@@ -79,6 +79,7 @@
       <AdditionalIncludeDirectories>D:\git\Game Stuff\Game Engine\third-party\include;D:\git\Game Stuff\Game Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8
  %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -117,6 +118,7 @@
       <AdditionalIncludeDirectories>D:\git\Game Stuff\Game Engine\third-party\include;D:\git\Game Stuff\Game Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8
  %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
