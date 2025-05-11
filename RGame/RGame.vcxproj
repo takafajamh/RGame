@@ -156,6 +156,12 @@
       <Project>{52ac8142-486d-4119-aea9-5eda2509c5bd}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Components\Components.hpp" />
+    <ClInclude Include="Components\Position.hpp" />
+    <ClInclude Include="Components\Sprite.hpp" />
+    <ClInclude Include="Systems\RendererSystem.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
