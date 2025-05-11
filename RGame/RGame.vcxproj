@@ -157,10 +157,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\Animation.hpp" />
     <ClInclude Include="Components\BiteComponent.hpp" />
     <ClInclude Include="Components\Components.hpp" />
     <ClInclude Include="Components\Position.hpp" />
+    <ClInclude Include="Components\RectangleShape.hpp" />
+    <ClInclude Include="Components\ScreenPosition.hpp" />
     <ClInclude Include="Components\Sprite.hpp" />
+    <ClInclude Include="Systems\AnimatorSystem.hpp" />
     <ClInclude Include="Systems\BiteSystem.hpp" />
     <ClInclude Include="Systems\RendererSystem.hpp" />
   </ItemGroup>

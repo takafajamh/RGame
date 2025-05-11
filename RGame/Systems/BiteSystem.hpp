@@ -30,6 +30,12 @@ public:
         auto view = registry.view<Position, BiteComponent>();
         for (auto [entity, position, bite] : view.each())
         {
+            if (position.y < 600)
+                dy = 1;
+
+            if (position.x < 320)
+                dx = 1;
+
             position.x += dx * bite.speed * dt;
             position.y += dy * bite.speed * dt;
 

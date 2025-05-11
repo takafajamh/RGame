@@ -13,7 +13,15 @@ private:
 		int layer;
 	};
 
+	struct ShapeRenderable
+	{
+		SDL_FRect dstRect;
+		int layer;
+		SDL_Color color;
+	};
+
 	std::vector<Renderable> renderQueue;
+	std::vector<ShapeRenderable> shapeQueue;
 
 public:
 
@@ -24,7 +32,7 @@ public:
 	void DrawSprites(entt::registry& registry)
 	{
 		renderQueue.clear();
-		renderQueue.reserve(registry.view<Sprite, Position>().size_hint());
+		renderQueue.reserve(registry.view<Sprite, Position>().size_hint() + registry.view<Sprite, ScreenPosition>().size_hint());
 
 		int width, height;
 		SDL_GetWindowSize(window, &width, &height);
@@ -42,6 +50,16 @@ public:
 				renderQueue.push_back({ dstRect, srcRect,sprite.texture->SDL_texture, sprite.layerOrder });
 			});
 
+		registry.view<Sprite, ScreenPosition>().each([&](auto entity, Sprite& sprite, ScreenPosition& sposition)
+			{
+				SDL_FRect dstRect = { sposition.x, sposition.y, sprite.sizeX, sprite.sizeY };
+				SDL_FRect* srcRect = nullptr;
+				if (sprite.useTextureRect)
+					srcRect = &sprite.textureRect;
+
+				renderQueue.push_back({ dstRect, srcRect,sprite.texture->SDL_texture, sprite.layerOrder });
+			});
+
 		std::sort(renderQueue.begin(), renderQueue.end(), [](const auto& a, const auto& b) 
 		{
 			return a.layer < b.layer;
@@ -50,6 +68,7 @@ public:
 		for (const auto& r : renderQueue)
 		{
 			bool renderState = SDL_RenderTexture(renderer, r.tex, r.srcRect, &r.dstRect);
+
 			if (!renderState)
 			{
 				spdlog::critical("Failed to render texture at {}. SDL_Error: {}", static_cast<void*>(r.tex), SDL_GetError());
@@ -58,4 +77,49 @@ public:
 		}
 
 	}
+
+	void DrawRectangles(entt::registry& registry)
+	{
+		shapeQueue.clear();
+		shapeQueue.reserve(registry.view<RectangleShape, Position>().size_hint() + registry.view<RectangleShape, ScreenPosition>().size_hint());
+
+		int width, height;
+		SDL_GetWindowSize(window, &width, &height);
+
+		float dx = camXPos - width / 2;
+		float dy = camYPos - height / 2;
+
+		registry.view<RectangleShape, Position>().each([&](auto entity, RectangleShape& rshape, Position& position)
+			{
+				SDL_FRect dstRect = { position.x - dx, position.y - dy, rshape.width, rshape.height };
+
+				shapeQueue.push_back({dstRect,rshape.layer,rshape.color});
+			});
+
+		registry.view<RectangleShape, ScreenPosition>().each([&](auto entity, RectangleShape& rshape, ScreenPosition& sposition)
+			{
+				SDL_FRect dstRect = { sposition.x, sposition.y, rshape.width, rshape.height };
+
+				shapeQueue.push_back({ dstRect,rshape.layer,rshape.color });
+			});
+
+		std::sort(shapeQueue.begin(), shapeQueue.end(), [](const auto& a, const auto& b)
+			{
+				return a.layer < b.layer;
+			});
+
+		for (const auto& r : shapeQueue)
+		{
+			SDL_SetRenderDrawColor(renderer, r.color.r, r.color.g, r.color.b, r.color.a);
+			bool renderState = SDL_RenderFillRect(renderer, &r.dstRect);
+
+			if (!renderState)
+			{
+				spdlog::critical("Failed to render Rectangle Shape. SDL_Error: {}", SDL_GetError());
+				assert(!renderState);
+			}
+		}
+
+	}
+
 };

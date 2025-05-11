@@ -6,6 +6,7 @@
 #include "Components/Components.hpp"
 #include "Systems/RendererSystem.hpp"
 #include "Systems/BiteSystem.hpp"
+#include "Systems/AnimatorSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -15,15 +16,18 @@ class mScene : public Scene
 public:
     RendererSystem rs;
     BiteSystem bs;
+    AnimatorSystem as;
 
     mScene(Game* game) : Scene(game)
     {
 
     }
+
     virtual void Init()
     {
         std::shared_ptr<Texture> t_Fumi = CreateTexture("GPX/fumi fishin.png");
         std::shared_ptr<Texture> t_Bite = CreateTexture("GPX/bite.png");
+        std::shared_ptr<Texture> t_Sum1 = CreateTexture("GPX/sum swim1.png");
 
 
         entt::entity Fumi = m_registry.create();
@@ -55,11 +59,56 @@ public:
         m_registry.emplace<BiteComponent>(Bite, BiteComponent{400});
 
 
+        entt::entity Water = m_registry.create();
+        m_registry.emplace<Position>(Water, Position{ 300.f, 600.f });
+        m_registry.emplace<RectangleShape>(Water, RectangleShape{ 2000,12000,5,{120,120,250,200} });
+
+        entt::entity Ground = m_registry.create();
+        m_registry.emplace<Position>(Ground, Position{ -500.f, 600.f });
+        m_registry.emplace<RectangleShape>(Ground, RectangleShape{ 800,12000,5,{110,60,35,255} });
+
+        entt::entity Grass = m_registry.create();
+        m_registry.emplace<Position>(Grass, Position{ -500.f, 575.f });
+        m_registry.emplace<RectangleShape>(Grass, RectangleShape{ 800,50,6,{120,220,100,255} });
+
+
+        entt::entity Sum = m_registry.create();
+        m_registry.emplace<Sprite>(Sum,
+            Sprite{
+                (float)t_Sum1->getSDL()->w/4 * 3,
+                (float)t_Sum1->getSDL()->h * 3,
+                4,
+                true,
+                {0,0,48,24}, // optional, default anyway
+                t_Sum1
+            });
+
+        m_registry.emplace<Position>(Sum, Position{ 800.f, 800.f });
+
+        Animation sumAnim;
+        sumAnim.name = "idle";
+
+        for (int i = 0; i < 4; ++i)
+        {
+            Frame frame;
+            frame.duration = 0.15f;
+            frame.frame = SDL_FRect{ static_cast<float>(i * 48), 0.0f, 48.0f, 24.0f };
+            sumAnim.frames.push_back(frame);
+        }
+
+        Animator animator;
+        animator.anims.push_back(sumAnim);
+        animator.looping = true;
+        animator.ToPlay = "idle";
+
+        m_registry.emplace<Animator>(Sum, animator);
+
 
         spdlog::info("Scene got init");
     }
     virtual void Update()
     {
+        as.Update(m_registry);
         bs.Update(m_registry);
 
         rs.camXPos = bs.GetPosition().first;
@@ -68,6 +117,7 @@ public:
     }
     virtual void Draw()
     {
+        rs.DrawRectangles(m_registry);
         rs.DrawSprites(m_registry);
     }
     virtual void Events(const SDL_Event& event)
