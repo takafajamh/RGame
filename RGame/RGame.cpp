@@ -5,6 +5,7 @@
 #include <KitsuEngine/KitsuneEngine.hpp>
 #include "Components/Components.hpp"
 #include "Systems/RendererSystem.hpp"
+#include "Systems/BiteSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -13,7 +14,7 @@ class mScene : public Scene
 {
 public:
     RendererSystem rs;
-
+    BiteSystem bs;
 
     mScene(Game* game) : Scene(game)
     {
@@ -22,6 +23,9 @@ public:
     virtual void Init()
     {
         std::shared_ptr<Texture> t_Fumi = CreateTexture("GPX/fumi fishin.png");
+        std::shared_ptr<Texture> t_Bite = CreateTexture("GPX/bite.png");
+
+
         entt::entity Fumi = m_registry.create();
         m_registry.emplace<Sprite>(Fumi, 
             Sprite{
@@ -33,10 +37,22 @@ public:
                 t_Fumi
             });
 
-        m_registry.emplace<Position>(Fumi, Position{ 0.f, 0.f });
+        m_registry.emplace<Position>(Fumi, Position{ 0.f, 300.f });
 
 
+        entt::entity Bite = m_registry.create();
+        m_registry.emplace<Sprite>(Bite,
+            Sprite{
+                (float)t_Bite->getSDL()->w * 3,
+                (float)t_Bite->getSDL()->h * 3,
+                5,
+                false,
+                {}, // optional, default anyway
+                t_Bite
+            });
 
+        m_registry.emplace<Position>(Bite, Position{ 240.f, 370.f });
+        m_registry.emplace<BiteComponent>(Bite, BiteComponent{400});
 
 
 
@@ -44,6 +60,10 @@ public:
     }
     virtual void Update()
     {
+        bs.Update(m_registry);
+
+        rs.camXPos = bs.GetPosition().first;
+        rs.camYPos = bs.GetPosition().second;
 
     }
     virtual void Draw()

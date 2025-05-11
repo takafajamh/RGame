@@ -26,9 +26,15 @@ public:
 		renderQueue.clear();
 		renderQueue.reserve(registry.view<Sprite, Position>().size_hint());
 
+		int width, height;
+		SDL_GetWindowSize(window, &width, &height);
+
+		float dx = camXPos - width / 2;
+		float dy = camYPos - height / 2;
+
 		registry.view<Sprite, Position>().each([&](auto entity, Sprite& sprite, Position& position) 
 			{
-				SDL_FRect dstRect = { position.x - camXPos, position.y - camYPos, sprite.sizeX, sprite.sizeY };
+				SDL_FRect dstRect = { position.x - dx, position.y - dy, sprite.sizeX, sprite.sizeY };
 				SDL_FRect* srcRect = nullptr;
 				if (sprite.useTextureRect)
 					srcRect = &sprite.textureRect;
