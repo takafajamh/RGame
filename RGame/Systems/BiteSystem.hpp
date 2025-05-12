@@ -93,7 +93,6 @@ public:
 
 
                     // Points delete
-                    // Points calculate
                     auto Points = registry.create();
 
                     Text t;
@@ -104,7 +103,8 @@ public:
                     t.font = font;
 
                     registry.emplace<Text>(Points, t);
-                    registry.emplace<ScreenPosition>(Points, ScreenPosition{400.f,100.f});
+                    registry.emplace<ScreenPosition>(Points, ScreenPosition{350.f,20.f});
+                    registry.emplace<RemoveAfterDelay>(Points, RemoveAfterDelay{1.5f, 0});
 
 
                     registry.destroy(Catch);

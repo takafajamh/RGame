@@ -10,6 +10,7 @@
 #include "Systems/FishSpawnerSystem.hpp"
 #include "Systems/FishSystem.hpp"
 #include "Systems/OdoruSystem.hpp"
+#include "Systems/RemoveAfterDelaySystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -27,6 +28,7 @@ public:
     FishSpawnerSystem fss;
     FishBrain fb;
     OdoruSystem os;
+    RemoveAfterDelaySystem rads;
 
 
     mScene(Game* game) : Scene(game)
@@ -91,7 +93,7 @@ public:
         as.Update(m_registry);
         bs.Update(m_registry);
         fb.Update(m_registry);
-
+        rads.Update(m_registry);
 
         rs.camXPos = bs.GetPosition().first;
         rs.camYPos = bs.GetPosition().second;
@@ -147,7 +149,7 @@ public:
 
 int main(int argc, char** argv)
 {
-    assert(KitsuEngineInit(800,600) == 0);
+    assert(KitsuEngineInit(800,600,"Fumi Fishin") == 0);
 
     Game* game = new Game();
     mScene* mainScene = new mScene(game);

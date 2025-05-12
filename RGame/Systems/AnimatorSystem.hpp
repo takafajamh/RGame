@@ -48,8 +48,6 @@ public:
 					spdlog::warn("Could not find Sprite on an Object with an Animator Component, Texture Rect not changed");
 				}
 
-
-				spdlog::info("Successfully started playing {} ", animator.currentAnimationName);
 			}
 			else
 			{
