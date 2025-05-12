@@ -17,7 +17,7 @@ struct Animator
 {
 	std::vector<Animation> anims;
 	bool looping = false;
-
+	bool restartOnFinish = false;
 
 	std::string currentAnimationName = "";
 	int currentAnimationId = -1;

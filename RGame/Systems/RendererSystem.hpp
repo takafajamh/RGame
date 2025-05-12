@@ -43,6 +43,12 @@ public:
 		registry.view<Sprite, Position>().each([&](auto entity, Sprite& sprite, Position& position) 
 			{
 				SDL_FRect dstRect = { position.x - dx, position.y - dy, sprite.sizeX, sprite.sizeY };
+				if (sprite.flipX)
+				{
+					dstRect.x += dstRect.w;
+					dstRect.w *= -1;
+				}
+
 				SDL_FRect* srcRect = nullptr;
 				if (sprite.useTextureRect)
 					srcRect = &sprite.textureRect;
@@ -53,6 +59,11 @@ public:
 		registry.view<Sprite, ScreenPosition>().each([&](auto entity, Sprite& sprite, ScreenPosition& sposition)
 			{
 				SDL_FRect dstRect = { sposition.x, sposition.y, sprite.sizeX, sprite.sizeY };
+				if (sprite.flipX)
+				{
+					dstRect.x += dstRect.w;
+					dstRect.w *= -1;
+				}
 				SDL_FRect* srcRect = nullptr;
 				if (sprite.useTextureRect)
 					srcRect = &sprite.textureRect;
@@ -118,6 +129,52 @@ public:
 				spdlog::critical("Failed to render Rectangle Shape. SDL_Error: {}", SDL_GetError());
 				assert(!renderState);
 			}
+		}
+
+	}
+
+	void DrawTexts(entt::registry& registry)
+	{
+		auto view = registry.view<Text, Position>();
+
+		int width, height;
+		SDL_GetWindowSize(window, &width, &height);
+
+		float dx = camXPos - width / 2;
+		float dy = camYPos - height / 2;
+
+		for (auto [entity, txt, pos] : view.each())
+		{
+			auto& text = view.get<Text>(entity);
+			auto& pos = view.get<Position>(entity);
+
+			SDL_FRect dst = { pos.x - dx, pos.y - dy, txt.xSize, txt.ySize};
+
+			SDL_Surface* surf = TTF_RenderText_Solid(txt.font->SDL_Font, text.content.c_str(), text.content.size(), txt.color);
+			SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
+			SDL_DestroySurface(surf);
+
+			SDL_RenderTexture(renderer, tex, nullptr, &dst);
+			SDL_DestroyTexture(tex);
+		}
+
+
+
+		auto view2 = registry.view<Text, ScreenPosition>();
+
+		for (auto [entity, txt, pos] : view2.each())
+		{
+			auto& text = view2.get<Text>(entity);
+			auto& pos = view2.get<ScreenPosition>(entity);
+
+			SDL_FRect dst = { pos.x, pos.y, txt.xSize, txt.ySize };
+
+			SDL_Surface* surf = TTF_RenderText_Solid(txt.font->SDL_Font, text.content.c_str(), text.content.size(), txt.color);
+			SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
+			SDL_DestroySurface(surf);
+
+			SDL_RenderTexture(renderer, tex, nullptr, &dst);
+			SDL_DestroyTexture(tex);
 		}
 
 	}

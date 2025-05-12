@@ -70,10 +70,21 @@ public:
 							}
 							else
 							{
+								if (animator.restartOnFinish)
+								{
+									if (auto* sprite = registry.try_get<Sprite>(entity))
+									{
+										sprite->textureRect = animator.anims[animator.currentAnimationId].frames[0].frame;
+										sprite->useTextureRect = true;
+									}
+								}
+
 								animator.currentAnimationId = -1;
 								animator.currentAnimationName = "";
 								animator.currentFrame = 0;
 								animator.currentTime = 0;
+								
+								
 								continue;
 							}
 						}

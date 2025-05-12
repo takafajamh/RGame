@@ -5,3 +5,6 @@
 #include "ScreenPosition.hpp"
 #include "RectangleShape.hpp"
 #include "Animation.hpp"
+#include "FishComponent.hpp"
+#include "OdoruComponent.hpp"
+#include "Text.hpp"

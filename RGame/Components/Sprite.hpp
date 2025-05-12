@@ -13,4 +13,7 @@
 		SDL_FRect textureRect;
 
 		std::shared_ptr<Texture> texture;
+
+		bool flipX = false;
+
 	};

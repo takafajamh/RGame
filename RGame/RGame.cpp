@@ -7,27 +7,38 @@
 #include "Systems/RendererSystem.hpp"
 #include "Systems/BiteSystem.hpp"
 #include "Systems/AnimatorSystem.hpp"
+#include "Systems/FishSpawnerSystem.hpp"
+#include "Systems/FishSystem.hpp"
+#include "Systems/OdoruSystem.hpp"
 
 #include <cassert>
 #include <iostream>
 
 class mScene : public Scene
 {
+private:
+    std::shared_ptr<Texture> t_Sum1;
+    std::shared_ptr<Texture> t_Odoru = CreateTexture("GPX/Odddoru.png");
+
 public:
     RendererSystem rs;
     BiteSystem bs;
     AnimatorSystem as;
+    FishSpawnerSystem fss;
+    FishBrain fb;
+    OdoruSystem os;
+
 
     mScene(Game* game) : Scene(game)
     {
-
+        bs.t_odoru = t_Odoru;
     }
 
     virtual void Init()
     {
         std::shared_ptr<Texture> t_Fumi = CreateTexture("GPX/fumi fishin.png");
         std::shared_ptr<Texture> t_Bite = CreateTexture("GPX/bite.png");
-        std::shared_ptr<Texture> t_Sum1 = CreateTexture("GPX/sum swim1.png");
+        t_Sum1 = CreateTexture("GPX/sum swim1.png");
 
 
         entt::entity Fumi = m_registry.create();
@@ -61,47 +72,16 @@ public:
 
         entt::entity Water = m_registry.create();
         m_registry.emplace<Position>(Water, Position{ 300.f, 600.f });
-        m_registry.emplace<RectangleShape>(Water, RectangleShape{ 2000,12000,5,{120,120,250,200} });
+        m_registry.emplace<RectangleShape>(Water, RectangleShape{ 120000,120000,5,{120,120,250,200} });
 
         entt::entity Ground = m_registry.create();
         m_registry.emplace<Position>(Ground, Position{ -500.f, 600.f });
-        m_registry.emplace<RectangleShape>(Ground, RectangleShape{ 800,12000,5,{110,60,35,255} });
+        m_registry.emplace<RectangleShape>(Ground, RectangleShape{ 800,120000,5,{110,60,35,255} });
 
         entt::entity Grass = m_registry.create();
         m_registry.emplace<Position>(Grass, Position{ -500.f, 575.f });
         m_registry.emplace<RectangleShape>(Grass, RectangleShape{ 800,50,6,{120,220,100,255} });
 
-
-        entt::entity Sum = m_registry.create();
-        m_registry.emplace<Sprite>(Sum,
-            Sprite{
-                (float)t_Sum1->getSDL()->w/4 * 3,
-                (float)t_Sum1->getSDL()->h * 3,
-                4,
-                true,
-                {0,0,48,24}, // optional, default anyway
-                t_Sum1
-            });
-
-        m_registry.emplace<Position>(Sum, Position{ 800.f, 800.f });
-
-        Animation sumAnim;
-        sumAnim.name = "idle";
-
-        for (int i = 0; i < 4; ++i)
-        {
-            Frame frame;
-            frame.duration = 0.15f;
-            frame.frame = SDL_FRect{ static_cast<float>(i * 48), 0.0f, 48.0f, 24.0f };
-            sumAnim.frames.push_back(frame);
-        }
-
-        Animator animator;
-        animator.anims.push_back(sumAnim);
-        animator.looping = true;
-        animator.ToPlay = "idle";
-
-        m_registry.emplace<Animator>(Sum, animator);
 
 
         spdlog::info("Scene got init");
@@ -110,15 +90,48 @@ public:
     {
         as.Update(m_registry);
         bs.Update(m_registry);
+        fb.Update(m_registry);
+
 
         rs.camXPos = bs.GetPosition().first;
         rs.camYPos = bs.GetPosition().second;
 
+        fss.Update(Position{ bs.GetPosition().first ,bs.GetPosition().second },m_registry, t_Sum1);
+        os.Update(m_registry);
     }
     virtual void Draw()
     {
         rs.DrawRectangles(m_registry);
         rs.DrawSprites(m_registry);
+
+        float camXPos = bs.GetPosition().first;
+        float camYPos = bs.GetPosition().second;
+
+        int width, height;
+        SDL_GetWindowSize(window, &width, &height);
+
+        // Camera offset (as used in your system)
+        float camOffsetX = camXPos - width / 2;
+        float camOffsetY = camYPos - height / 2;
+
+        // World position (e.g., the object's position)
+        float worldX = 260;
+        float worldY = 370;
+
+        // Convert world to screen
+        float screenX1 = worldX - camOffsetX;
+        float screenY1 = worldY - camOffsetY;
+
+        // Fixed screen-space point (e.g., 20px right of screen center)
+        float screenX2 = width / 2 + 20;
+        float screenY2 = height / 2;
+
+        // Draw the line
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderLine(renderer, screenX1, screenY1, screenX2, screenY2);
+
+
+        rs.DrawTexts(m_registry);
     }
     virtual void Events(const SDL_Event& event)
     {
