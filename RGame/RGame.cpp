@@ -38,6 +38,34 @@ public:
 
     virtual void Init()
     {
+        SDL_AudioDeviceID audio_device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
+        if (!audio_device)
+        {
+            spdlog::error("Could not instantiate the Audio Device ID, SDL Error: {}", SDL_GetError());
+            assert(audio_device);
+        }
+        if (!Mix_OpenAudio(audio_device, nullptr)) 
+        {
+            spdlog::error("Could not open the audio, SDL Error: {}", SDL_GetError());
+            assert(false);
+        }
+        Mix_Music* music = Mix_LoadMUS("Music/bg.wav");
+        if (!music)
+        {
+            spdlog::error("Could not load the audio file, SDL Error: {}", SDL_GetError());
+            assert(music);
+        }
+        if (!Mix_PlayMusic(music, -1)) 
+        {
+            spdlog::error("Could not play the music, SDL Error: {}", SDL_GetError());
+            assert(false);
+        }
+        Mix_VolumeMusic(MIX_MAX_VOLUME / 8); // Set volume to 50%
+
+
+
+        spdlog::info("Music started playing successfully");
+
         std::shared_ptr<Texture> t_Fumi = CreateTexture("GPX/fumi fishin.png");
         std::shared_ptr<Texture> t_Bite = CreateTexture("GPX/bite.png");
         t_Sum1 = CreateTexture("GPX/sum swim1.png");

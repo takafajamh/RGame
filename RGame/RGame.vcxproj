@@ -82,10 +82,12 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL3.lib;SDL3_mixer.lib;SDL3_ttf.lib;SDL3_image.lib;KitsuEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\git\Game Stuff\Game Engine\third-party\lib\SDL3;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Image;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Mixer;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_TTF;D:\git\Game Stuff\Game Stuff\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup
+ %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,10 +123,12 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL3.lib;SDL3_mixer.lib;SDL3_ttf.lib;SDL3_image.lib;KitsuEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\git\Game Stuff\Game Engine\third-party\lib\SDL3;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Image;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Mixer;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_TTF;D:\git\Game Stuff\Game Stuff\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup
+ %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
