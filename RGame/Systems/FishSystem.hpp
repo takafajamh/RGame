@@ -1,5 +1,5 @@
 #pragma once
-#include "../Components/Components.hpp"
+#include "../Components.hpp"
 
 class FishBrain
 {

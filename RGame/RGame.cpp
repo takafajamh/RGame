@@ -3,7 +3,7 @@
 #include <SDL3_Image/SDL_image.h>
 #include <spdlog/spdlog.h>
 #include <KitsuEngine/KitsuneEngine.hpp>
-#include "Components/Components.hpp"
+#include "Components.hpp"
 #include "Systems/RendererSystem.hpp"
 #include "Systems/BiteSystem.hpp"
 #include "Systems/AnimatorSystem.hpp"
@@ -173,15 +173,96 @@ public:
     }
 };
 
+class App : public Scene
+{
+private:
 
+public:
+    RendererSystem rs;
+    AnimatorSystem as;
+
+
+    App(Game* game) : Scene(game)
+    {
+    }
+
+    virtual void Init()
+    {
+        entt::entity CheckBox = m_registry.create();
+        m_registry.emplace<ScreenPosition>(CheckBox, ScreenPosition{ 10.f, 10.f });
+        m_registry.emplace<RectangleShape>(CheckBox, RectangleShape{ 50,50,6,{120,220,100,255} });
+
+
+
+        spdlog::info("Scene got init");
+    }
+    virtual void Update()
+    {
+        as.Update(m_registry);
+    
+
+    }
+    virtual void Draw()
+    {
+        rs.DrawRectangles(m_registry);
+        rs.DrawSprites(m_registry);
+
+        rs.DrawTexts(m_registry);
+    }
+    virtual void Events(const SDL_Event& event)
+    {
+
+    }
+};
+
+std::pair<int,int> GetScreenSize()
+{
+    SDL_DisplayID primaryDisplay = SDL_GetPrimaryDisplay();
+    if (primaryDisplay == 0)
+    {
+        spdlog::error("Failed to get primary display: {}", SDL_GetError());
+    }
+    else
+    {
+        SDL_Rect bounds;
+        if (!SDL_GetDisplayBounds(primaryDisplay, &bounds))
+        {
+            spdlog::error("SDL_GetDisplayBounds failed: {}", SDL_GetError());
+        }
+        else
+        {
+            int screenWidth = bounds.w;
+            int screenHeight = bounds.h;
+            spdlog::info("Primary screen size: {} x {}", screenWidth, screenHeight);
+            return std::pair<int, int>(screenWidth, screenHeight);
+        }
+    }
+
+    return { 0,0 };
+}
 
 int main(int argc, char** argv)
 {
-    assert(KitsuEngineInit(800,600,"Fumi Fishin") == 0);
+    WindowParams wp;
+    //wp.Borderless = true;
+    wp.AlwaysOnTop = true;
+    wp.Transparent = true;
+    wp.Resizable = true;
+    
+    assert(KitsuEngineInit(300,600,"Log", &wp ) == 0);
+
+    if (!SDL_SetWindowPosition(window, GetScreenSize().first - 300, 50))
+    {
+        spdlog::error("Could not move the window: {}", SDL_GetError());
+    }
+    else
+    {
+        spdlog::info("Window moved into {},{}", GetScreenSize().first - 300, 50);
+    }
 
     Game* game = new Game();
-    mScene* mainScene = new mScene(game);
-
+   // mScene* mainScene = new mScene(game);
+    App* mainScene = new App(game);
 
     game->StartGame(mainScene);
     

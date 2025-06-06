@@ -1,5 +1,5 @@
 	#pragma once
-	#include <KitsuEngine/Texture.hpp>
+	#include <KitsuEngine/SafetyWrappers/Texture.hpp>
 	#include <memory>
 
 	struct Sprite
@@ -9,7 +9,7 @@
 
 		int layerOrder = 5;
 
-		bool useTextureRect=false;
+		bool useTextureRect = false;
 		SDL_FRect textureRect;
 
 		std::shared_ptr<Texture> texture;

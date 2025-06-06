@@ -74,7 +74,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SDL_MAIN_HANDLED;SDL_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SDL_MAIN_HANDLED;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\git\Game Stuff\Game Engine\third-party\include;D:\git\Game Stuff\Game Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8
@@ -82,12 +82,10 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL3.lib;SDL3_mixer.lib;SDL3_ttf.lib;SDL3_image.lib;KitsuEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\git\Game Stuff\Game Engine\third-party\lib\SDL3;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Image;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Mixer;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_TTF;D:\git\Game Stuff\Game Stuff\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup
- %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,7 +113,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SDL_MAIN_HANDLED;SDL_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SDL_MAIN_HANDLED;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\git\Game Stuff\Game Engine\third-party\include;D:\git\Game Stuff\Game Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8
@@ -123,12 +121,10 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL3.lib;SDL3_mixer.lib;SDL3_ttf.lib;SDL3_image.lib;KitsuEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\git\Game Stuff\Game Engine\third-party\lib\SDL3;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Image;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Mixer;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_TTF;D:\git\Game Stuff\Game Stuff\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup
- %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,7 +159,8 @@
   <ItemGroup>
     <ClInclude Include="Components\Animation.hpp" />
     <ClInclude Include="Components\BiteComponent.hpp" />
-    <ClInclude Include="Components\Components.hpp" />
+    <ClInclude Include="Components\Checkbox.hpp" />
+    <ClInclude Include="Components.hpp" />
     <ClInclude Include="Components\FishComponent.hpp" />
     <ClInclude Include="Components\OdoruComponent.hpp" />
     <ClInclude Include="Components\Position.hpp" />

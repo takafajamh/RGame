@@ -1,6 +1,6 @@
 #pragma once
 #include <KitsuEngine/KitsuneEngine.hpp>
-#include "../Components/Components.hpp"
+#include "../Components.hpp"
 
 
 class OdoruSystem
