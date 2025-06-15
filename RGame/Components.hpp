@@ -1,12 +1,9 @@
 #pragma once
 #include "Components/Position.hpp"
 #include "Components/Sprite.hpp"
-#include "Components/BiteComponent.hpp"
 #include "Components/ScreenPosition.hpp"
 #include "Components/RectangleShape.hpp"
 #include "Components/Animation.hpp"
-#include "Components/FishComponent.hpp"
-#include "Components/OdoruComponent.hpp"
 #include "Components/Text.hpp"
 #include "Components/RemoveAfterDelay.hpp"
 #include "Components/Checkbox.hpp"

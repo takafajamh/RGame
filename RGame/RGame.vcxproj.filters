@@ -32,9 +32,6 @@
     <ClInclude Include="Systems\RendererSystem.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Components\BiteComponent.hpp">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Components\RectangleShape.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
@@ -45,12 +42,6 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="Systems\AnimatorSystem.hpp">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\FishComponent.hpp">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\OdoruComponent.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="Components\Text.hpp">

@@ -158,11 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Animation.hpp" />
-    <ClInclude Include="Components\BiteComponent.hpp" />
     <ClInclude Include="Components\Checkbox.hpp" />
     <ClInclude Include="Components.hpp" />
-    <ClInclude Include="Components\FishComponent.hpp" />
-    <ClInclude Include="Components\OdoruComponent.hpp" />
     <ClInclude Include="Components\Position.hpp" />
     <ClInclude Include="Components\RectangleShape.hpp" />
     <ClInclude Include="Components\RemoveAfterDelay.hpp" />

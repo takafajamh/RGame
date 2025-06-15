@@ -20,8 +20,13 @@ public:
 
     virtual void Init()
     {
-        entt::entity CheckBox = m_registry.create();
-        m_registry.emplace<ScreenPosition>(CheckBox, ScreenPosition{ 10.f, 10.f });
+        //entt::entity CheckBox = m_registry.create();
+        //m_registry.emplace<ScreenPosition>(CheckBox, ScreenPosition{ 10.f, 10.f });
+
+        entt::entity Player = m_registry.create();
+        m_registry.emplace<Position>(Player, Position{300,300});
+
+
 
 
         spdlog::info("Scene got init");
