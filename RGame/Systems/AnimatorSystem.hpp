@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../Components.hpp"
+#include <KitsuEngine/System.hpp>
 
-
-class AnimatorSystem
+class AnimatorSystem : ISystem
 {
 public:
 	void Update(entt::registry& registry)

@@ -1,8 +1,9 @@
 #pragma once
 #include "../Components.hpp"
+#include <KitsuEngine/System.hpp>
 #include <KitsuEngine/KitsuneEngine.hpp>
 
-class RemoveAfterDelaySystem
+class RemoveAfterDelaySystem : ISystem
 {
 public:
 

@@ -1,8 +1,9 @@
 #pragma once
 #include "../Components.hpp"
+#include <KitsuEngine/System.hpp>
 #include <KitsuEngine/KitsuneEngine.hpp>
 
-class RendererSystem
+class RendererSystem : ISystem
 {
 private:
 	struct Renderable
@@ -29,6 +30,11 @@ public:
 	float camYPos = 0;
 
 	
+	void Render(entt::registry& registry)
+	{
+
+	}
+
 	void DrawSprites(entt::registry& registry)
 	{
 		renderQueue.clear();

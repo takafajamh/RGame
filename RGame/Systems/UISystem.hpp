@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../Components.hpp"
-
+#include <KitsuEngine/System.hpp>
 // Does not account for just position, uses Screen Position
 
 
-class UISystem
+class UISystem : ISystem
 {
 private:
 	Uint32 prevMouseState = 0;

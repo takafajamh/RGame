@@ -32,9 +32,6 @@
     <ClInclude Include="Systems\RendererSystem.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\BiteSystem.hpp">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Components\BiteComponent.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
@@ -50,19 +47,10 @@
     <ClInclude Include="Systems\AnimatorSystem.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\FishSpawnerSystem.hpp">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Components\FishComponent.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\FishSystem.hpp">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Components\OdoruComponent.hpp">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Systems\OdoruSystem.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="Components\Text.hpp">
