@@ -11,6 +11,7 @@
 #include "Systems/FishSystem.hpp"
 #include "Systems/OdoruSystem.hpp"
 #include "Systems/RemoveAfterDelaySystem.hpp"
+#include "Systems/UISystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -176,11 +177,12 @@ public:
 class App : public Scene
 {
 private:
-
+    std::shared_ptr<Font> font = std::make_shared<Font>("Font/munro.ttf");
+    
 public:
     RendererSystem rs;
     AnimatorSystem as;
-
+    UISystem us;
 
     App(Game* game) : Scene(game)
     {
@@ -191,6 +193,19 @@ public:
         entt::entity CheckBox = m_registry.create();
         m_registry.emplace<ScreenPosition>(CheckBox, ScreenPosition{ 10.f, 10.f });
         m_registry.emplace<RectangleShape>(CheckBox, RectangleShape{ 50,50,6,{120,220,100,255} });
+        m_registry.emplace<RectangleCheckbox>(CheckBox, RectangleCheckbox{{220,120,100,255},{180,180,160,255},{120,220,100,255} });
+
+        entt::entity check_first = m_registry.create();
+
+        Text t;
+        t.color = { 255,255,255,255 };
+        t.content = "Hewwo, this is a test";
+        t.xSize = t.content.length() * 12;
+        t.ySize = 24;
+        t.font = font;
+
+        m_registry.emplace<Text>(check_first, t);
+        m_registry.emplace<ScreenPosition>(check_first, ScreenPosition{ 80.f,10.f });
 
 
 
@@ -199,8 +214,7 @@ public:
     virtual void Update()
     {
         as.Update(m_registry);
-    
-
+        us.Update(m_registry);
     }
     virtual void Draw()
     {
