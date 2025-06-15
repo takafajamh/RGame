@@ -3,7 +3,7 @@
 #include "../Components.hpp"
 #include <KitsuEngine/System.hpp>
 
-class AnimatorSystem : ISystem
+class AnimatorSystem : public ISystem
 {
 public:
 	void Update(entt::registry& registry)

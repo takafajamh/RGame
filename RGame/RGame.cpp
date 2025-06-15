@@ -5,6 +5,9 @@
 #include <KitsuEngine/KitsuneEngine.hpp>
 #include "Components.hpp"
 
+#include "Systems/RendererSystem.hpp"
+#include "Systems/PlayerMovementSystem.hpp"
+
 #include <cassert>
 #include <iostream>
 
@@ -20,13 +23,28 @@ public:
 
     virtual void Init()
     {
-        //entt::entity CheckBox = m_registry.create();
-        //m_registry.emplace<ScreenPosition>(CheckBox, ScreenPosition{ 10.f, 10.f });
+        addSystem<RendererSystem>();
+
+
+        std::shared_ptr<Texture> t_Player = CreateTexture("GPX/characters-sheet.png");
+        
 
         entt::entity Player = m_registry.create();
-        m_registry.emplace<Position>(Player, Position{300,300});
+        Position& playerPosition = m_registry.emplace<Position>(Player, Position{0,0});
+        xCamPos = &playerPosition.x;
+        yCamPos = &playerPosition.y;
 
+        Sprite playerSprite;
+        {
+            playerSprite.texture = t_Player;
+            playerSprite.useTextureRect = true;
+            playerSprite.textureRect = { 0.f, 0.f, 48.f, 48.f };
+            playerSprite.sizeX = 48 * 2;
+            playerSprite.sizeY = 48 * 2;
+        }
+        m_registry.emplace<Sprite>(Player, playerSprite);
 
+        addSystem<PlayerMovementSystem>(Player);
 
 
         spdlog::info("Scene got init");

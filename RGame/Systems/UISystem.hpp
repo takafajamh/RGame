@@ -5,7 +5,7 @@
 // Does not account for just position, uses Screen Position
 
 
-class UISystem : ISystem
+class UISystem : public ISystem
 {
 private:
 	Uint32 prevMouseState = 0;

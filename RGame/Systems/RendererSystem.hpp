@@ -3,7 +3,7 @@
 #include <KitsuEngine/System.hpp>
 #include <KitsuEngine/KitsuneEngine.hpp>
 
-class RendererSystem : ISystem
+class RendererSystem : public ISystem
 {
 private:
 	struct Renderable
@@ -25,14 +25,12 @@ private:
 	std::vector<ShapeRenderable> shapeQueue;
 
 public:
-
-	float camXPos = 0;
-	float camYPos = 0;
-
 	
-	void Render(entt::registry& registry)
+	virtual void Render(entt::registry& registry) override
 	{
-
+		DrawSprites(registry);
+		DrawRectangles(registry);
+		DrawTexts(registry);
 	}
 
 	void DrawSprites(entt::registry& registry)

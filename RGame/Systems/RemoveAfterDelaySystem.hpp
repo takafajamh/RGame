@@ -3,7 +3,7 @@
 #include <KitsuEngine/System.hpp>
 #include <KitsuEngine/KitsuneEngine.hpp>
 
-class RemoveAfterDelaySystem : ISystem
+class RemoveAfterDelaySystem : public ISystem
 {
 public:
 
