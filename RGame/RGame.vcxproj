@@ -166,10 +166,12 @@
     <ClInclude Include="Components\ScreenPosition.hpp" />
     <ClInclude Include="Components\Sprite.hpp" />
     <ClInclude Include="Components\Text.hpp" />
+    <ClInclude Include="Components\Tilemap.hpp" />
     <ClInclude Include="Systems\AnimatorSystem.hpp" />
     <ClInclude Include="Systems\PlayerMovementSystem.hpp" />
     <ClInclude Include="Systems\RemoveAfterDelaySystem.hpp" />
     <ClInclude Include="Systems\RendererSystem.hpp" />
+    <ClInclude Include="Systems\TilemapSystem.hpp" />
     <ClInclude Include="Systems\UISystem.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -7,7 +7,7 @@
 
 #include "Systems/RendererSystem.hpp"
 #include "Systems/PlayerMovementSystem.hpp"
-
+#include "Systems/TilemapSystem.hpp"
 #include <cassert>
 #include <iostream>
 
@@ -24,7 +24,7 @@ public:
     virtual void Init()
     {
         addSystem<RendererSystem>();
-
+        
 
         std::shared_ptr<Texture> t_Player = CreateTexture("GPX/characters-sheet.png");
         
@@ -45,6 +45,11 @@ public:
         m_registry.emplace<Sprite>(Player, playerSprite);
 
         addSystem<PlayerMovementSystem>(Player);
+
+
+        TilemapSystem* ts = addSystem<TilemapSystem>();
+        std::shared_ptr<Texture> t_Tilesheet = CreateTexture("GPX/tilesheet.png");
+        ts->LoadMap(m_registry, "GPX/mapa.json", t_Tilesheet, Position{ 0,0 });
 
 
         spdlog::info("Scene got init");

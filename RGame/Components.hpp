@@ -7,3 +7,4 @@
 #include "Components/Text.hpp"
 #include "Components/RemoveAfterDelay.hpp"
 #include "Components/Checkbox.hpp"
+#include "Components/Tilemap.hpp"
