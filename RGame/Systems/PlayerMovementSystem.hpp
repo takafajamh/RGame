@@ -2,15 +2,57 @@
 #include "../Components.hpp"
 #include <KitsuEngine/System.hpp>
 #include <KitsuEngine/KitsuneEngine.hpp>
+#include "TilemapSystem.hpp"
 
 class PlayerMovementSystem : public ISystem
 {
 private:
 	entt::entity m_player;
+	TilemapSystem* m_tilemap;
+
+	bool isCollider(std::vector<TileInfo> ti)
+	{
+		for (auto& t : ti)
+		{
+			if (t.isCollider)
+				return true;
+		}
+		return ti.size() == 0;
+	}
+
+	bool shouldReturn(Position pos, entt::registry& registry)
+	{
+		if (m_tilemap != nullptr)
+		{
+			Position UL = pos;
+			Position UR = pos;
+			Position DL = pos;
+			Position DR = pos;
+
+			Sprite& s = registry.get<Sprite>(m_player);
+			UL.y += (s.sizeY / 3) * 2;
+			UR.y += (s.sizeY / 3) * 2;
+			DL.y += s.sizeY;
+			DR.y += s.sizeY;
+
+			UL.x = DL.x = pos.x + (s.sizeX / 4);
+			UR.x = DR.x = pos.x + s.sizeX - (s.sizeX / 4);
+
+			std::vector<TileInfo> tiUL = m_tilemap->GetTileInfo(registry, UL.x, UL.y);
+			std::vector<TileInfo> tiUR = m_tilemap->GetTileInfo(registry, UR.x, UR.y);
+			std::vector<TileInfo> tiDL = m_tilemap->GetTileInfo(registry, DL.x, DL.y);
+			std::vector<TileInfo> tiDR = m_tilemap->GetTileInfo(registry, DR.x, DR.y);
+
+			return isCollider(tiDL) || isCollider(tiDR) || isCollider(tiUL) || isCollider(tiUR);
+		}
+		return false;
+	}
+
 public:
-	PlayerMovementSystem(entt::entity& Player)
+	PlayerMovementSystem(entt::entity& Player, TilemapSystem* tilemap = nullptr)
 	{
 		m_player = Player;
+		m_tilemap = tilemap;
 	}
 	void Update(entt::registry& registry) override
 	{
@@ -33,7 +75,16 @@ public:
 		if (keys[SDL_SCANCODE_DOWN])  dy += 1.0f;
 
 		pos.x += dx * speed * dt;
+		if (shouldReturn(pos, registry))
+		{
+			pos.x -= dx * speed * dt;
+		}
+
 		pos.y += dy * speed * dt;
+		if (shouldReturn(pos, registry))
+		{
+			pos.y -= dy * speed * dt;
+		}
 
 	}
 };

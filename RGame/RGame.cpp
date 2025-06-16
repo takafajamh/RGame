@@ -24,13 +24,13 @@ public:
     virtual void Init()
     {
         addSystem<RendererSystem>();
-        
+        TilemapSystem* ts = addSystem<TilemapSystem>();
 
         std::shared_ptr<Texture> t_Player = CreateTexture("GPX/characters-sheet.png");
         
 
         entt::entity Player = m_registry.create();
-        Position& playerPosition = m_registry.emplace<Position>(Player, Position{0,0});
+        Position& playerPosition = m_registry.emplace<Position>(Player, Position{200,400});
         xCamPos = &playerPosition.x;
         yCamPos = &playerPosition.y;
 
@@ -44,10 +44,10 @@ public:
         }
         m_registry.emplace<Sprite>(Player, playerSprite);
 
-        addSystem<PlayerMovementSystem>(Player);
+        addSystem<PlayerMovementSystem>(Player, ts);
 
 
-        TilemapSystem* ts = addSystem<TilemapSystem>();
+        
         std::shared_ptr<Texture> t_Tilesheet = CreateTexture("GPX/tilesheet.png");
         ts->LoadMap(m_registry, "GPX/mapa.json", t_Tilesheet, Position{ 0,0 });
 
