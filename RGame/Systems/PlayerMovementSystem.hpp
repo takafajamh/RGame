@@ -48,12 +48,32 @@ private:
 		return false;
 	}
 
+	void animate(entt::registry& registry, float dx, float dy)
+	{
+		Animator& anim = registry.get<Animator>(m_player);
+
+		if (dx == 0 && dy == 0)
+		{
+			anim.ToPlay = "Idle";
+			return;
+		}
+
+		if (dy < 0)
+		{
+			anim.ToPlay = "Forward";
+			return;
+		}
+
+		anim.ToPlay = "Backward";
+	}
+
 public:
 	PlayerMovementSystem(entt::entity& Player, TilemapSystem* tilemap = nullptr)
 	{
 		m_player = Player;
 		m_tilemap = tilemap;
 	}
+	
 	void Update(entt::registry& registry) override
 	{
 		if (!registry.valid(m_player))
@@ -73,6 +93,8 @@ public:
 		if (keys[SDL_SCANCODE_RIGHT]) dx += 1.0f;
 		if (keys[SDL_SCANCODE_UP])    dy -= 1.0f;
 		if (keys[SDL_SCANCODE_DOWN])  dy += 1.0f;
+
+		animate(registry, dx, dy);
 
 		pos.x += dx * speed * dt;
 		if (shouldReturn(pos, registry))

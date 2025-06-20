@@ -8,6 +8,7 @@
 #include "Systems/RendererSystem.hpp"
 #include "Systems/PlayerMovementSystem.hpp"
 #include "Systems/TilemapSystem.hpp"
+#include "Systems/AnimatorSystem.hpp"
 #include <cassert>
 #include <iostream>
 
@@ -24,13 +25,15 @@ public:
     virtual void Init()
     {
         addSystem<RendererSystem>();
+        addSystem<AnimatorSystem>();
+
         TilemapSystem* ts = addSystem<TilemapSystem>();
 
         std::shared_ptr<Texture> t_Player = CreateTexture("GPX/characters-sheet.png");
         
 
         entt::entity Player = m_registry.create();
-        Position& playerPosition = m_registry.emplace<Position>(Player, Position{200,400});
+        Position& playerPosition = m_registry.emplace<Position>(Player, Position{1150,1900});
         xCamPos = &playerPosition.x;
         yCamPos = &playerPosition.y;
 
@@ -46,8 +49,32 @@ public:
 
         addSystem<PlayerMovementSystem>(Player, ts);
 
+        float Dress = 2;
 
+        Animator animator;
+        animator.anims.push_back(Animation{ "Idle",
+            {
+            Frame{{Dress*48,0,48,48}, 2.2f},
+            Frame{{(Dress * 48) + 1536,0,48,48}, 0.4f},
+            }});
+       
+        animator.anims.push_back(Animation{ "Backward",
+            {
+            Frame{{Dress * 48,0,48,48}, 0.15f},
+            Frame{{(Dress + 4) * 48,0,48,48}, 0.15f},
+            Frame{{(Dress + 8) * 48,0,48,48}, 0.15f},
+            Frame{{(Dress + 12) * 48,0,48,48}, 0.15f},
+            } });
+        animator.anims.push_back(Animation{ "Forward",
+            {
+            Frame{{(Dress + 16) * 48,0,48,48}, 0.15f},
+            Frame{{(Dress + 20) * 48,0,48,48}, 0.15f},
+            Frame{{(Dress + 24) * 48,0,48,48}, 0.15f},
+            Frame{{(Dress + 28) * 48,0,48,48}, 0.15f},
+            } });
         
+        m_registry.emplace<Animator>(Player, animator);
+
         std::shared_ptr<Texture> t_Tilesheet = CreateTexture("GPX/tilesheet.png");
         ts->LoadMap(m_registry, "GPX/mapa.json", t_Tilesheet, Position{ 0,0 });
 

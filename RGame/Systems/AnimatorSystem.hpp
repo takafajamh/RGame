@@ -12,6 +12,11 @@ public:
 
 		for (auto [entity, animator] : view.each())
 		{
+			if (animator.ToPlay == animator.currentAnimationName)
+			{
+				animator.ToPlay = "";
+			}
+
 			if (animator.ToPlay != "")
 			{
 				int id = -1;

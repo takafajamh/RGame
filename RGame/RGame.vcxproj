@@ -94,11 +94,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SDL_MAIN_HANDLED;SDL_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SDL_MAIN_HANDLED;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\git\Game Stuff\Game Engine\third-party\include;D:\git\Game Stuff\Game Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8
  %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,7 +107,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL3.lib;SDL3_mixer.lib;SDL3_ttf.lib;SDL3_image.lib;KitsuEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\git\Game Stuff\Game Engine\third-party\lib\SDL3;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Image;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Mixer;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_TTF;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\git\Game Stuff\Game Engine\third-party\lib\SDL3;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Image;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Mixer;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_TTF;D:\git\Game Stuff\Game Stuff\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -133,11 +134,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SDL_MAIN_HANDLED;SDL_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SDL_MAIN_HANDLED;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\git\Game Stuff\Game Engine\third-party\include;D:\git\Game Stuff\Game Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8
  %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,7 +147,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL3.lib;SDL3_mixer.lib;SDL3_ttf.lib;SDL3_image.lib;KitsuEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\git\Game Stuff\Game Engine\third-party\lib\SDL3;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Image;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Mixer;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_TTF;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\git\Game Stuff\Game Engine\third-party\lib\SDL3;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Image;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_Mixer;D:\git\Game Stuff\Game Engine\third-party\lib\SDL3_TTF;D:\git\Game Stuff\Game Stuff\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
