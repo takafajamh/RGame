@@ -35,46 +35,83 @@ private:
 		std::stringstream ss(text.content);
 		std::string token;
 
-		while (std::getline(ss, token, '\n')) 
+		// Split by newlines first
+		while (std::getline(ss, token, '\n'))
 		{
 			initialLines.push_back(token);
 		}
 
-		for (const std::string& originalLine : initialLines) 
+		for (const std::string& originalLine : initialLines)
 		{
 			std::string current = originalLine;
 
-			while (!current.empty()) 
+			while (!current.empty())
 			{
-				std::size_t maxChars = static_cast<std::size_t>(text.xSize / (text.fontSize * 2/3));
+				int measuredWidth;
+				size_t measuredLength;
 
-				if (current.size() <= maxChars)
+				// Use SDL3's TTF_MeasureString to find how much text fits in the available width
+				if (TTF_MeasureString(text.font->SDL_Font, current.c_str(), current.size(),
+					static_cast<int>(text.xSize), &measuredWidth, &measuredLength))
 				{
-					result.push_back(current);
-					break;
+					// If the entire remaining text fits
+					if (measuredLength >= current.size())
+					{
+						result.push_back(current);
+						break;
+					}
+
+					// Find the best break point (prefer spaces)
+					size_t breakPoint = measuredLength;
+
+					// Look backwards from measuredLength to find a space
+					size_t spacePos = current.rfind(' ', breakPoint);
+
+					if (spacePos != std::string::npos && spacePos > 0)
+					{
+						breakPoint = spacePos;
+					}
+
+					std::string linePart = current.substr(0, breakPoint);
+					result.push_back(linePart);
+
+					// Skip the space if we broke at one
+					if (breakPoint < current.size() && current[breakPoint] == ' ')
+						breakPoint++;
+
+					current = current.substr(breakPoint);
 				}
-
-				// Try to split at nearest space within maxChars
-				std::size_t splitPos = current.rfind(' ', maxChars);
-
-				if (splitPos == std::string::npos)
+				else
 				{
-					splitPos = maxChars;
+					// Fallback if TTF_MeasureString fails
+					if (current.size() <= 1)
+					{
+						result.push_back(current);
+						break;
+					}
+
+					// Try with half the remaining text
+					size_t fallbackLength = current.size() / 2;
+					size_t spacePos = current.rfind(' ', fallbackLength);
+
+					if (spacePos != std::string::npos && spacePos > 0)
+					{
+						fallbackLength = spacePos;
+					}
+
+					std::string linePart = current.substr(0, fallbackLength);
+					result.push_back(linePart);
+
+					if (fallbackLength < current.size() && current[fallbackLength] == ' ')
+						fallbackLength++;
+
+					current = current.substr(fallbackLength);
 				}
-
-				std::string linePart = current.substr(0, splitPos);
-				result.push_back(linePart);
-
-				if (splitPos < current.size() && current[splitPos] == ' ')
-					splitPos++;
-
-				current = current.substr(splitPos);
 			}
 		}
-	
+
 		return result;
 	}
-
 public:
 	
 	virtual void Render(entt::registry& registry) override
@@ -291,7 +328,12 @@ public:
 			{
 				SDL_FRect dst = origin;
 				dst.y += i * txt.fontSize + i * txt.padding;
-				dst.w = texs.at(i).size() * txt.fontSize * 2/3;
+
+				int textWidth, textHeight;
+				TTF_SetFontSize(txt.font->getSDL(), txt.fontSize);
+				TTF_GetStringSize(txt.font->getSDL(), texs.at(i).c_str(), texs.at(i).size(), &textWidth, &textHeight);
+
+				dst.w = textWidth;
 
 				SDL_Surface* surf = TTF_RenderText_Solid(txt.font->SDL_Font, texs.at(i).c_str(), texs.at(i).size(), txt.color);
 				SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);

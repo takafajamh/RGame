@@ -57,7 +57,7 @@ private:
 		registry.emplace<ScreenPosition>(txt, ScreenPosition{ 340, 550 });
 
 		Text text;
-		text.content = "Aki Shiba";
+		text.content = m_currentDialogue.at(m_textID).Name;
 		text.color = { 255,255,255,255 };
 		text.xSize = 64 * 8;
 		text.fontSize = 24;
@@ -74,7 +74,7 @@ private:
 		Text text1;
 		text1.content = "Lorem Ipsum, Pan Tadeusz. To jest nowa linia, uwutki";
 		text1.color = { 255,255,255,255 };
-		text1.xSize = 68 * 8;
+		text1.xSize = 86 * 8;
 		text1.fontSize = 18;
 		text1.font = m_font;
 
@@ -83,6 +83,87 @@ private:
 		m_txt1 = txt1;
 
 
+	}
+	
+	void HandleDialogueInteraction(entt::registry& registry)
+	{
+		if (!IsEntityValid(registry, m_BG) || !IsEntityValid(registry, m_txt) || !IsEntityValid(registry, m_txt1))
+		{
+			CleanupDialogueUI(registry);
+			addUI(registry);
+		}
+
+		if (m_lineTime < 0)
+		{
+			m_lineTime = static_cast<float>(m_currentDialogue.at(static_cast<size_t>(m_textID)).Text.length()) * m_timeForChar;
+		}
+
+		UpdateTypewriterEffect(registry);
+		HandleInput();
+	}
+
+	void UpdateTypewriterEffect(entt::registry& registry)
+	{
+		m_timer += dt;
+		float ratio = (m_timer / m_lineTime);
+		if (m_timer > m_lineTime)
+		{
+			m_timer = m_lineTime + 1;
+			ratio = 1;
+		}
+
+		registry.get<Text>(m_txt1).content = m_currentDialogue.at(m_textID).Text.substr(0, ratio * m_currentDialogue.at(m_textID).Text.size());
+	}
+
+	void HandleInput()
+	{
+		const bool* keys = SDL_GetKeyboardState(nullptr);
+
+		if (keys[SDL_SCANCODE_Z] && !m_holdLock)
+		{
+			if (m_timer > m_lineTime)
+			{
+				m_timer = 0;
+				m_lineTime = -1;
+				m_textID++;
+				if (m_textID >= m_currentDialogue.size())
+				{
+					m_textID = 0;
+					Interacting = false;
+					m_currentDialogue.clear();
+					m_holdLock = false;
+				}
+			}
+			else
+			{
+				m_holdLock = true;
+			}
+		}
+		else if (!keys[SDL_SCANCODE_Z])
+		{
+			m_holdLock = false;
+		}
+	}
+
+	void CleanupDialogueUI(entt::registry& registry)
+	{
+		DestroyEntityIfValid(registry, m_BG);
+		DestroyEntityIfValid(registry, m_txt);
+		DestroyEntityIfValid(registry, m_txt1);
+	}
+
+	void DestroyEntityIfValid(entt::registry& registry, entt::entity& entity)
+	{
+		if (registry.valid(entity) && entity != entt::null)
+		{
+			registry.destroy(entity);
+			entity = entt::null;
+		}
+	}
+
+	bool IsEntityValid(const entt::registry& registry, const entt::entity& entity)
+	{
+		return registry.valid(m_BG) && m_BG != entt::null;
 	}
 
 
@@ -135,72 +216,11 @@ public:
 	{
 		if (Interacting)
 		{
-			if (!registry.valid(m_BG) || m_BG == entt::null)
-			{
-				addUI(registry);
-			}
-
-			const bool* keys = SDL_GetKeyboardState(nullptr);
-
-			if (m_lineTime < 0)
-			{
-				m_lineTime = static_cast<float>(m_currentDialogue.at(static_cast<size_t>(m_textID)).Text.length()) * m_timeForChar;
-			}
-
-			m_timer += dt;
-			float ratio = (m_timer / m_lineTime);
-			if (m_timer > m_lineTime)
-			{
-				m_timer = m_lineTime + 1;
-				ratio = 1;
-			}
-
-			registry.get<Text>(m_txt1).content = m_currentDialogue.at(m_textID).Text.substr(0, ratio * m_currentDialogue.at(m_textID).Text.size());
-
-			if (keys[SDL_SCANCODE_Z] && !m_holdLock)
-			{
-				if (m_timer > m_lineTime)
-				{
-					m_timer = 0;
-					m_lineTime = -1;
-					m_textID++;
-					if (m_textID >= m_currentDialogue.size())
-					{
-						m_textID = 0;
-						Interacting = false;
-						m_currentDialogue.clear();
-						m_holdLock = false;
-					}
-				}
-				else
-				{
-					m_holdLock = true;
-					//m_timer = m_lineTime + 1;
-				}
-			}
-			else if (!keys[SDL_SCANCODE_Z])
-			{
-				m_holdLock = false;
-			}
-
+			HandleDialogueInteraction(registry);
 		}
 		else
 		{
-			if (registry.valid(m_BG) && m_BG != entt::null)
-			{
-				registry.destroy(m_BG);
-				m_BG = entt::null;
-			}
-			if (registry.valid(m_txt) && m_txt != entt::null)
-			{
-				registry.destroy(m_txt);
-				m_txt = entt::null;
-			}
-			if (registry.valid(m_txt1) && m_txt1 != entt::null)
-			{
-				registry.destroy(m_txt1);
-				m_txt1 = entt::null;
-			}
+			CleanupDialogueUI(registry);
 		}
 	}
 
