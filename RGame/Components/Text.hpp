@@ -9,4 +9,6 @@ struct Text
     std::shared_ptr<Font> font;
     float xSize;
     float ySize;
+    int fontSize;
+    int padding = 1;
 };

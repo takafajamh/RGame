@@ -49,7 +49,7 @@ public:
         m_registry.emplace<Sprite>(Player, playerSprite);
 
         PlayerMovementSystem* pms = addSystem<PlayerMovementSystem>(Player, ts);
-        pms->setInteract(addSystem<PlayerInteractSystem>(Player, ts));
+        pms->setInteract(addSystem<PlayerInteractSystem>(Player, ts, font));
 
         float Dress = 0;
 

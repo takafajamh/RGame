@@ -2,6 +2,9 @@
 #include "../Components.hpp"
 #include <KitsuEngine/System.hpp>
 #include <KitsuEngine/KitsuneEngine.hpp>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 class RendererSystem : public ISystem
 {
@@ -23,6 +26,54 @@ private:
 
 	std::vector<Renderable> renderQueue;
 	std::vector<ShapeRenderable> shapeQueue;
+
+
+	std::vector<std::string> split(const Text& text)
+	{
+		std::vector<std::string> initialLines;
+		std::vector<std::string> result;
+		std::stringstream ss(text.content);
+		std::string token;
+
+		while (std::getline(ss, token, '\n')) 
+		{
+			initialLines.push_back(token);
+		}
+
+		for (const std::string& originalLine : initialLines) 
+		{
+			std::string current = originalLine;
+
+			while (!current.empty()) 
+			{
+				std::size_t maxChars = static_cast<std::size_t>(text.xSize / (text.fontSize * 2/3));
+
+				if (current.size() <= maxChars)
+				{
+					result.push_back(current);
+					break;
+				}
+
+				// Try to split at nearest space within maxChars
+				std::size_t splitPos = current.rfind(' ', maxChars);
+
+				if (splitPos == std::string::npos)
+				{
+					splitPos = maxChars;
+				}
+
+				std::string linePart = current.substr(0, splitPos);
+				result.push_back(linePart);
+
+				if (splitPos < current.size() && current[splitPos] == ' ')
+					splitPos++;
+
+				current = current.substr(splitPos);
+			}
+		}
+	
+		return result;
+	}
 
 public:
 	
@@ -232,14 +283,23 @@ public:
 			auto& text = view2.get<Text>(entity);
 			auto& pos = view2.get<ScreenPosition>(entity);
 
-			SDL_FRect dst = { pos.x, pos.y, txt.xSize, txt.ySize };
+			SDL_FRect origin = { pos.x, pos.y, txt.fontSize * txt.content.size(), txt.fontSize};
 
-			SDL_Surface* surf = TTF_RenderText_Solid(txt.font->SDL_Font, text.content.c_str(), text.content.size(), txt.color);
-			SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
-			SDL_DestroySurface(surf);
+			std::vector<std::string> texs = split(txt);
+			
+			for (size_t i = 0; i < texs.size(); i++)
+			{
+				SDL_FRect dst = origin;
+				dst.y += i * txt.fontSize + i * txt.padding;
+				dst.w = texs.at(i).size() * txt.fontSize * 2/3;
 
-			SDL_RenderTexture(renderer, tex, nullptr, &dst);
-			SDL_DestroyTexture(tex);
+				SDL_Surface* surf = TTF_RenderText_Solid(txt.font->SDL_Font, texs.at(i).c_str(), texs.at(i).size(), txt.color);
+				SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
+				SDL_DestroySurface(surf);
+
+				SDL_RenderTexture(renderer, tex, nullptr, &dst);
+				SDL_DestroyTexture(tex);
+			}
 		}
 
 	}
