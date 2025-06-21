@@ -468,6 +468,69 @@
                         }]
                 }, 
                 {
+                 "id":56,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"It is a half naked redhead girl, quiet an old piece."
+                        }]
+                }, 
+                {
+                 "id":57,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"The piece presents a sex scene with a farmer."
+                        }]
+                }, 
+                {
+                 "id":58,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"This frame is empty"
+                        }]
+                }, 
+                {
+                 "id":59,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"A beautiful girl poses naked, she is probably one of the French girls."
+                        }]
+                }, 
+                {
+                 "id":69,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"The art presents a naked girl laying on a raft on a piece of water, it looks like a new painting."
+                        }]
+                }, 
+                {
+                 "id":70,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"A scene in humans natural habitat, they look a bit clueless."
+                        }]
+                }, 
+                {
+                 "id":71,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"The art presents a naked man waiting for his misstress to come closer."
+                        }]
+                }, 
+                {
                  "id":72,
                  "properties":[
                         {
@@ -495,12 +558,44 @@
                         }]
                 }, 
                 {
+                 "id":78,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"It seems closed?"
+                        }]
+                }, 
+                {
+                 "id":79,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"It seems closed?"
+                        }]
+                }, 
+                {
+                 "id":81,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":""
+                        }]
+                }, 
+                {
                  "id":82,
                  "properties":[
                         {
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"One of the newer art pieces, it is called - \"A blue girl of my dreams\", she doesn't have any arms."
                         }]
                 }, 
                 {
@@ -510,6 +605,11 @@
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"One of the newer art pieces, it is called - \"A blue girl of my dreams\", she doesn't have any arms."
                         }]
                 }, 
                 {
@@ -522,12 +622,44 @@
                         }]
                 }, 
                 {
+                 "id":90,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"It seems closed?"
+                        }]
+                }, 
+                {
+                 "id":91,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"It seems closed?"
+                        }]
+                }, 
+                {
+                 "id":93,
+                 "properties":[
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":""
+                        }]
+                }, 
+                {
                  "id":94,
                  "properties":[
                         {
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"One of the newer art pieces, it is called - \"A blue girl of my dreams\", she doesn't have any arms."
                         }]
                 }, 
                 {
@@ -537,6 +669,11 @@
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"One of the newer art pieces, it is called - \"A blue girl of my dreams\", she doesn't have any arms."
                         }]
                 }, 
                 {
@@ -546,6 +683,11 @@
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"It seems closed?"
                         }]
                 }, 
                 {
@@ -555,6 +697,11 @@
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"It seems closed?"
                         }]
                 }, 
                 {
@@ -582,6 +729,11 @@
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"The pussy flower, really fancy."
                         }]
                 }, 
                 {
@@ -618,6 +770,11 @@
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"The pussy flower, really fancy."
                         }]
                 }, 
                 {
@@ -663,6 +820,11 @@
                          "name":"Collider",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"Desc",
+                         "type":"string",
+                         "value":"The pussy flower, really fancy."
                         }]
                 }, 
                 {

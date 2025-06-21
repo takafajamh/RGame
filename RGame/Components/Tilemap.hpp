@@ -1,6 +1,7 @@
 #pragma once
 #include <KitsuEngine/SafetyWrappers/Texture.hpp>
 #include <vector>
+#include <string>
 
 struct TileInfo
 {
@@ -8,6 +9,7 @@ struct TileInfo
     bool isDoor = false;
     int GID = -1;
     int layer = -1;
+    std::string dialogue = "";
 };
 
 struct Tilemap

@@ -7,6 +7,7 @@
 
 #include "Systems/RendererSystem.hpp"
 #include "Systems/PlayerMovementSystem.hpp"
+#include "Systems/PlayerInteract.hpp"
 #include "Systems/TilemapSystem.hpp"
 #include "Systems/AnimatorSystem.hpp"
 #include <cassert>
@@ -47,9 +48,10 @@ public:
         }
         m_registry.emplace<Sprite>(Player, playerSprite);
 
-        addSystem<PlayerMovementSystem>(Player, ts);
+        PlayerMovementSystem* pms = addSystem<PlayerMovementSystem>(Player, ts);
+        pms->setInteract(addSystem<PlayerInteractSystem>(Player, ts));
 
-        float Dress = 2;
+        float Dress = 0;
 
         Animator animator;
         animator.anims.push_back(Animation{ "Idle",

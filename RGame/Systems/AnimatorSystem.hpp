@@ -24,7 +24,7 @@ public:
 				{
 					if (animator.anims[i].name == animator.ToPlay)
 					{
-						id = i;
+						id = static_cast<int>(i);
 						break;
 					}
 				}

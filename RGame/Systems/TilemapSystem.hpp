@@ -71,12 +71,15 @@ public:
 							if (prop["name"] == "Collider" && prop["type"] == "bool")
 								info.isCollider = prop["value"];
 
-							else if (prop["name"] == "Door" && prop["type"] == "bool")
+							if (prop["name"] == "Door" && prop["type"] == "bool")
 								info.isDoor = prop["value"];
+
+							if (prop["name"] == "Desc" && prop["type"] == "string")
+								info.dialogue = prop["value"];
 						}
 					}
 
-					if (info.isCollider || info.isDoor)
+					if (info.isCollider || info.isDoor || info.dialogue != "")
 					{
 						tileInfoLookup[gid] = info;
 						++specialCount;

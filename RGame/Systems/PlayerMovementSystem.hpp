@@ -3,12 +3,14 @@
 #include <KitsuEngine/System.hpp>
 #include <KitsuEngine/KitsuneEngine.hpp>
 #include "TilemapSystem.hpp"
+#include "PlayerInteract.hpp"
 
 class PlayerMovementSystem : public ISystem
 {
 private:
 	entt::entity m_player;
 	TilemapSystem* m_tilemap;
+	PlayerInteractSystem* m_playerInteract;
 
 	bool isCollider(std::vector<TileInfo> ti)
 	{
@@ -48,7 +50,7 @@ private:
 		return false;
 	}
 
-	void animate(entt::registry& registry, float dx, float dy)
+	void animate(entt::registry& registry, const float& dx, const float& dy)
 	{
 		Animator& anim = registry.get<Animator>(m_player);
 
@@ -67,6 +69,10 @@ private:
 		anim.ToPlay = "Backward";
 	}
 
+
+	int m_dx;
+	int m_dy;
+
 public:
 	PlayerMovementSystem(entt::entity& Player, TilemapSystem* tilemap = nullptr)
 	{
@@ -74,6 +80,11 @@ public:
 		m_tilemap = tilemap;
 	}
 	
+	void setInteract(PlayerInteractSystem* playerInteractSys)
+	{
+		m_playerInteract = playerInteractSys;
+	}
+
 	void Update(entt::registry& registry) override
 	{
 		if (!registry.valid(m_player))
@@ -82,7 +93,12 @@ public:
 			return;
 		}
 
-
+		if (m_playerInteract->Interacting)
+		{
+			animate(registry, 0, 0);
+			// Check for finish?
+			return;
+		}
 		constexpr float speed = 200.0f; 
 
 		auto& pos = registry.get<Position>(m_player);
@@ -95,6 +111,9 @@ public:
 		if (keys[SDL_SCANCODE_DOWN])  dy += 1.0f;
 
 		animate(registry, dx, dy);
+		m_playerInteract->interact(registry, dx, dy, pos);
+		m_dx = dx;
+		m_dy = dy;
 
 		pos.x += dx * speed * dt;
 		if (shouldReturn(pos, registry))
@@ -107,6 +126,36 @@ public:
 		{
 			pos.y -= dy * speed * dt;
 		}
+
+	}
+
+	void UIRender(entt::registry& registry) override
+	{
+#if _DEBUG 
+		Sprite& s = registry.get<Sprite>(m_player);
+
+		Position interaction = registry.get<Position>(m_player);
+		interaction.x += s.sizeX / 2;
+		interaction.y += s.sizeY / 2;
+
+		float xSpan = m_dx * (s.sizeX * 0.6f);
+		float ySpan = m_dy * (s.sizeY * 0.7f);
+
+		interaction.x += xSpan;
+		interaction.y += ySpan;
+
+		SDL_SetRenderDrawColor(renderer, 20,20,40,255);
+		
+		int width, height;
+		SDL_GetWindowSize(window, &width, &height);
+
+		float dx = camXPos - width / 2;
+		float dy = camYPos - height / 2;
+		// SDL_FRect dstRect = { position.x - dx, position.y - dy, rshape.width, rshape.height };
+		
+		SDL_FRect fr{ interaction.x - dx, interaction.y - dy, 6,6 };
+		bool renderState = SDL_RenderFillRect(renderer, &fr);
+#endif
 
 	}
 };
