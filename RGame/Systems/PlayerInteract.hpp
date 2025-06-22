@@ -4,6 +4,7 @@
 #include <KitsuEngine/KitsuneEngine.hpp>
 #include "TilemapSystem.hpp"
 #include <vector>
+#include <functional>
 #include <KitsuEngine/Globals.hpp>
 
 
@@ -15,6 +16,7 @@ private:
 	TilemapSystem* m_tilemap;
 	entt::entity m_player;
 	std::shared_ptr<Texture> t_Talk;
+	std::shared_ptr<Texture> t_C1;
 	std::shared_ptr<Font> m_font;
 
 
@@ -26,10 +28,13 @@ private:
 	float m_lineTime = -1;
 
 	bool m_holdLock = false;
-	
+	bool m_timeractLock = false;
+	bool m_hentaiArt = false;
+
 	entt::entity m_BG = entt::null;
 	entt::entity m_txt = entt::null;
 	entt::entity m_txt1 = entt::null;
+	entt::entity m_art = entt::null;
 
 	void addUI(entt::registry& registry)
 	{
@@ -42,7 +47,7 @@ private:
 			BGsprite.useTextureRect = false;
 			BGsprite.sizeX = 72 * 8;
 			BGsprite.sizeY = 16 * 8;
-			BGsprite.layerOrder = 1;
+			BGsprite.layerOrder = 12;
 		}
 		registry.emplace<Sprite>(BG, BGsprite);
 
@@ -71,7 +76,7 @@ private:
 		Text text1;
 		text1.content = "Lorem Ipsum, Pan Tadeusz. To jest nowa linia, uwutki";
 		text1.color = { 255,255,255,255 };
-		text1.xSize = 86 * 8;
+		text1.xSize = 68 * 8;
 		text1.fontSize = 18;
 		text1.font = m_font;
 
@@ -177,13 +182,16 @@ public:
 
 	int GDress = 0;
 	int GTime = 0;
+	bool increase = false;
 	DialogueFlags df;
+
 
 	PlayerInteractSystem(entt::entity& Player, TilemapSystem* tilemap, std::shared_ptr<Font>& font)
 	{
 		m_player = Player;
 		m_tilemap = tilemap;
 		t_Talk = std::make_shared<Texture>("GPX/talk.png");
+		t_C1 = std::make_shared<Texture>("GPX/C1.png");
 		m_font = font;
 	}
 
@@ -209,10 +217,43 @@ public:
 			interaction.x += xSpan;
 			interaction.y += ySpan;
 
-			auto view = registry.view<NPC, Position, Sprite>();
-
 			SDL_FRect interactRect = { interaction.x, interaction.y, 3, 3 };
 
+			auto vieww = registry.view<TimeMover, Sprite, Position>();
+			for (auto [entity, tm, sprite, npos] : vieww.each())
+			{
+				const float x = npos.x;
+				const float y = npos.y;
+				const float w = sprite.sizeX;
+				const float h = sprite.sizeY;
+				SDL_FRect otherRect = { x, y, w, h };
+
+				if (SDL_FRectIntersects(otherRect, interactRect) && !m_timeractLock)
+				{
+					if (tm.firstInteraction)
+					{
+						tm.firstInteraction = false;
+						Interacting = true;
+						m_currentDialogue.push_back(DialogueLine{ "", "I will drink some to pass the time next time" });
+						m_timeractLock = true;
+						return;
+					}
+					else
+					{
+						increase = true;
+						m_timeractLock = true;
+						return;
+					}
+				}
+				else if(!SDL_FRectIntersects(otherRect, interactRect))
+				{
+					m_timeractLock = false;
+				}
+			}
+
+			auto view = registry.view<NPC, Position, Sprite>();
+
+			
 
 			for (auto [entity, npc, npos, sprite] : view.each())
 			{
@@ -230,11 +271,22 @@ public:
 					dc.NumberOfConversations = npc.talks;
 					dc.Time = GTime;
 					dc.Flags = df;
+
 					auto* temp = GetDialogue(npc, dc);
 					if (temp != nullptr)
 					{
 						m_currentDialogue = temp->Lines;
 						df |= temp->FlagsToSet;
+
+						if (HasFlag(df, DialogueFlag::fucked_May))
+						{
+							m_hentaiArt = true;
+						}
+						else
+						{
+							m_hentaiArt = false;
+						}
+
 						spdlog::info("Flags: {:08b}", df);
 					}
 					else
@@ -266,10 +318,35 @@ public:
 		if (Interacting)
 		{
 			HandleDialogueInteraction(registry);
+			
+			if (m_hentaiArt)
+			{
+				if (m_art == entt::null)
+				{
+					entt::entity BG = registry.create();
+					registry.emplace<ScreenPosition>(BG, ScreenPosition{ 0, 0 });
+
+					Sprite BGsprite;
+					{
+						BGsprite.texture = t_C1;
+						BGsprite.useTextureRect = false;
+						BGsprite.sizeX = 1080;
+						BGsprite.sizeY = 720;
+						BGsprite.layerOrder = 11;
+					}
+					registry.emplace<Sprite>(BG, BGsprite);
+					m_art = BG;
+				}
+			}
 		}
 		else
 		{
 			CleanupDialogueUI(registry);
+			if (m_hentaiArt)
+			{
+				m_hentaiArt = false;
+				DestroyEntityIfValid(registry, m_art);
+			}
 		}
 	}
 

@@ -14,7 +14,10 @@ private:
 		if (time >= 4)
 		{
 			time = 0;
-			spdlog::error("BROOOO HANDLE THAT and add an pretty shit");
+			if (game != nullptr && menu != nullptr)
+			{
+				game->NewScene(menu);
+			}
 			return;
 		}
 
@@ -26,6 +29,15 @@ private:
 			npos.x = npc.positions.at(time).x;
 			npos.y = npc.positions.at(time).y;
 		}
+
+		auto vieww = registry.view<TimeMover, Sprite>();
+
+		for (auto [entity, tm, sprite] : vieww.each())
+		{
+			sprite.textureRect = tm.tRect[time];
+		}
+
+
 	}
 
 	PlayerInteractSystem* m_PI = nullptr;
@@ -35,6 +47,10 @@ private:
 public:
 	int time = 0;
 	int dress = 0;
+
+	Scene* menu = nullptr;
+	Game* game = nullptr;
+	DialogueFlags* df = nullptr;
 
 	TimeEventManagerSystem(PlayerInteractSystem* pi)
 	{
@@ -49,6 +65,21 @@ public:
 		m_PI->GTime = time;
 		m_PI->GDress = dress;
 
+		if (m_PI->increase)
+		{
+			m_PI->increase = false;
+			MoveTime(registry);
+		}
+
+		if (HasFlag(*df, DialogueFlag::finishFlag) && !m_PI->Interacting)
+		{
+			if (game != nullptr && menu != nullptr)
+			{
+				game->NewScene(menu);
+			}
+		}
+
+#if _DEBUG
 		const bool* keys = SDL_GetKeyboardState(nullptr);
 		if (keys[SDL_SCANCODE_Y] && !singleClick)
 		{
@@ -61,6 +92,6 @@ public:
 		{
 			singleClick = false;
 		}
-
+#endif
 	}
 };

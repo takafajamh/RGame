@@ -7,7 +7,7 @@
 		float sizeX;
 		float sizeY;
 
-		int layerOrder = 5;
+		int layerOrder = 9;
 
 		bool useTextureRect = false;
 		SDL_FRect textureRect;

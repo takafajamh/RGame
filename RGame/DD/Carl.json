@@ -51,6 +51,7 @@
         "Priotity": 5,
         "NumberOfConversations": 0,
 		"Flag": ["drink"],
+        "SetFlags": "finishFlag",
         "Lines": [
         { "Name": "Carl Michelgrove", "Text": "Beu.. B... Pretty..." },
         { "Name": "", "Text": "*He seems to be horribly drunk.*" },

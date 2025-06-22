@@ -15,3 +15,4 @@
 #include "Components/QuitGameEffector.hpp"
 #include "Components/GameVolumeEffector.hpp"
 #include "Components/TextUpdateFromPointer.hpp"
+#include "Components/TimeMover.hpp"

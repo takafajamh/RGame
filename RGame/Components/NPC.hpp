@@ -20,7 +20,7 @@ enum class DialogueFlag : uint8_t
 	drink = 1 << 2,			// 000100
 	talked_MsP = 1 << 3,	// 001000
 	talked_Ted = 1 << 4,	// 010000
-	TalkedWithF = 1 << 5,	// 100000
+	finishFlag = 1 << 5,	// 100000
 };
 
 inline DialogueFlags operator|(DialogueFlag a, DialogueFlag b) 
@@ -47,7 +47,7 @@ DialogueFlag StringToFlag(const std::string& flagStr)
 	if (flagStr == "drink") return DialogueFlag::drink;
 	if (flagStr == "talked_MsP") return DialogueFlag::talked_MsP;
 	if (flagStr == "talked_Ted") return DialogueFlag::talked_Ted;
-	if (flagStr == "TalkedWithF") return DialogueFlag::TalkedWithF;
+	if (flagStr == "finishFlag") return DialogueFlag::finishFlag;
 	
 	return DialogueFlag::None;
 }

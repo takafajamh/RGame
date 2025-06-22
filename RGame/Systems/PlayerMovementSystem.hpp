@@ -56,6 +56,21 @@ private:
 			}
 		}
 
+		auto view2 = registry.view<TimeMover, Position, Sprite>();
+		for (auto [entity, tm, npos, sprite] : view2.each())
+		{
+			const float x = npos.x;
+			const float y = npos.y;
+			const float w = sprite.sizeX;
+			const float h = sprite.sizeY;
+			SDL_FRect npcRect = { x, y, w, h };
+
+			if (SDL_FRectIntersects(npcRect, playerRect))
+			{
+				return true;
+			}
+		}
+
 		if (m_tilemap != nullptr)
 		{
 			std::vector<TileInfo> tiUL = m_tilemap->GetTileInfo(registry, UL.x, UL.y);

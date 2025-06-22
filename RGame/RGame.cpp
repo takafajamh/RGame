@@ -103,7 +103,11 @@ public:
         PlayerInteractSystem* pis = addSystem<PlayerInteractSystem>(Player, ts, font);
         pms->setInteract(pis);
 
-        addSystem<TimeEventManagerSystem>(pis);
+        auto* tems = addSystem<TimeEventManagerSystem>(pis);
+        tems->menu = getMenuScene(m_game);
+        tems->game = m_game;
+        tems->df = &pis->df;
+
 
         float Dress = 0;
 
@@ -159,6 +163,28 @@ public:
            {m * 37, m * 28},
            {m * 33, m * 41 - 18},
            {m * 16, m * 41 - 18} }, Player);
+
+
+
+        entt::entity Table = m_registry.create();
+        Position& tablePosition = m_registry.emplace<Position>(Table, Position{ 1600, 1520 });
+        Sprite tableSprite;
+        {
+            tableSprite.texture = t_Tilesheet;
+            tableSprite.useTextureRect = true;
+            tableSprite.textureRect = { 8 * 24.f, 8 * 24.f, 24.f, 24.f * 2.f };
+            tableSprite.sizeX = 48;
+            tableSprite.sizeY = 48 * 2;
+            tableSprite.layerOrder = 1;
+        }
+        m_registry.emplace<Sprite>(Table, tableSprite);
+
+        TimeMover tm;
+        tm.tRect[0] = { 8 * 24.f, 8 * 24.f, 24.f, 24.f * 2.f };
+        tm.tRect[1] = { 8 * 24.f, 2 * 24.f, 24.f, 24.f * 2.f };
+        tm.tRect[2] = { 8 * 24.f, 0 * 24.f, 24.f, 24.f * 2.f };
+        tm.tRect[3] = { 5 * 24.f, 7 * 24.f, 24.f, 24.f * 2.f };
+        m_registry.emplace<TimeMover>(Table, tm);
 
         spdlog::info("Scene got init");
     }

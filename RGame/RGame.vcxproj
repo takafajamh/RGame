@@ -176,6 +176,7 @@
     <ClInclude Include="Components\Text.hpp" />
     <ClInclude Include="Components\TextUpdateFromPointer.hpp" />
     <ClInclude Include="Components\Tilemap.hpp" />
+    <ClInclude Include="Components\TimeMover.hpp" />
     <ClInclude Include="Systems\AnimatorSystem.hpp" />
     <ClInclude Include="Systems\HeightDependendLayerSystem.hpp" />
     <ClInclude Include="Systems\PlayerInteract.hpp" />

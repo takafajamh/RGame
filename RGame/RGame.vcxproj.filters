@@ -98,5 +98,8 @@
     <ClInclude Include="Components\TextUpdateFromPointer.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="Components\TimeMover.hpp">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
