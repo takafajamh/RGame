@@ -5,16 +5,12 @@
 #include "TilemapSystem.hpp"
 #include <vector>
 
-struct DialogueLine
-{
-	std::string Name;
-	std::string Text;
-};
 
 
 class PlayerInteractSystem : public ISystem
 {
-private:
+private:	
+
 	TilemapSystem* m_tilemap;
 	entt::entity m_player;
 	std::shared_ptr<Texture> t_Talk;
@@ -22,7 +18,7 @@ private:
 
 
 	std::vector<DialogueLine> m_currentDialogue;
-	float m_timeForChar = 0.05f;
+	float m_timeForChar = 0.03f;
 
 	float m_timer = 0;
 	float m_textID = 0;
@@ -119,6 +115,11 @@ private:
 	{
 		const bool* keys = SDL_GetKeyboardState(nullptr);
 
+		if (keys[SDL_SCANCODE_X])
+		{
+			m_timer = m_lineTime + 1;
+		}
+
 		if (keys[SDL_SCANCODE_Z] && !m_holdLock)
 		{
 			if (m_timer > m_lineTime)
@@ -136,6 +137,7 @@ private:
 			}
 			else
 			{
+				m_timer = m_lineTime + 1;
 				m_holdLock = true;
 			}
 		}
@@ -182,6 +184,7 @@ public:
 	{
 		if (m_tilemap != nullptr)
 		{
+			m_holdLock = true;
 			const bool* keys = SDL_GetKeyboardState(nullptr);
 			if (!keys[SDL_SCANCODE_Z])
 			{

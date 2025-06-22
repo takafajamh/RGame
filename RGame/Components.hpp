@@ -8,3 +8,4 @@
 #include "Components/RemoveAfterDelay.hpp"
 #include "Components/Checkbox.hpp"
 #include "Components/Tilemap.hpp"
+#include "Components/NPC.hpp"
