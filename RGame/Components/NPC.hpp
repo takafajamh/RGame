@@ -107,6 +107,7 @@ namespace std
 struct NPC
 {
 	std::unordered_map<DialogueContextKey, std::map<int, std::vector<DialogueLine>>> Dialogues;
+	int talks = 0;
 };
 
 void SetDialogue(NPC& npc, const std::vector<DialogueLine>& lines, const DialogueContext& ctx)

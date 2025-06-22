@@ -4,6 +4,7 @@
 #include <KitsuEngine/KitsuneEngine.hpp>
 #include "TilemapSystem.hpp"
 #include <vector>
+#include <KitsuEngine/Globals.hpp>
 
 
 
@@ -88,13 +89,14 @@ private:
 			CleanupDialogueUI(registry);
 			addUI(registry);
 		}
-
 		if (m_lineTime < 0)
 		{
 			m_lineTime = static_cast<float>(m_currentDialogue.at(static_cast<size_t>(m_textID)).Text.length()) * m_timeForChar;
 		}
 
+
 		UpdateTypewriterEffect(registry);
+
 		HandleInput();
 	}
 
@@ -127,6 +129,7 @@ private:
 				m_timer = 0;
 				m_lineTime = -1;
 				m_textID++;
+				m_holdLock = true;
 				if (m_textID >= m_currentDialogue.size())
 				{
 					m_textID = 0;
@@ -201,6 +204,33 @@ public:
 
 			interaction.x += xSpan;
 			interaction.y += ySpan;
+
+			auto view = registry.view<NPC, Position, Sprite>();
+
+			SDL_FRect interactRect = { interaction.x, interaction.y, 3, 3 };
+
+
+			for (auto [entity, npc, npos, sprite] : view.each())
+			{
+				const float x = npos.x;
+				const float y = npos.y;
+				const float w = sprite.sizeX;
+				const float h = sprite.sizeY;
+				SDL_FRect npcRect = { x, y, w, h };
+
+				if (SDL_FRectIntersects(npcRect, interactRect))
+				{
+					Interacting = true;
+					DialogueContext dc;
+					dc.Dress = 0;
+					dc.NumberOfConversarions = npc.talks;
+					dc.Time = 0;
+					m_currentDialogue = GetDialogue(npc, dc);
+					npc.talks++;
+					return;
+				}
+			}
+
 
 			std::vector<TileInfo> ti = m_tilemap->GetTileInfo(registry, interaction.x, interaction.y);
 			for (const TileInfo& t : ti)

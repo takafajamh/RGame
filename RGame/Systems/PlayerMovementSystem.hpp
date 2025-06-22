@@ -8,9 +8,9 @@
 class PlayerMovementSystem : public ISystem
 {
 private:
-	entt::entity m_player;
-	TilemapSystem* m_tilemap;
-	PlayerInteractSystem* m_playerInteract;
+	entt::entity m_player = entt::null;
+	TilemapSystem* m_tilemap = nullptr;
+	PlayerInteractSystem* m_playerInteract = nullptr;
 
 	bool isCollider(std::vector<TileInfo> ti)
 	{
@@ -19,27 +19,47 @@ private:
 			if (t.isCollider)
 				return true;
 		}
+
 		return ti.size() == 0;
 	}
 
+
+
 	bool shouldReturn(Position pos, entt::registry& registry)
 	{
+		Position UL = pos;
+		Position UR = pos;
+		Position DL = pos;
+		Position DR = pos;
+
+		Sprite& s = registry.get<Sprite>(m_player);
+		UL.y += (s.sizeY / 3) * 2;
+		UR.y += (s.sizeY / 3) * 2;
+		DL.y += s.sizeY;
+		DR.y += s.sizeY;
+
+		UL.x = DL.x = pos.x + (s.sizeX / 4);
+		UR.x = DR.x = pos.x + s.sizeX - (s.sizeX / 4);
+		SDL_FRect playerRect = {UL.x, UL.y, (UR.x - UL.x), (DL.y - UL.y)};
+
+		auto view = registry.view<NPC, Position, Sprite>();
+
+		for (auto [entity, npc, npos, sprite] : view.each())
+		{
+			const float x = npos.x + (sprite.sizeX / 4);
+			const float y = npos.y + (sprite.sizeY / 3) * 2;
+			const float w = sprite.sizeX - (sprite.sizeX / 4);
+			const float h = sprite.sizeY - (sprite.sizeY / 3) * 2;
+			SDL_FRect npcRect = {x, y, w, h};
+
+			if (SDL_FRectIntersects(npcRect, playerRect))
+			{
+				return true;
+			}
+		}
+
 		if (m_tilemap != nullptr)
 		{
-			Position UL = pos;
-			Position UR = pos;
-			Position DL = pos;
-			Position DR = pos;
-
-			Sprite& s = registry.get<Sprite>(m_player);
-			UL.y += (s.sizeY / 3) * 2;
-			UR.y += (s.sizeY / 3) * 2;
-			DL.y += s.sizeY;
-			DR.y += s.sizeY;
-
-			UL.x = DL.x = pos.x + (s.sizeX / 4);
-			UR.x = DR.x = pos.x + s.sizeX - (s.sizeX / 4);
-
 			std::vector<TileInfo> tiUL = m_tilemap->GetTileInfo(registry, UL.x, UL.y);
 			std::vector<TileInfo> tiUR = m_tilemap->GetTileInfo(registry, UR.x, UR.y);
 			std::vector<TileInfo> tiDL = m_tilemap->GetTileInfo(registry, DL.x, DL.y);
@@ -70,8 +90,8 @@ private:
 	}
 
 
-	int m_dx;
-	int m_dy;
+	int m_dx = 0;
+	int m_dy = 0;
 
 public:
 	PlayerMovementSystem(entt::entity& Player, TilemapSystem* tilemap = nullptr)
