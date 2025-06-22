@@ -10,3 +10,6 @@
 #include "Components/Tilemap.hpp"
 #include "Components/NPC.hpp"
 #include "Components/Button.hpp"
+#include "Components/HeightDependendLayer.hpp"
+#include "Components/ChangeSceneComponent.hpp"
+#include "Components/QuitGameEffector.hpp"

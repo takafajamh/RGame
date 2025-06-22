@@ -12,16 +12,15 @@
 #include "Systems/AnimatorSystem.hpp"
 #include "Systems/TimeEventManagerSystem.hpp"
 #include "Systems/UISystem.hpp"
+#include "Systems/HeightDependendLayerSystem.hpp"
 #include <cassert>
 #include <iostream>
 
 ///
 /// Text pointer in an Button with color change for N, H, C
-/// GoBehindMe Layers based on position relative to the player sprite
 /// Scene Change on Click
 /// Volume Change on Click
 /// Map refactor
-/// Flag refactor
 ///
 
 
@@ -30,7 +29,7 @@ class App : public Scene
 private:
     std::shared_ptr<Font> font = std::make_shared<Font>("Font/munro.ttf");
     
-    entt::entity& makeNPC(const Position& pos, const std::shared_ptr<Texture>& t_Player,const float& textureX,const float& textureY, const std::string& path, const std::vector<Position>& poses)
+    entt::entity& makeNPC(const Position& pos, const std::shared_ptr<Texture>& t_Player,const float& textureX,const float& textureY, const std::string& path, const std::vector<Position>& poses, const entt::entity& player)
     {
         entt::entity NPCEntity = m_registry.create();
         Position& playerPosition = m_registry.emplace<Position>(NPCEntity, poses.at(0));
@@ -59,9 +58,12 @@ private:
         LoadNPCFromJSON(path, npc);
         npc.positions = poses;
 
-
         m_registry.emplace<NPC>(NPCEntity, npc);
 
+        HeightDependendLayer hdl;
+        hdl.playerPos = &m_registry.get<Position>(player);
+        hdl.playerSprite = &m_registry.get<Sprite>(player);
+        m_registry.emplace<HeightDependendLayer>(NPCEntity, hdl);
 
         return NPCEntity;
     }
@@ -76,6 +78,7 @@ public:
     {
         addSystem<RendererSystem>();
         addSystem<AnimatorSystem>();
+        addSystem<HeightDependendLayerSystem>();
        
 
         TilemapSystem* ts = addSystem<TilemapSystem>();
@@ -139,37 +142,45 @@ public:
             {m * 29, m * 40},
             {m * 40, m * 3}, 
             {m * 9, m * 3},
-            {m * 25, m * 3} });
-
-        spdlog::info("111");
+            {m * 25, m * 3} }, Player);
 
         entt::entity Carl = makeNPC({ 1200, 1850 }, t_Player, 3 * 48, 48 * 3, "DD/Carl.json", {
            {m * 9, m * 34},
            {m * 6, m * 24},
            {m * 38, m * 34},
-           {m * 38, m * 34} });
-        
-        spdlog::info("222");
+           {m * 38, m * 34} }, Player);
 
         entt::entity msP = makeNPC({ 1200, 1850 }, t_Player, 2 * 48, 48 * 3, "DD/Ms. Pearce.json", {
            {m * 28, m * 21},
            {m * 999, m * 999},
            {m * 999, m * 999},
-           {m * 45, m * 3} });
-
-        spdlog::info("333");
+           {m * 45, m * 3} }, Player);
 
         entt::entity Ted = makeNPC({ 1200, 1850 }, t_Player, 1 * 48, 48 * 3, "DD/Ted.json", {
            {m * 26, m * 3},
            {m * 37, m * 28},
            {m * 33, m * 41 - 18},
-           {m * 16, m * 41 - 18} });
-
-        spdlog::info("444");
+           {m * 16, m * 41 - 18} }, Player);
 
         spdlog::info("Scene got init");
     }
        
+};
+
+class CreditsScene : public Scene
+{
+private:
+    std::shared_ptr<Font> m_font = std::make_shared<Font>("Font/munro.ttf");
+public:
+    CreditsScene(Game* game) : Scene(game)
+    {
+    }
+
+    virtual void Init()
+    {
+        spdlog::error("TO IMPLEMENT");
+        m_game->StopGame();
+    }
 };
 
 class Menu : public Scene
@@ -184,10 +195,10 @@ public:
     virtual void Init()
     {
         addSystem<RendererSystem>();
-        addSystem<UISystem>();
+        addSystem<UISystem>(m_game);
         addSystem<AnimatorSystem>();
 
-        std::shared_ptr<Texture> t_bg = CreateTexture("GPX/C1.png");
+        std::shared_ptr<Texture> t_bg = CreateTexture("GPX/BG.png");
         std::shared_ptr<Texture> t_button = CreateTexture("GPX/buttons.png");
         std::shared_ptr<Texture> t_buttonSmall = CreateTexture("GPX/button_small.png");
 
@@ -205,13 +216,15 @@ public:
         }
         m_registry.emplace<Sprite>(BG, bgSprite);
 
+        float FSV = 100;
+
         // Play Button
         {
             entt::entity Play = m_registry.create();
             entt::entity TText = m_registry.create();
 
-            ScreenPosition& playPos = m_registry.emplace<ScreenPosition>(Play, ScreenPosition{ 444,260 });
-            ScreenPosition& textPos = m_registry.emplace<ScreenPosition>(TText, ScreenPosition{ 502, 283 });
+            ScreenPosition& playPos = m_registry.emplace<ScreenPosition>(Play, ScreenPosition{ 444-400,260 - FSV });
+            ScreenPosition& textPos = m_registry.emplace<ScreenPosition>(TText, ScreenPosition{ 502-400, 283 - FSV });
 
             Sprite playSprite;
             {
@@ -229,6 +242,9 @@ public:
             tbPlay.HoverRect = { 32,0,32,32 };
             m_registry.emplace<TextureButton>(Play, tbPlay);
 
+            
+            m_registry.emplace<ChangeSceneComponent>(Play, ChangeSceneComponent{new App(m_game)});
+
             Text t;
             t.color = { 235, 235, 230, 255 };
             t.content = "Play";
@@ -245,8 +261,8 @@ public:
             entt::entity Credits = m_registry.create();
             entt::entity TText = m_registry.create();
 
-            ScreenPosition& creditsPos = m_registry.emplace<ScreenPosition>(Credits, ScreenPosition{ 444,380 });
-            ScreenPosition& textPos = m_registry.emplace<ScreenPosition>(TText, ScreenPosition{ 475, 403 });
+            ScreenPosition& creditsPos = m_registry.emplace<ScreenPosition>(Credits, ScreenPosition{ 444-400,380 - FSV });
+            ScreenPosition& textPos = m_registry.emplace<ScreenPosition>(TText, ScreenPosition{ 475-400, 403 - FSV });
 
             Sprite creditsSprite;
             {
@@ -263,6 +279,8 @@ public:
             tbCredits.ClickRect = { 0,0,32,32 };
             tbCredits.HoverRect = { 32,0,32,32 };
             m_registry.emplace<TextureButton>(Credits, tbCredits);
+            m_registry.emplace<ChangeSceneComponent>(Credits, ChangeSceneComponent{ new CreditsScene(m_game) });
+
 
             Text t;
             t.color = { 235, 235, 230, 255 };
@@ -280,8 +298,8 @@ public:
             entt::entity Quit = m_registry.create();
             entt::entity TText = m_registry.create();
 
-            ScreenPosition& quitPos = m_registry.emplace<ScreenPosition>(Quit, ScreenPosition{ 444,500 });
-            ScreenPosition& textPos = m_registry.emplace<ScreenPosition>(TText, ScreenPosition{ 507, 523 });
+            ScreenPosition& quitPos = m_registry.emplace<ScreenPosition>(Quit, ScreenPosition{ 444-400,500 - FSV });
+            ScreenPosition& textPos = m_registry.emplace<ScreenPosition>(TText, ScreenPosition{ 507-400, 523 - FSV });
 
             Sprite quitSprite;
             {
@@ -298,6 +316,8 @@ public:
             tbQuit.ClickRect = { 0,0,32,32 };
             tbQuit.HoverRect = { 32,0,32,32 };
             m_registry.emplace<TextureButton>(Quit, tbQuit);
+
+            m_registry.emplace<QuitGameEffector>(Quit, QuitGameEffector{false});
 
             Text t;
             t.color = { 235, 235, 230, 255 };
@@ -320,13 +340,14 @@ public:
             entt::entity Counter = m_registry.create();
             entt::entity Descriptor = m_registry.create();
 
+            float TFV = -60;
 
-            ScreenPosition& UpPos = m_registry.emplace<ScreenPosition>(Up, ScreenPosition{ 444,500 });
-            ScreenPosition& TxtUpPos = m_registry.emplace<ScreenPosition>(txtUp, ScreenPosition{ 444,500 });
-            ScreenPosition& DownPos = m_registry.emplace<ScreenPosition>(Down, ScreenPosition{ 444,500 });
-            ScreenPosition& TxtDownPos = m_registry.emplace<ScreenPosition>(txtDown, ScreenPosition{ 444,500 });
-            ScreenPosition& CounterPos = m_registry.emplace<ScreenPosition>(Counter, ScreenPosition{ 444,500 });
-            ScreenPosition& DescriptorPos = m_registry.emplace<ScreenPosition>(Descriptor, ScreenPosition{ 444,500 });
+            ScreenPosition& UpPos = m_registry.emplace<ScreenPosition>(Up, ScreenPosition{ 10,560 - TFV });
+            ScreenPosition& TxtUpPos = m_registry.emplace<ScreenPosition>(txtUp, ScreenPosition{ 30,570 - TFV });
+            ScreenPosition& DownPos = m_registry.emplace<ScreenPosition>(Down, ScreenPosition{ 200,560 - TFV });
+            ScreenPosition& TxtDownPos = m_registry.emplace<ScreenPosition>(txtDown, ScreenPosition{ 223,565 - TFV });
+            ScreenPosition& CounterPos = m_registry.emplace<ScreenPosition>(Counter, ScreenPosition{ 105,560 - TFV });
+            ScreenPosition& DescriptorPos = m_registry.emplace<ScreenPosition>(Descriptor, ScreenPosition{ 65,500 - TFV });
 
 
             Sprite UpSprite;
@@ -334,8 +355,8 @@ public:
                 UpSprite.texture = t_buttonSmall;
                 UpSprite.useTextureRect = true;
                 UpSprite.textureRect = { 0,0,16,16 };
-                UpSprite.sizeX = 16 * 6;
-                UpSprite.sizeY = 16 * 6;
+                UpSprite.sizeX = 16 * 4;
+                UpSprite.sizeY = 16 * 4;
                 UpSprite.layerOrder = 3;
             }
             m_registry.emplace<Sprite>(Up, UpSprite);
@@ -345,8 +366,8 @@ public:
                 DowmSprite.texture = t_buttonSmall;
                 DowmSprite.useTextureRect = true;
                 DowmSprite.textureRect = { 0,0,16,16 };
-                DowmSprite.sizeX = 16 * 6;
-                DowmSprite.sizeY = 16 * 6;
+                DowmSprite.sizeX = 16 * 4;
+                DowmSprite.sizeY = 16 * 4;
                 DowmSprite.layerOrder = 3;
             }
             m_registry.emplace<Sprite>(Down, DowmSprite);
@@ -405,7 +426,7 @@ public:
                 tDescriptor.ySize = 200;
                 tDescriptor.fontSize = 48;
             }
-            m_registry.emplace<Text>(Counter, tCounter);
+            m_registry.emplace<Text>(Descriptor, tDescriptor);
 
 
         }
@@ -444,8 +465,8 @@ int main(int argc, char** argv)
     KitsuEngineInit(1080, 720, "SPY");
 
     Game* game = new Game();
-    App* mainScene = new App(game);
-    //Menu* mainScene = new Menu(game);
+    //App* mainScene = new App(game);
+    Menu* mainScene = new Menu(game);
 
     game->StartGame(mainScene);
     

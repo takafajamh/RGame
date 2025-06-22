@@ -177,7 +177,7 @@ public:
 
 	int GDress = 0;
 	int GTime = 0;
-	// Handle flags
+	DialogueFlags df;
 
 	PlayerInteractSystem(entt::entity& Player, TilemapSystem* tilemap, std::shared_ptr<Font>& font)
 	{
@@ -229,10 +229,13 @@ public:
 					dc.Dress = GDress;
 					dc.NumberOfConversations = npc.talks;
 					dc.Time = GTime;
+					dc.Flags = df;
 					auto* temp = GetDialogue(npc, dc);
 					if (temp != nullptr)
 					{
 						m_currentDialogue = temp->Lines;
+						df |= temp->FlagsToSet;
+						spdlog::info("Flags: {:08b}", df);
 					}
 					else
 					{

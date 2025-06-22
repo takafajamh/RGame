@@ -161,10 +161,13 @@
   <ItemGroup>
     <ClInclude Include="Components\Animation.hpp" />
     <ClInclude Include="Components\Button.hpp" />
+    <ClInclude Include="Components\ChangeSceneComponent.hpp" />
     <ClInclude Include="Components\Checkbox.hpp" />
     <ClInclude Include="Components.hpp" />
+    <ClInclude Include="Components\HeightDependendLayer.hpp" />
     <ClInclude Include="Components\NPC.hpp" />
     <ClInclude Include="Components\Position.hpp" />
+    <ClInclude Include="Components\QuitGameEffector.hpp" />
     <ClInclude Include="Components\RectangleShape.hpp" />
     <ClInclude Include="Components\RemoveAfterDelay.hpp" />
     <ClInclude Include="Components\ScreenPosition.hpp" />
@@ -172,6 +175,7 @@
     <ClInclude Include="Components\Text.hpp" />
     <ClInclude Include="Components\Tilemap.hpp" />
     <ClInclude Include="Systems\AnimatorSystem.hpp" />
+    <ClInclude Include="Systems\HeightDependendLayerSystem.hpp" />
     <ClInclude Include="Systems\PlayerInteract.hpp" />
     <ClInclude Include="Systems\PlayerMovementSystem.hpp" />
     <ClInclude Include="Systems\RemoveAfterDelaySystem.hpp" />

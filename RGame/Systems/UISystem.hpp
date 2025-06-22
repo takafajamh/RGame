@@ -2,13 +2,15 @@
 
 #include "../Components.hpp"
 #include <KitsuEngine/System.hpp>
+#include "../Components/ChangeSceneComponent.hpp"
 // Does not account for just position, uses Screen Position
-
 
 class UISystem : public ISystem
 {
 private:
 	Uint32 prevMouseState = 0;
+
+	Game* m_game = nullptr;
 
 	void checkboxUpdate(entt::registry& registry)
 	{
@@ -81,9 +83,10 @@ private:
 			{
 				sprite.textureRect = button.HoverRect;
 
-				if (mouseState | SDL_BUTTON_LMASK)
+				if (mouseState & SDL_BUTTON_LMASK)
 				{
 					button.isClicked = true;
+					onClickEffectors(registry, entity);
 				}
 				else
 				{
@@ -102,7 +105,26 @@ private:
 		}
 	}
 
+	void onClickEffectors(entt::registry& registry, entt::entity& entity)
+	{
+		ChangeSceneComponent* csc = registry.try_get<ChangeSceneComponent>(entity);
+		if (csc != nullptr && m_game != nullptr)
+		{
+			m_game->NewScene(csc->toChange);
+		}
+
+		QuitGameEffector* qge = registry.try_get<QuitGameEffector>(entity);
+		if (qge != nullptr && m_game != nullptr)
+		{
+			m_game->StopGame();
+		}
+	}
+
 public:
+	UISystem(Game* game = nullptr)
+	{
+		m_game = game;
+	}
 
 	void Update(entt::registry& registry)
 	{

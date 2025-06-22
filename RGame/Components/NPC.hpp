@@ -229,7 +229,7 @@ NPC& LoadNPCFromJSON(const std::string& path, NPC& toLoad)
 		currentEntry.Dress = j_entry.value("Dress", -1);
 		currentEntry.Time = j_entry.value("Time", -1);
 		currentEntry.NumberOfConversations = j_entry.value("NumberOfConversations", -1);
-		currentEntry.Priority = j_entry.value("Priority", 0); // Default priority is 0
+		currentEntry.Priority = j_entry.value("Priotity", 0); // Default priority is 0
 
 		// Handle "Flags" (requirements)
 		if (j_entry.contains("Flags"))
