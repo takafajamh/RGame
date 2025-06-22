@@ -1,0 +1,114 @@
+[
+    {
+        "Dress": 0,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Carl Michelgrove", "Text": "Beautiful, isn't it?" },
+        { "Name": "Carl Michelgrove", "Text": "Most people see art so beautiful only once in their lifetime." },
+		{ "Name": "Carl Michelgrove", "Text": "Not me, though. I make sure to stimulate my mind with true beauty." }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 1,
+        "Lines": [
+        { "Name": "", "Text": "*He seems lost in thought*" }
+        ]
+    },
+	
+	{
+        "Dress": 0,
+        "Time": -1,
+        "Priotity": 2,
+        "NumberOfConversations": 0,
+		"Flags": ["talked_MsP"],
+		"SetFlags": ["talked_Carl"],
+        "Lines": [
+        { "Name": "", "Text": "*There seems to be something in his back pocket.*" },
+        { "Name": "", "Text": "*He'd notice if you'd try to take it out.*" }
+        ]
+    },
+	
+	{
+        "Dress": 0,
+        "Time": -1,
+        "Priotity": 3,
+        "NumberOfConversations": 0,
+		"Flags": ["talked_Carl"],
+        "Lines": [
+        { "Name": "", "Text": "*There seems to be something in his back pocket.*" },
+        { "Name": "", "Text": "*If only there was a way he wouldn't notice you...*" }
+        ]
+    },
+	
+	{
+        "Dress": 0,
+        "Time": -1,
+        "Priotity": 5,
+        "NumberOfConversations": 0,
+		"Flag": ["drink"],
+        "Lines": [
+        { "Name": "Carl Michelgrove", "Text": "Beu.. B... Pretty..." },
+        { "Name": "", "Text": "*He seems to be horribly drunk.*" },
+		{ "Name": "", "Text": "*You sneak your hand into his back pocket and take out a pendrive." },
+		{ "Name": "Carl Michelgrove", "Text": "I love... ahrt..." },
+		{ "Name": "", "Text": "*Before he realises it, you're gone.*" }
+        ]
+    },
+
+
+
+    {
+        "Dress": 1,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Carl Michelgrove", "Text": "Beautiful, isn't it?" },
+        { "Name": "Carl Michelgrove", "Text": "Most people see art so beautiful only once in their lifetime." },
+		{ "Name": "Carl Michelgrove", "Text": "Not me, though. I make sure to stimulate my mind with true beauty." }
+        ]
+    },
+    {
+        "Dress": 1,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Carl Michelgrove", "Text": "I am not really the talktive type miss, I prefer art." },
+        { "Name": "", "Text": "*And neither are you with him*" }
+
+        ]
+    },
+
+
+
+    {
+        "Dress": 2,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Carl Michelgrove", "Text": "Beautiful, isn't it?" },
+        { "Name": "Carl Michelgrove", "Text": "Most people see art so beautiful only once in their lifetime." },
+		{ "Name": "Carl Michelgrove", "Text": "Not me, though. I make sure to stimulate my mind with true beauty." }
+        ]
+    },
+    {
+        "Dress": 2,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Carl Michelgrove", "Text": "This suit doesn't fit you..." },
+        { "Name": "MC", "Text": "Thank you very much, but I think it does" },
+        { "Name": "Carl Michelgrove", "Text": "Poor one..." }
+
+        ]
+    }
+ 
+]

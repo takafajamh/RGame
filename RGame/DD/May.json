@@ -1,0 +1,202 @@
+[
+    {
+        "Dress": 0,
+        "Time": 0,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "May Scott", "Text": "Hi there! Do you need anything?" },
+        { "Name": "MC", "Text": "Sorry, I'm new here, is there anything I could help you with?" },
+		{ "Name": "May Scott", "Text": "Nothing in particular. It's a surprisingly slow party. Not much work to be done."}
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 0,
+        "Priotity": 1,
+        "NumberOfConversations": 1,
+        "Lines": [
+        { "Name": "MC", "Text": "Are you on your brake, then?" },
+        { "Name": "May Scott", "Text": "Not until Ms. Pearce says so. Maybe in an hour or so? Care to join me then?" },
+		{ "Name": "MC", "Text": "I'd love to!"},
+		{ "Name": "May Scott", "Text": "See you then"}
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 0,
+        "Priotity": 1,
+        "NumberOfConversations": 2,
+        "Lines": [
+        { "Name": "MC", "Text": "Soo, you will just wait here?" },
+        { "Name": "May Scott", "Text": "Yes! Ms. Pearce is really strict..." },
+		{ "Name": "MC", "Text": "Oh... alright, see you later"},
+		{ "Name": "May Scott", "Text": "See you then"}
+        ]
+    },
+
+
+    {
+        "Dress": 0,
+        "Time": 1, 
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "MC", "Text": "There you are! Finished with your work now?" },
+        { "Name": "May Scott", "Text": "Nooo... somebody was complaining that their room is dirty!" },
+		{ "Name": "MC", "Text": "Wow, what happened?" },
+		{ "Name": "May Scott", "Text": "I would like to know before Ms. Pearce gets to know..." },
+		{ "Name": "MC", "Text": "Oh... true..." },
+        { "Name": "May Scott", "Text": "What about you? How are you doing here?" },
+        { "Name": "May Scott", "Text": "Normally I would give you a tour... But we are a bit busy..." },
+        { "Name": "MC", "Text": "Makes sense..." }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 1, 
+        "Priotity": 1,
+        "NumberOfConversations": 1,
+        "Lines": [
+        { "Name": "MC", "Text": "Hey, I have a question" },
+        { "Name": "May Scott", "Text": "Oh! Yes! Tell me" },
+		{ "Name": "MC", "Text": "Are all of those rooms booked?" },
+		{ "Name": "May Scott", "Text": "Em... I don't think so?" },
+		{ "Name": "MC", "Text": "Really? Not a lot folks stay here?" },
+        { "Name": "May Scott", "Text": "I would say so..." },
+        { "Name": "MC", "Text": "Alright, thanks" },
+        { "Name": "May Scott", "Text": "You are welcome!" }
+        ]
+    },
+     {
+        "Dress": 0,
+        "Time": 1, 
+        "Priotity": 1,
+        "NumberOfConversations": 2,
+        "Lines": [
+        { "Name": "May Scott", "Text": "Do you need anything?" },
+        { "Name": "MC", "Text": "Oh, sorry, I was just admiring an art piece" },
+		{ "Name": "May Scott", "Text": "But there is none here..?" },
+		{ "Name": "MC", "Text": "..." },
+		{ "Name": "MC", "Text": "*You smile*" },
+        { "Name": "May Scott", "Text": "Alright??" }
+        ]
+    },
+
+
+
+    {
+        "Dress": 0,
+        "Time": 2, 
+        "Priotity": 2,
+        "NumberOfConversations": 0,
+		"SetFlags": ["fucked_May"],
+        "Lines": [
+        { "Name": "MC", "Text": "There you are! Finished with your work now?" },
+        { "Name": "May Scott", "Text": "Finished and free, my friend. Of course until someone breaks a glass again..." },
+		{ "Name": "MC", "Text": "Fingers crossed." },
+		{ "Name": "MC", "Text": "What do you usually do here to relax?" },
+		{ "Name": "May Scott", "Text": "Nothing in particular... Do you have something in mind?" },
+		{ "Name": "MC", "Text": "Oh do I~" },
+		{ "Name": "", "Text": "*You pull her into an empty room*" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Priotity": 2,
+        "Time": 3, 
+        "NumberOfConversations": 0,
+		"SetFlags": ["fucked_May"],
+        "Lines": [
+        { "Name": "MC", "Text": "There you are! Finished with your work now?" },
+        { "Name": "May Scott", "Text": "Finished and free, my friend. Of course until someone breaks a glass again..." },
+		{ "Name": "MC", "Text": "Fingers crossed." },
+		{ "Name": "MC", "Text": "What do you usually do here to relax after work?" },
+		{ "Name": "May Scott", "Text": "Nothing in particular... Do you have something in mind?" },
+		{ "Name": "MC", "Text": "Oh do I~" },
+		{ "Name": "", "Text": "*You pull her into an empty room*" }
+        ]
+    },
+
+	{
+        "Dress": 0,
+        "Priotity": 2,
+        "Time": -1,
+        "NumberOfConversations": -1,
+		"Flags": ["fucked_May"],
+        "Lines": [
+        { "Name": "May Scott", "Text": "I'm still shaking. That was crazy!" },
+        { "Name": "MC", "Text": "Good thing noone saw us." },
+		{ "Name": "May Scott", "Text": "I don't even want to think about something like that!" }
+        ]
+    },
+	
+
+	{
+        "Dress": 0,
+        "Time": -1,
+        "Priotity": 5,
+        "NumberOfConversations": -1,
+		"Flags": ["fucked_May", "talked_Carl"],
+		"SetFlags": ["drink"],
+        "Lines": [
+        { "Name": "May Scott", "Text": "I'm still shaking. That was crazy!" },
+        { "Name": "MC", "Text": "Want to try something even more crazy?" },
+		{ "Name": "May Scott", "Text": "No way!" },
+		{ "Name": "May Scott", "Text": ". . ." },
+		{ "Name": "May Scott", "Text": "Okay, what is it?" },
+		{ "Name": "MC", "Text": "See this guy over there? The critic?" },
+		{ "Name": "MC", "Text": "I want to get back on him for acting so high and mighty; spike his drink a little." },
+		{ "Name": "May Scott", "Text": "What!" },
+		{ "Name": "MC", "Text": "It's nothing that strong... He'll just look like he got properly wine drunk!" },
+		{ "Name": "MC", "Text": "Can you help me with that?" },
+        { "Name": "May Scott", "Text": "I don't know... I don't want to get fired..." },
+        { "Name": "MC", "Text": "Trust me, nobody is gonna know~" },
+		{ "Name": "May Scott", "Text": "I can't say no to you, can I?" },
+		{ "Name": "", "Text": "*You give her a pill she dissolves in the next drink Carl will drink.*" }
+        ]
+    },
+	
+	{
+        "Dress": 0,
+        "Time": -1,
+        "Priotity": 10,
+        "NumberOfConversations": -1,
+		"Flags": ["drink"],
+        "Lines": [
+        { "Name": "May Scott", "Text": "I hope you keep working here. Today was so exciting!" },
+		{ "Name": "MC", "Text": "Glad to hear it." }
+        ]
+    },
+
+
+    {
+        "Dress": 1,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "May Scott", "Text": "Hello Miss! May I help you?" },
+        { "Name": "MC", "Text": "No need, thank you very much" },
+        { "Name": "May Scott", "Text": "Yes, tell me when You need something." }
+        ]
+    },
+
+
+    {
+        "Dress": 2,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "May Scott", "Text": "Hello missster..?" },
+        { "Name": "MC", "Text": "Oh silly one, I am a girl" },
+        { "Name": "May Scott", "Text": "Aaaa.. I am so sorry!" },
+        { "Name": "MC", "Text": "No need, I will take it as a compliment" },
+        { "Name": "MC", "Text": "Especielly from a cute like you you~" },
+        { "Name": "May Scott", "Text": "//O.O//" }
+        ]
+    }
+
+    
+]

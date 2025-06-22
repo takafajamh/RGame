@@ -23,8 +23,6 @@ private:
 		return ti.size() == 0;
 	}
 
-
-
 	bool shouldReturn(Position pos, entt::registry& registry)
 	{
 		Position UL = pos;

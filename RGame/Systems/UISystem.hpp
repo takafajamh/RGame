@@ -10,7 +10,7 @@ class UISystem : public ISystem
 private:
 	Uint32 prevMouseState = 0;
 
-	void CheckboxUpdate(entt::registry& registry)
+	void checkboxUpdate(entt::registry& registry)
 	{
 		float mouseX, mouseY;
 		Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
@@ -52,11 +52,62 @@ private:
 			prevMouseState = mouseState;
 		}
 	}
+
+	void buttonUpdate(entt::registry& registry)
+	{
+		float mouseX, mouseY;
+		Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+
+		auto view = registry.view<TextureButton, Sprite, ScreenPosition>();
+
+		for (auto [entity, button, sprite, pos] : view.each())
+		{
+			SDL_FRect rect =
+			{
+				pos.x,
+				pos.y,
+				sprite.sizeX,
+				sprite.sizeY
+			};
+
+			bool hovered =
+				mouseX >= rect.x && mouseX <= rect.x + rect.w &&
+				mouseY >= rect.y && mouseY <= rect.y + rect.h;
+
+			button.isHovered = hovered;
+
+			// Set current color based on state
+			if (hovered)
+			{
+				sprite.textureRect = button.HoverRect;
+
+				if (mouseState | SDL_BUTTON_LMASK)
+				{
+					button.isClicked = true;
+				}
+				else
+				{
+					button.isClicked = false;
+				}
+			}
+			else
+			{
+				sprite.textureRect = button.ClickRect;
+				button.isClicked = false;
+			}
+				
+
+			
+
+		}
+	}
+
 public:
 
 	void Update(entt::registry& registry)
 	{
-		CheckboxUpdate(registry);
+		checkboxUpdate(registry);
+		buttonUpdate(registry);
 	}
 
 };

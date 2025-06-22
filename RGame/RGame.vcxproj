@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Animation.hpp" />
+    <ClInclude Include="Components\Button.hpp" />
     <ClInclude Include="Components\Checkbox.hpp" />
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="Components\NPC.hpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Systems\RemoveAfterDelaySystem.hpp" />
     <ClInclude Include="Systems\RendererSystem.hpp" />
     <ClInclude Include="Systems\TilemapSystem.hpp" />
+    <ClInclude Include="Systems\TimeEventManagerSystem.hpp" />
     <ClInclude Include="Systems\UISystem.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

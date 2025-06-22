@@ -1,0 +1,92 @@
+[
+    {
+        "Dress": 0,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Ms. Pearce", "Text": "What are you bugging me for? Get back to work!" },
+        { "Name": "MC", "Text": "Yes!" }
+        ]
+    },
+	
+	{
+        "Dress": 0,
+        "Time": 2,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+		"Flags": ["talked_Ted"],
+		"SetFlags": ["talked_MsP"],
+        "Lines": [
+        { "Name": "Ms. Pearce", "Text": "What are you bugging me for? Get back to work!" },
+		{ "Name": "MC", "Text": "Sorry miss Pearce. Me and the rest of the staff are just slightly worried." },
+		{ "Name": "Ms. Pearce", "Text": "Worried? What for?!" },
+		{ "Name": "MC", "Text": "You just seem... More agitated than usual. We're worried something's wrong" },
+		{ "Name": "Ms. Pearce", "Text": "Pah! Wrong! Everything is wrong!" },
+		{ "Name": "Ms. Pearce", "Text": "We're two minutes behind schedule with absolutely everything, since we had to kick out that awful guest." },
+		{ "Name": "Ms. Pearce", "Text": "Digging in poor mister Michaelgrove's pockets he was. Awful." },
+		{ "Name": "MC", "Text": "Is that really all?" },
+		{ "Name": "Ms. Pearce", "Text": "All? All? Ah, you stupid girl. You'd never understand. Get back to work." }
+        ]
+    },
+	
+	{
+        "Dress": 0,
+        "Time": 3,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+		"Flags": ["talked_Ted"],
+		"SetFlags": ["talked_MsP"],
+        "Lines": [
+        { "Name": "Ms. Pearce", "Text": "What are you bugging me for? Get back to work!" },
+		{ "Name": "MC", "Text": "Sorry miss Pearce. Me and the rest of the staff are just slightly worried." },
+		{ "Name": "Ms. Pearce", "Text": "Worried? What for?!" },
+		{ "Name": "MC", "Text": "You just seem... More agitated than usual. We're worried something's wrong" },
+		{ "Name": "Ms. Pearce", "Text": "Pah! Wrong! Everything is wrong!" },
+		{ "Name": "Ms. Pearce", "Text": "We're two minutes behind schedule with absolutely everything, since we had to kick out that awful guest." },
+		{ "Name": "Ms. Pearce", "Text": "Digging in poor mister Michaelgrove's pockets he was. Awful." },
+		{ "Name": "MC", "Text": "Is that really all?" },
+		{ "Name": "Ms. Pearce", "Text": "All? All?! Ah, you stupid girl. You'd never understand. Get back to work." }
+        ]
+    },
+
+	{
+        "Dress": 0,
+        "Time": -1,
+        "NumberOfConversations": 0,
+        "Priotity": 6,
+		"Flags": ["talked_MsP"],
+        "Lines": [
+        { "Name": "Ms. Pearce", "Text": "Don't bother me anymore." }
+        ]
+    },
+
+
+    {
+        "Dress": 1,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Ms. Pearce", "Text": "How may I help you, Miss?" },
+        { "Name": "MC", "Text": "I was just walking around" },
+        { "Name": "Ms. Pearce", "Text": "Alright Miss, enjoy your evening" },
+        { "Name": "MC", "Text": "I will thank you" }
+        ]
+    },
+ 
+
+    {
+        "Dress": 2,
+        "Time": -1,
+        "Priotity": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Ms. Pearce", "Text": "How may I help you, Miss?" },
+        { "Name": "MC", "Text": "I was just walking around" },
+        { "Name": "Ms. Pearce", "Text": "Alright Miss, enjoy your evening" },
+        { "Name": "MC", "Text": "I will thank you" }
+        ]
+    }
+   
+]

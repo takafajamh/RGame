@@ -9,3 +9,4 @@
 #include "Components/Checkbox.hpp"
 #include "Components/Tilemap.hpp"
 #include "Components/NPC.hpp"
+#include "Components/Button.hpp"

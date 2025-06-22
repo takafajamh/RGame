@@ -175,6 +175,9 @@ private:
 public:
 	bool Interacting = false;
 
+	int GDress = 0;
+	int GTime = 0;
+
 	PlayerInteractSystem(entt::entity& Player, TilemapSystem* tilemap, std::shared_ptr<Font>& font)
 	{
 		m_player = Player;
@@ -222,9 +225,9 @@ public:
 				{
 					Interacting = true;
 					DialogueContext dc;
-					dc.Dress = 0;
+					dc.Dress = GDress;
 					dc.NumberOfConversarions = npc.talks;
-					dc.Time = 0;
+					dc.Time = GTime;
 					m_currentDialogue = GetDialogue(npc, dc);
 					npc.talks++;
 					return;

@@ -12,11 +12,11 @@ using DialogueFlags = uint8_t;
 enum class DialogueFlag : uint8_t
 {
 	None = 0,
-	TalkedWithA = 1 << 0,		// 000001
-	TalkedWithB = 1 << 1,		// 000010
-	TalkedWithC = 1 << 2,		// 000100
-	TalkedWithD = 1 << 3,		// 001000
-	TalkedWithE = 1 << 4,		// 010000
+	fucked_May = 1 << 0,		// 000001
+	talked_Carl = 1 << 1,		// 000010
+	drink = 1 << 2,		// 000100
+	talked_MsP = 1 << 3,		// 001000
+	talked_Ted = 1 << 4,		// 010000
 	TalkedWithF = 1 << 5,		// 100000
 };
 
@@ -43,17 +43,6 @@ struct DialogueLine
 	std::string Text;
 };
 
-/// <summary>
-/// Required for:
-/// Dress: 0,1,2
-/// Time = 0,1,2,3,4,5,6,7
-/// NumberofConversations 0 
-/// 
-/// So we need at least 24 dialogues per NPC
-/// Ideally 48+ (Case Talk second time)
-/// 
-/// + Flags, standard = 0
-/// </summary>
 struct DialogueContext
 {
 	int Dress = 0; // 0 - 2
@@ -107,6 +96,7 @@ namespace std
 struct NPC
 {
 	std::unordered_map<DialogueContextKey, std::map<int, std::vector<DialogueLine>>> Dialogues;
+	std::vector<Position> positions;
 	int talks = 0;
 };
 
@@ -153,7 +143,6 @@ NPC& LoadNPCFromJSON(const std::string& path, NPC& toLoad)
 		spdlog::error("Failed to open NPC JSON file: {}", path);
 		return toLoad;
 	}
-
 	json j;
 	in >> j;
 
@@ -177,11 +166,11 @@ NPC& LoadNPCFromJSON(const std::string& path, NPC& toLoad)
 			{
 				std::string flag = flagStr.get<std::string>();
 
-				if (flag == "TalkedWithA") ctx.Flags |= DialogueFlag::TalkedWithA;
-				else if (flag == "TalkedWithB") ctx.Flags |= DialogueFlag::TalkedWithB;
-				else if (flag == "TalkedWithC") ctx.Flags |= DialogueFlag::TalkedWithC;
-				else if (flag == "TalkedWithD") ctx.Flags |= DialogueFlag::TalkedWithD;
-				else if (flag == "TalkedWithE") ctx.Flags |= DialogueFlag::TalkedWithE;
+				if (flag == "fucked_May") ctx.Flags |= DialogueFlag::fucked_May;
+				else if (flag == "talked_Carl") ctx.Flags |= DialogueFlag::talked_Carl;
+				else if (flag == "drink") ctx.Flags |= DialogueFlag::drink;
+				else if (flag == "talked_MsP") ctx.Flags |= DialogueFlag::talked_MsP;
+				else if (flag == "talked_Ted") ctx.Flags |= DialogueFlag::talked_Ted;
 				else if (flag == "TalkedWithF") ctx.Flags |= DialogueFlag::TalkedWithF;
 				else {
 					spdlog::warn("Unknown flag '{}' in {} (Dress={}, Time={}, Conv={})",
