@@ -164,6 +164,7 @@
     <ClInclude Include="Components\ChangeSceneComponent.hpp" />
     <ClInclude Include="Components\Checkbox.hpp" />
     <ClInclude Include="Components.hpp" />
+    <ClInclude Include="Components\GameVolumeEffector.hpp" />
     <ClInclude Include="Components\HeightDependendLayer.hpp" />
     <ClInclude Include="Components\NPC.hpp" />
     <ClInclude Include="Components\Position.hpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Components\ScreenPosition.hpp" />
     <ClInclude Include="Components\Sprite.hpp" />
     <ClInclude Include="Components\Text.hpp" />
+    <ClInclude Include="Components\TextUpdateFromPointer.hpp" />
     <ClInclude Include="Components\Tilemap.hpp" />
     <ClInclude Include="Systems\AnimatorSystem.hpp" />
     <ClInclude Include="Systems\HeightDependendLayerSystem.hpp" />

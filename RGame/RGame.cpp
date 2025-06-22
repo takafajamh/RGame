@@ -18,11 +18,11 @@
 
 ///
 /// Text pointer in an Button with color change for N, H, C
-/// Scene Change on Click
 /// Volume Change on Click
 /// Map refactor
 ///
 
+Scene* getMenuScene(Game* game);
 
 class App : public Scene
 {
@@ -178,8 +178,63 @@ public:
 
     virtual void Init()
     {
-        spdlog::error("TO IMPLEMENT");
-        m_game->StopGame();
+        addSystem<RendererSystem>();
+        addSystem<UISystem>(m_game);
+
+        std::shared_ptr<Texture> t_button = CreateTexture("GPX/buttons.png");
+
+        entt::entity bt = m_registry.create();
+        ScreenPosition& ttpos = m_registry.emplace<ScreenPosition>(bt, ScreenPosition{ 60, 120 });
+
+        Text t5;
+        t5.color = { 235, 235, 230, 255 };
+        t5.content = "So programming, gathering pals, and parts of everything: Shadow Kitsune (aka me). \nBut I couldn'y have done it without Ignof - pixel art, some dialogue and general help. \nFelek! - High res arts, arigatou! \nKjubi - Backhround/itchio. \nImie - Music :3. \nBunnyHeart - For the dialogue help, the spicy one~ \nSo thank you all again!";
+        t5.font = m_font;
+        t5.xSize = 1200;
+        t5.ySize = 200;
+        t5.fontSize = 36;
+
+        m_registry.emplace<Text>(bt, t5);
+
+
+        // Return Button
+        {
+            entt::entity Play = m_registry.create();
+            entt::entity TText = m_registry.create();
+
+            ScreenPosition& playPos = m_registry.emplace<ScreenPosition>(Play, ScreenPosition{ 25,600 });
+            ScreenPosition& textPos = m_registry.emplace<ScreenPosition>(TText, ScreenPosition{ 60, 620 });
+
+            Sprite playSprite;
+            {
+                playSprite.texture = t_button;
+                playSprite.useTextureRect = true;
+                playSprite.textureRect = { 0,0,32,32 };
+                playSprite.sizeX = 32 * 6;
+                playSprite.sizeY = 16 * 6;
+                playSprite.layerOrder = 3;
+            }
+            m_registry.emplace<Sprite>(Play, playSprite);
+
+            TextureButton tbPlay;
+            tbPlay.ClickRect = { 0,0,32,32 };
+            tbPlay.HoverRect = { 32,0,32,32 };
+            m_registry.emplace<TextureButton>(Play, tbPlay);
+
+
+            m_registry.emplace<ChangeSceneComponent>(Play, ChangeSceneComponent{ getMenuScene(m_game)});
+
+            Text t;
+            t.color = { 235, 235, 230, 255 };
+            t.content = "Return";
+            t.font = m_font;
+            t.xSize = 200;
+            t.ySize = 200;
+            t.fontSize = 48;
+
+            m_registry.emplace<Text>(TText, t);
+        }
+
     }
 };
 
@@ -343,9 +398,9 @@ public:
             float TFV = -60;
 
             ScreenPosition& UpPos = m_registry.emplace<ScreenPosition>(Up, ScreenPosition{ 10,560 - TFV });
-            ScreenPosition& TxtUpPos = m_registry.emplace<ScreenPosition>(txtUp, ScreenPosition{ 30,570 - TFV });
+            ScreenPosition& TxtUpPos = m_registry.emplace<ScreenPosition>(txtUp, ScreenPosition{ 220, 570 - TFV });
             ScreenPosition& DownPos = m_registry.emplace<ScreenPosition>(Down, ScreenPosition{ 200,560 - TFV });
-            ScreenPosition& TxtDownPos = m_registry.emplace<ScreenPosition>(txtDown, ScreenPosition{ 223,565 - TFV });
+            ScreenPosition& TxtDownPos = m_registry.emplace<ScreenPosition>(txtDown, ScreenPosition{ 33,565 - TFV });
             ScreenPosition& CounterPos = m_registry.emplace<ScreenPosition>(Counter, ScreenPosition{ 105,560 - TFV });
             ScreenPosition& DescriptorPos = m_registry.emplace<ScreenPosition>(Descriptor, ScreenPosition{ 65,500 - TFV });
 
@@ -372,7 +427,9 @@ public:
             }
             m_registry.emplace<Sprite>(Down, DowmSprite);
 
-
+            m_registry.emplace<GameVolumeEffector>(Up, GameVolumeEffector{-5,true});
+            m_registry.emplace<GameVolumeEffector>(Down, GameVolumeEffector{5,true});
+            
             TextureButton tbUp;
             tbUp.ClickRect = { 0,0,16,16 };
             tbUp.HoverRect = { 16,0,16,16 };
@@ -416,6 +473,8 @@ public:
                 tCounter.fontSize = 48;
             }
             m_registry.emplace<Text>(Counter, tCounter);
+            m_registry.emplace<TextUpdateFromPointer>(Counter, TextUpdateFromPointer{&m_game->Volume});
+            
 
             Text tDescriptor;
             {
@@ -433,6 +492,11 @@ public:
     
     }
 };
+
+Scene* getMenuScene(Game* game)
+{
+    return new Menu(game);
+}
 
 std::pair<int,int> GetScreenSize()
 {

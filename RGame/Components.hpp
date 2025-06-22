@@ -13,3 +13,5 @@
 #include "Components/HeightDependendLayer.hpp"
 #include "Components/ChangeSceneComponent.hpp"
 #include "Components/QuitGameEffector.hpp"
+#include "Components/GameVolumeEffector.hpp"
+#include "Components/TextUpdateFromPointer.hpp"

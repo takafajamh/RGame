@@ -3,6 +3,8 @@
 #include "../Components.hpp"
 #include <KitsuEngine/System.hpp>
 #include "../Components/ChangeSceneComponent.hpp"
+#include <string>
+
 // Does not account for just position, uses Screen Position
 
 class UISystem : public ISystem
@@ -91,6 +93,7 @@ private:
 				else
 				{
 					button.isClicked = false;
+					outClickEffector(registry, entity);
 				}
 			}
 			else
@@ -118,6 +121,42 @@ private:
 		{
 			m_game->StopGame();
 		}
+
+		GameVolumeEffector* gve = registry.try_get<GameVolumeEffector>(entity);
+		if (gve != nullptr && m_game != nullptr && gve->unclicked)
+		{
+			m_game->Volume += gve->dValue;
+			gve->unclicked = false;
+
+			if (m_game->Volume > 100)
+			{
+				m_game->Volume -= 100;
+			}
+
+			if (m_game->Volume < 0)
+			{
+				m_game->Volume += 100;
+			}
+		}
+	}
+
+	void outClickEffector(entt::registry& registry, entt::entity& entity)
+	{
+		GameVolumeEffector* ve = registry.try_get<GameVolumeEffector>(entity);
+		if (ve != nullptr && m_game != nullptr)
+		{
+			ve->unclicked = true;
+		}
+	}
+
+	void updateTexts(entt::registry& registry)
+	{
+		auto view = registry.view<TextUpdateFromPointer, Text>();
+
+		for (auto [entity, tu, txt] : view.each())
+		{
+			txt.content = std::to_string(*tu.pointer);
+		}
 	}
 
 public:
@@ -130,6 +169,7 @@ public:
 	{
 		checkboxUpdate(registry);
 		buttonUpdate(registry);
+		updateTexts(registry);
 	}
 
 };
