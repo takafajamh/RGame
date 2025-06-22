@@ -177,6 +177,7 @@ public:
 
 	int GDress = 0;
 	int GTime = 0;
+	// Handle flags
 
 	PlayerInteractSystem(entt::entity& Player, TilemapSystem* tilemap, std::shared_ptr<Font>& font)
 	{
@@ -226,9 +227,18 @@ public:
 					Interacting = true;
 					DialogueContext dc;
 					dc.Dress = GDress;
-					dc.NumberOfConversarions = npc.talks;
+					dc.NumberOfConversations = npc.talks;
 					dc.Time = GTime;
-					m_currentDialogue = GetDialogue(npc, dc);
+					auto* temp = GetDialogue(npc, dc);
+					if (temp != nullptr)
+					{
+						m_currentDialogue = temp->Lines;
+					}
+					else
+					{
+						m_currentDialogue.push_back(DialogueLine{ "", "*Doesn't seem talkative*"});
+						spdlog::error("How did we get here?????? No correct dialogue entry");
+					}
 					npc.talks++;
 					return;
 				}
@@ -241,7 +251,7 @@ public:
 				if (t.dialogue != "")
 				{
 					Interacting = true;
-					m_currentDialogue.push_back(DialogueLine{"You", t.dialogue});
+					m_currentDialogue.push_back(DialogueLine{"", t.dialogue});
 					return;
 				}
 			}
