@@ -18,6 +18,42 @@ class App : public Scene
 private:
     std::shared_ptr<Font> font = std::make_shared<Font>("Font/munro.ttf");
     
+    entt::entity& makeNPC(const Position& pos, const std::shared_ptr<Texture>& t_Player,const float& textureX,const float& textureY, const std::string& path)
+    {
+        entt::entity NPCEntity = m_registry.create();
+        Position& playerPosition = m_registry.emplace<Position>(NPCEntity, pos);
+
+        Sprite npcSprite;
+        {
+            npcSprite.texture = t_Player;
+            npcSprite.useTextureRect = true;
+            npcSprite.textureRect = { textureX, textureY, 48.f, 48.f };
+            npcSprite.sizeX = 48 * 2;
+            npcSprite.sizeY = 48 * 2;
+        }
+        m_registry.emplace<Sprite>(NPCEntity, npcSprite);
+
+        Animator animator;
+        animator.anims.push_back(Animation{ "Idle",
+            {
+            Frame{{textureX,textureY,48,48}, 2.2f},
+            Frame{{textureX + 1536,textureY,48,48}, 0.4f},
+            } });
+        animator.ToPlay = "Idle";
+
+        m_registry.emplace<Animator>(NPCEntity, animator);
+
+
+        NPC npc;
+        LoadNPCFromJSON(path, npc);
+
+        m_registry.emplace<NPC>(NPCEntity, npc);
+
+
+        return NPCEntity;
+    }
+
+
 public:
     App(Game* game) : Scene(game)
     {
@@ -79,6 +115,10 @@ public:
 
         std::shared_ptr<Texture> t_Tilesheet = CreateTexture("GPX/tilesheet.png");
         ts->LoadMap(m_registry, "GPX/mapa.json", t_Tilesheet, Position{ 0,0 });
+
+
+
+        entt::entity Maya = makeNPC({ 1200, 1850 }, t_Player, 0, 48 * 3, "DD/Maya.json");
 
 
         spdlog::info("Scene got init");

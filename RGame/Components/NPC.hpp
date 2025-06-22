@@ -158,6 +158,7 @@ NPC& LoadNPCFromJSON(const std::string& path, NPC& toLoad)
 
 	int totalEntries = 0;
 	int emptyLinesCount = 0;
+	int setss = 0;
 
 	for (const auto& entry : j)
 	{
@@ -165,6 +166,7 @@ NPC& LoadNPCFromJSON(const std::string& path, NPC& toLoad)
 		ctx.Dress = entry.at("Dress").get<int>();
 		ctx.Time = entry.at("Time").get<int>();
 		ctx.NumberOfConversarions = entry.at("NumberOfConversations").get<int>();
+		setss++;
 
 		// Handle Flags
 		ctx.Flags = 0;
@@ -192,6 +194,7 @@ NPC& LoadNPCFromJSON(const std::string& path, NPC& toLoad)
 		std::vector<DialogueLine> lines;
 		for (const auto& line : entry.at("Lines"))
 		{
+			totalEntries++;
 			DialogueLine dl{
 				line.at("Name").get<std::string>(),
 				line.at("Text").get<std::string>()
@@ -203,8 +206,8 @@ NPC& LoadNPCFromJSON(const std::string& path, NPC& toLoad)
 		SetDialogue(toLoad, lines, ctx);
 	}
 
-	spdlog::info("Finished loading NPC from '{}': {} entries, {} empty dialogue lines",
-		path, totalEntries, emptyLinesCount);
+	spdlog::info("Finished loading NPC from '{}': {} entries, {} empty dialogue lines, Overall dialogues {}",
+		path, totalEntries, emptyLinesCount, setss);
 
 	return toLoad;
 }

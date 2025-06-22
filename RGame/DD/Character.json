@@ -1,0 +1,233 @@
+[
+    {
+        "Dress": 0,
+        "Time": 0,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "Hello miss maid" },
+        { "Name": "MC", "Text": "Hello mister" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 0,
+        "NumberOfConversations": 1,
+        "Lines": [
+        { "Name": "Char", "Text": "You are annoying maid" },
+        { "Name": "MC", "Text": "We have spoken once!" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 2,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 3,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 4,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 5,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 6,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 0,
+        "Time": 7,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+
+
+
+
+    {
+        "Dress": 1,
+        "Time": 0,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "Hello miss maid" },
+        { "Name": "MC", "Text": "Hello mister" }
+        ]
+    },
+    {
+        "Dress": 1,
+        "Time": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 1,
+        "Time": 2,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 1,
+        "Time": 3,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 1,
+        "Time": 4,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 1,
+        "Time": 5,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 1,
+        "Time": 6,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 1,
+        "Time": 7,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+
+
+    {
+        "Dress": 2,
+        "Time": 0,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "Hello miss maid" },
+        { "Name": "MC", "Text": "Hello mister" }
+        ]
+    },
+    {
+        "Dress": 2,
+        "Time": 1,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 2,
+        "Time": 2,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 2,
+        "Time": 3,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 2,
+        "Time": 4,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 2,
+        "Time": 5,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 2,
+        "Time": 6,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    },
+    {
+        "Dress": 2,
+        "Time": 7,
+        "NumberOfConversations": 0,
+        "Lines": [
+        { "Name": "Char", "Text": "" },
+        { "Name": "MC", "Text": "" }
+        ]
+    }
+]
