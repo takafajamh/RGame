@@ -109,7 +109,7 @@ private:
 			m_timer = m_lineTime + 1;
 			ratio = 1;
 		}
-
+		registry.get<Text>(m_txt).content = m_currentDialogue.at(m_textID).Name;
 		registry.get<Text>(m_txt1).content = m_currentDialogue.at(m_textID).Text.substr(0, ratio * m_currentDialogue.at(m_textID).Text.size());
 	}
 

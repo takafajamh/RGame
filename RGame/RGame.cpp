@@ -17,8 +17,6 @@
 #include <iostream>
 
 ///
-/// Text pointer in an Button with color change for N, H, C
-/// Volume Change on Click
 /// Map refactor
 ///
 
