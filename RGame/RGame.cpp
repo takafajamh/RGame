@@ -550,7 +550,7 @@ std::pair<int,int> GetScreenSize()
 
 int main(int argc, char** argv)
 {
-    KitsuEngineInit(1080, 720, "SPY");
+    KitsuEngineInit(1080, 720, "Spex - Spies like Sex");
 
     Game* game = new Game();
     //App* mainScene = new App(game);
