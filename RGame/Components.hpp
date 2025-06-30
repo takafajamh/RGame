@@ -18,3 +18,4 @@
 #include "Components/TimeMover.hpp"
 #include "Components/Mover.hpp"
 #include "Components/NoteReceiver.hpp"
+#include "Components/Note.hpp"

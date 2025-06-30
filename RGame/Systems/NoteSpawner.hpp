@@ -80,6 +80,7 @@ public:
 		sp.y += carry * m.Speed;
 
 		registry.emplace<RemoveAfterDelay>(arrow, RemoveAfterDelay{ 5, 0 });
+		registry.emplace<Note>(arrow, Note{ num });
 	}
 
 	void Update(entt::registry& registry) override

@@ -169,6 +169,7 @@
     <ClInclude Include="Components\GameVolumeEffector.hpp" />
     <ClInclude Include="Components\HeightDependendLayer.hpp" />
     <ClInclude Include="Components\Mover.hpp" />
+    <ClInclude Include="Components\Note.hpp" />
     <ClInclude Include="Components\NoteReceiver.hpp" />
     <ClInclude Include="Components\NPC.hpp" />
     <ClInclude Include="Components\Position.hpp" />

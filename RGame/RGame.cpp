@@ -77,10 +77,10 @@ public:
             m_registry.emplace<Sprite>(DArrow, SDA);
 
 
-            m_registry.emplace<NoteReceiver>(LArrow, NoteReceiver{ { 16 * 0, 16 * 0, 16, 16 }, { 16 * 1, 16 * 0, 16, 16 }, SDL_SCANCODE_LEFT });
-            m_registry.emplace<NoteReceiver>(RArrow, NoteReceiver{ { 16 * 0, 16 * 1, 16, 16 }, { 16 * 1, 16 * 1, 16, 16 }, SDL_SCANCODE_RIGHT });
-            m_registry.emplace<NoteReceiver>(UArrow, NoteReceiver{ { 16 * 0, 16 * 2, 16, 16 }, { 16 * 1, 16 * 2, 16, 16 }, SDL_SCANCODE_UP });
-            m_registry.emplace<NoteReceiver>(DArrow, NoteReceiver{ { 16 * 0, 16 * 3, 16, 16 }, { 16 * 1, 16 * 3, 16, 16 }, SDL_SCANCODE_DOWN });
+            m_registry.emplace<NoteReceiver>(LArrow, NoteReceiver{ { 16 * 0, 16 * 0, 16, 16 }, { 16 * 1, 16 * 0, 16, 16 }, SDL_SCANCODE_LEFT , 0 });
+            m_registry.emplace<NoteReceiver>(RArrow, NoteReceiver{ { 16 * 0, 16 * 1, 16, 16 }, { 16 * 1, 16 * 1, 16, 16 }, SDL_SCANCODE_RIGHT, 3 });
+            m_registry.emplace<NoteReceiver>(UArrow, NoteReceiver{ { 16 * 0, 16 * 2, 16, 16 }, { 16 * 1, 16 * 2, 16, 16 }, SDL_SCANCODE_UP, 1 });
+            m_registry.emplace<NoteReceiver>(DArrow, NoteReceiver{ { 16 * 0, 16 * 3, 16, 16 }, { 16 * 1, 16 * 3, 16, 16 }, SDL_SCANCODE_DOWN, 2 });
 
 
 
