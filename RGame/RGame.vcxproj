@@ -168,6 +168,8 @@
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="Components\GameVolumeEffector.hpp" />
     <ClInclude Include="Components\HeightDependendLayer.hpp" />
+    <ClInclude Include="Components\Mover.hpp" />
+    <ClInclude Include="Components\NoteReceiver.hpp" />
     <ClInclude Include="Components\NPC.hpp" />
     <ClInclude Include="Components\Position.hpp" />
     <ClInclude Include="Components\QuitGameEffector.hpp" />
@@ -181,6 +183,10 @@
     <ClInclude Include="Components\TimeMover.hpp" />
     <ClInclude Include="Systems\AnimatorSystem.hpp" />
     <ClInclude Include="Systems\HeightDependendLayerSystem.hpp" />
+    <ClInclude Include="Systems\MoverSystem.hpp" />
+    <ClInclude Include="Systems\NoteClickSystem.hpp" />
+    <ClInclude Include="Systems\NoteRecorder.hpp" />
+    <ClInclude Include="Systems\NoteSpawner.hpp" />
     <ClInclude Include="Systems\PlayerInteract.hpp" />
     <ClInclude Include="Systems\PlayerMovementSystem.hpp" />
     <ClInclude Include="Systems\RemoveAfterDelaySystem.hpp" />

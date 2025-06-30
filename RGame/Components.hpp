@@ -16,3 +16,5 @@
 #include "Components/GameVolumeEffector.hpp"
 #include "Components/TextUpdateFromPointer.hpp"
 #include "Components/TimeMover.hpp"
+#include "Components/Mover.hpp"
+#include "Components/NoteReceiver.hpp"
