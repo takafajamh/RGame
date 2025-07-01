@@ -44,6 +44,7 @@ public:
 
         std::shared_ptr<Texture> t_Arrows = CreateTexture("GPX/Arrows.png");
         std::shared_ptr<Texture> t_char1 = CreateTexture("GPX/char1.png");
+        std::shared_ptr<Texture> t_bg = CreateTexture("GPX/bg.png");
 
         // Arrows down
         {
@@ -105,8 +106,8 @@ public:
             ScreenPosition& sp = m_registry.emplace<ScreenPosition>(character, ScreenPosition{0, 720 - (120 * 2.5)});
 
             Sprite sChar;
-            sChar.sizeX = (1200 / 5) * 2.5;
-            sChar.sizeY = 120 * 2.5;
+            sChar.sizeX = 638; //240 * 2.5;
+            sChar.sizeY = 319; //120 * 2.5;
             sChar.texture = t_char1;
             sChar.useTextureRect = true;
             sChar.layerOrder = 8;
@@ -122,7 +123,18 @@ public:
             m_registry.emplace<InputTRectChange>(character, itrc);
         }
 
+        // BG
+        {
+            entt::entity bg = m_registry.create();
+            ScreenPosition& sp = m_registry.emplace<ScreenPosition>(bg, ScreenPosition{ 660 - 22, 0 });
 
+            Sprite sprite;
+            sprite.sizeX = 410;
+            sprite.sizeY = 720;
+            sprite.texture = t_bg;
+            sprite.layerOrder = 2;
+            m_registry.emplace<Sprite>(bg, sprite);
+        }
 
         spdlog::info("Scene got init");
     }
