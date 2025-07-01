@@ -7,6 +7,8 @@ class NoteClickSystem : public ISystem
 {
 private:
     std::vector<bool> prevKeys;
+    float m = 100;
+    float sPos = 660;
 
 public:
     int combo = 0;
@@ -28,7 +30,7 @@ public:
 
         for (auto [entity, nr, spr] : view.each())
         {
-            SDL_Scancode key = static_cast<SDL_Scancode>(nr.button);
+            SDL_Scancode key = nr.button;
 
             // Check if key was JUST pressed (down this frame, up last frame)
             if (currentKeys[key] && !prevKeys[key])
@@ -38,7 +40,7 @@ public:
                 auto notes = registry.view<ScreenPosition, Mover, Note>();
                 for (auto [noteEntity, sp, mv, nt] : notes.each())
                 {
-                    int col = (int)((sp.x - 260) / 120);
+                    int col = (int)((sp.x - sPos) / m);
                     if (col == nr.column)
                     {
                         float dy = std::abs(sp.y - hitY);

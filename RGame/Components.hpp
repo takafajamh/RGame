@@ -19,3 +19,4 @@
 #include "Components/Mover.hpp"
 #include "Components/NoteReceiver.hpp"
 #include "Components/Note.hpp"
+#include "Components/InputTRectChange.hpp"

@@ -12,6 +12,7 @@
 #include "Systems/NoteClickSystem.hpp"
 #include "Systems/RemoveAfterDelaySystem.hpp"
 #include "Systems/NoteRecorder.hpp"
+#include "Systems/InputTRectChangeSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -39,8 +40,10 @@ public:
         addSystem<MoverSystem>();
         addSystem<RemoveAfterDelaySystem>();
         addSystem<NoteClickSystem>();
+        addSystem<InputTRectChangeSystem>();
 
         std::shared_ptr<Texture> t_Arrows = CreateTexture("GPX/Arrows.png");
+        std::shared_ptr<Texture> t_char1 = CreateTexture("GPX/char1.png");
 
         // Arrows down
         {
@@ -49,12 +52,13 @@ public:
             entt::entity UArrow = m_registry.create();
             entt::entity DArrow = m_registry.create();
 
-            float m = 120;
+            float m = 100;
+            float sPos = 660;
 
-            m_registry.emplace<ScreenPosition>(LArrow, ScreenPosition{ 260, 600 });
-            m_registry.emplace<ScreenPosition>(UArrow, ScreenPosition{ 260 + m, 600 });
-            m_registry.emplace<ScreenPosition>(DArrow, ScreenPosition{ 260 + 2 * m, 600 });
-            m_registry.emplace<ScreenPosition>(RArrow, ScreenPosition{ 260 + 3 * m, 600 });
+            m_registry.emplace<ScreenPosition>(LArrow, ScreenPosition{ sPos, 600 });
+            m_registry.emplace<ScreenPosition>(UArrow, ScreenPosition{ sPos + m, 600 });
+            m_registry.emplace<ScreenPosition>(DArrow, ScreenPosition{ sPos + 2 * m, 600 });
+            m_registry.emplace<ScreenPosition>(RArrow, ScreenPosition{ sPos + 3 * m, 600 });
 
             Sprite SLA;
             SLA.sizeX = 16 * 4;
@@ -94,6 +98,30 @@ public:
 
         addSystem<NoteSpawner>(m_game->music, t_Arrows, beatmap);
         //addSystem<NoteRecorder>(m_game->music);
+
+        // Char
+        {
+            entt::entity character = m_registry.create();
+            ScreenPosition& sp = m_registry.emplace<ScreenPosition>(character, ScreenPosition{0, 720 - (120 * 2.5)});
+
+            Sprite sChar;
+            sChar.sizeX = (1200 / 5) * 2.5;
+            sChar.sizeY = 120 * 2.5;
+            sChar.texture = t_char1;
+            sChar.useTextureRect = true;
+            sChar.layerOrder = 8;
+            sChar.textureRect = {0,0,1200/5, 120};
+            m_registry.emplace<Sprite>(character, sChar);
+
+            InputTRectChange itrc;
+            itrc.n = { 0,0,1200 / 5, 120 };
+            itrc.u = { 240,0,1200 / 5, 120 };
+            itrc.d = { 480,0,1200 / 5, 120 };
+            itrc.l = { 720,0,1200 / 5, 120 };
+            itrc.r = { 960,0,1200 / 5, 120 };
+            m_registry.emplace<InputTRectChange>(character, itrc);
+        }
+
 
 
         spdlog::info("Scene got init");

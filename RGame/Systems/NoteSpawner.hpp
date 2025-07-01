@@ -50,6 +50,9 @@ private:
 	Mix_Music* Music;
 	std::shared_ptr<Texture> t_Arrows;
 
+	float m = 100;
+	float sPos = 660;
+
 public:
 	NoteSpawner(Mix_Music* music, std::shared_ptr<Texture> t_arrows, const std::vector<BeatNote>& beatmap)
 		: Music(music), t_Arrows(t_arrows), m_beatmap(beatmap)
@@ -62,7 +65,7 @@ public:
 		const int num = vals[tnum];
 
 		entt::entity arrow = registry.create();
-		ScreenPosition& sp = registry.emplace<ScreenPosition>(arrow, ScreenPosition{ 260 + (float)(num * 120), -50 });
+		ScreenPosition& sp = registry.emplace<ScreenPosition>(arrow, ScreenPosition{ sPos + (float)(num * m), -50 });
 
 		Sprite sArrow;
 		sArrow.sizeX = 16 * 4;

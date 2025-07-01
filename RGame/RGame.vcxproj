@@ -168,6 +168,7 @@
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="Components\GameVolumeEffector.hpp" />
     <ClInclude Include="Components\HeightDependendLayer.hpp" />
+    <ClInclude Include="Components\InputTRectChange.hpp" />
     <ClInclude Include="Components\Mover.hpp" />
     <ClInclude Include="Components\Note.hpp" />
     <ClInclude Include="Components\NoteReceiver.hpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Components\TimeMover.hpp" />
     <ClInclude Include="Systems\AnimatorSystem.hpp" />
     <ClInclude Include="Systems\HeightDependendLayerSystem.hpp" />
+    <ClInclude Include="Systems\InputTRectChangeSystem.hpp" />
     <ClInclude Include="Systems\MoverSystem.hpp" />
     <ClInclude Include="Systems\NoteClickSystem.hpp" />
     <ClInclude Include="Systems\NoteRecorder.hpp" />
