@@ -13,6 +13,7 @@
 #include "Systems/RemoveAfterDelaySystem.hpp"
 #include "Systems/NoteRecorder.hpp"
 #include "Systems/InputTRectChangeSystem.hpp"
+#include "Systems/UISystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -39,8 +40,9 @@ public:
         addSystem<AnimatorSystem>();
         addSystem<MoverSystem>();
         addSystem<RemoveAfterDelaySystem>();
-        addSystem<NoteClickSystem>();
+        NoteClickSystem* ncs = addSystem<NoteClickSystem>();
         addSystem<InputTRectChangeSystem>();
+        addSystem<UISystem>();
 
         std::shared_ptr<Texture> t_Arrows = CreateTexture("GPX/Arrows.png");
         std::shared_ptr<Texture> t_char1 = CreateTexture("GPX/char1.png");
@@ -100,7 +102,9 @@ public:
         addSystem<NoteSpawner>(m_game->music, t_Arrows, beatmap);
         //addSystem<NoteRecorder>(m_game->music);
 
+        
         // Char
+        
         {
             entt::entity character = m_registry.create();
             ScreenPosition& sp = m_registry.emplace<ScreenPosition>(character, ScreenPosition{0, 720 - (120 * 2.5)});
@@ -123,6 +127,34 @@ public:
             m_registry.emplace<InputTRectChange>(character, itrc);
         }
 
+        // Combo
+        {
+            entt::entity combo = m_registry.create();
+            ScreenPosition& sp = m_registry.emplace<ScreenPosition>(combo, ScreenPosition{ 160, 30 });
+            Text txt;
+            txt.color = { 255,255,255,255 };
+            txt.content = "0";
+            txt.font = font;
+            txt.fontSize = 48;
+            txt.xSize = 300;
+            m_registry.emplace<Text>(combo, txt);
+
+            TextUpdateFromPointer tufp;
+            tufp.pointer = &ncs->combo;
+            m_registry.emplace<TextUpdateFromPointer>(combo, tufp);
+
+            entt::entity combo1 = m_registry.create();
+            ScreenPosition& sp1 = m_registry.emplace<ScreenPosition>(combo1, ScreenPosition{ 10, 30 });
+            Text txt1;
+            txt1.color = { 255,255,255,255 };
+            txt1.content = "Combo: ";
+            txt1.font = font;
+            txt1.fontSize = 48;
+            txt1.xSize = 300;
+            m_registry.emplace<Text>(combo1, txt1);
+
+        }
+        
         // BG
         {
             entt::entity bg = m_registry.create();
