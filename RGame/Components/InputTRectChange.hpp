@@ -8,4 +8,5 @@ struct InputTRectChange
 	SDL_FRect r;
 	SDL_FRect u;
 	SDL_FRect d;
+	SDL_FRect dlr;
 };

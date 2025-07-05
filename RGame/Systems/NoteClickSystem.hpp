@@ -48,14 +48,14 @@ public:
                         {
                             registry.destroy(noteEntity);
                             combo++;
-                            spdlog::info("COMBO: {}", combo);
+                            //spdlog::info("COMBO: {}", combo);
                             break; 
                         }
                         else if (dy <= missWindow)
                         {
                             registry.destroy(noteEntity);
                             combo = 0;
-                            spdlog::warn("COMBO: 0 - RESET");
+                            //spdlog::warn("COMBO: 0 - RESET");
                             break;
                         }
                     }

@@ -100,7 +100,7 @@ public:
         }
 
         addSystem<NoteSpawner>(m_game->music, t_Arrows, beatmap);
-        //addSystem<NoteRecorder>(m_game->music);
+        //addSystem<NoteRecorder>(m_game->music); //F5
 
         
         // Char
@@ -124,6 +124,7 @@ public:
             itrc.d = { 480,0,1200 / 5, 120 };
             itrc.l = { 720,0,1200 / 5, 120 };
             itrc.r = { 960,0,1200 / 5, 120 };
+            itrc.dlr = { 1200,0,1200 / 5, 120 };
             m_registry.emplace<InputTRectChange>(character, itrc);
         }
 
