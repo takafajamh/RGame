@@ -13,10 +13,18 @@ private:
 	bool m_lastF5 = false;
 	bool m_keyState[256]{}; // simple debounce
 
+	BeatNote m_currentNotes[4];
+
+	const float SliderThreshhold = 0.3f;
+
 public:
 	NoteRecorder(Mix_Music* music)
 	{
 		m_music = music;
+		m_currentNotes[0] = {};
+		m_currentNotes[1] = {};
+		m_currentNotes[2] = {};
+		m_currentNotes[3] = {};
 	}
 
 	void Save(const std::string& path)
@@ -26,7 +34,7 @@ public:
 
 		for (const auto& note : m_notes)
 		{
-			j["notes"].push_back({ { "time", note.time }, { "column", note.column } });
+			j["notes"].push_back({ { "time", note.time }, { "column", note.column }, { "length", note.length } });
 		}
 
 		std::ofstream file(path);
@@ -54,12 +62,18 @@ public:
 			{
 				if (!m_keyState[k.key]) // only once per press
 				{
-					m_notes.push_back({ time, k.col });
+					m_currentNotes[k.col] = { time, k.col, 0 };
 					m_keyState[k.key] = true;
 				}
 			}
-			else
+			else if(m_currentNotes[k.col].column != -1)
 			{
+				m_currentNotes[k.col].length = time - m_currentNotes[k.col].time;
+				if (m_currentNotes[k.col].length < SliderThreshhold) m_currentNotes[k.col].length = 0;
+
+				m_notes.push_back(m_currentNotes[k.col]);
+				m_currentNotes[k.col] = { 0, -1, 0 };
+
 				m_keyState[k.key] = false;
 			}
 		}

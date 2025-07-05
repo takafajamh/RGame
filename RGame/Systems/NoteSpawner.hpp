@@ -5,8 +5,8 @@
 
 struct BeatNote
 {
-	double time;
-	int column;
+	double time = 0;
+	int column = -1;
 	float length = 0;
 };
 

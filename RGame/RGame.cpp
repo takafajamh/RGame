@@ -94,17 +94,16 @@ public:
         }
 
         std::vector<BeatNote> beatmap;
-        if (!LoadBeatmapJson("Music/map.json", beatmap)) 
+        if (!LoadBeatmapJson("Music/mapped.json", beatmap)) 
         {
             spdlog::error("Failed to load beatmap!");
         }
 
         addSystem<NoteSpawner>(m_game->music, t_Arrows, beatmap);
         //addSystem<NoteRecorder>(m_game->music); //F5
-
+        
         
         // Char
-        
         {
             entt::entity character = m_registry.create();
             ScreenPosition& sp = m_registry.emplace<ScreenPosition>(character, ScreenPosition{0, 720 - (120 * 2.5)});
