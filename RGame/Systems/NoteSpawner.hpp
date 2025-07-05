@@ -38,7 +38,7 @@ bool LoadBeatmapJson(const std::string& path, std::vector<BeatNote>& out)
 
 	std::sort(out.begin(), out.end(), [](auto& a, auto& b) 
 		{
-		return a.time < b.time;
+		return a.time - a.length < b.time - a.length;
 		});
 
 	return true;
@@ -106,25 +106,28 @@ public:
 		const int num = vals[tnum];
 
 		entt::entity arrow = registry.create();
-		ScreenPosition& sp = registry.emplace<ScreenPosition>(arrow, ScreenPosition{ sPos + (float)(num * m), -50 });
+
+		Mover mv;
+		mv.Speed = (595 + 50) / m_fallTime;
+		registry.emplace<Mover>(arrow, mv);
+
+		ScreenPosition& sp = registry.emplace<ScreenPosition>(arrow, ScreenPosition{ sPos + (float)(num * m), -50 - (mv.Speed * noteTime)});
 
 		RectangleShape sArrow;
 		sArrow.width = 16 * 4;
 		sArrow.layer = 9;
 		sArrow.color = { 130,130,130,130 };
 
-		Mover m;
-		m.Speed = (595 + 50) / m_fallTime;
-		registry.emplace<Mover>(arrow, m);
+		
 
-		sp.y += carry * m.Speed;
+		sp.y += carry * mv.Speed;
 
-		sArrow.height = noteTime * m.Speed;
+		sArrow.height = noteTime * mv.Speed;
 
 		registry.emplace<RemoveAfterDelay>(arrow, RemoveAfterDelay{ 5, 0 });
 
-		entt::entity startNote = SpawnNote(registry, tnum, carry, false, sArrow.height - noteSize);
-		entt::entity endNote = SpawnNote(registry, tnum, carry, true);
+		entt::entity startNote = SpawnNote(registry, tnum, carry, false, -noteSize);
+		entt::entity endNote = SpawnNote(registry, tnum, carry, true, -(mv.Speed * noteTime));
 
 		registry.emplace<LongNote>(arrow, LongNote{ startNote, endNote, num, noteTime, false });
 		registry.emplace<RectangleShape>(arrow, sArrow);
@@ -140,12 +143,13 @@ public:
 		// We want to spawn the note early so it arrives just in time
 		double spawnThreshold = currentTime + m_fallTime;
 
-		while (m_nextNoteIndex < m_beatmap.size() && m_beatmap[m_nextNoteIndex].time <= spawnThreshold)
+		while (m_nextNoteIndex < m_beatmap.size() && m_beatmap[m_nextNoteIndex].time - m_beatmap[m_nextNoteIndex].length <= spawnThreshold)
 		{
 			const BeatNote& note = m_beatmap[m_nextNoteIndex];
 
 			// Carry is how much "late" we are in spawning it (small error correction)
 			float carry = std::max(0.0, spawnThreshold - note.time);
+
 			if (note.length == 0)
 				SpawnNote(registry, note.column, carry);
 			else
@@ -154,4 +158,5 @@ public:
 			++m_nextNoteIndex;
 		}
 	}
+
 };
