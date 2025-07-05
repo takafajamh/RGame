@@ -15,7 +15,7 @@ private:
     const float hitWindow = 50.0f;
     const float missWindow = 70.0f;
     
-    void handleLongNotes(entt::registry& registry, const NoteReceiver& nr)
+    void handleLongNotesStart(entt::registry& registry, const NoteReceiver& nr)
     {
         auto notes = registry.view<ScreenPosition, Mover, LongNote, RectangleShape>(); // TO SPRITE LATER
         for (auto [noteEntity, sp, mv, nt, rs] : notes.each())
@@ -38,25 +38,6 @@ private:
                     else if (dy <= missWindow)
                     {
                         registry.destroy(nt.startNote);
-                        registry.destroy(nt.endNote);
-                        registry.destroy(noteEntity);
-                        combo = 0;
-                        break;
-                    }
-                }
-                else
-                {
-                    const ScreenPosition& nSp = registry.get<ScreenPosition>(nt.endNote);
-
-                    float dy = nSp.y - hitY;
-
-                    if (dy < 0)
-                        continue;
-
-                    dy = std::abs(dy);
-
-                    if (!(dy <= hitWindow) && dy <= missWindow)
-                    {
                         registry.destroy(nt.endNote);
                         registry.destroy(noteEntity);
                         combo = 0;
@@ -146,7 +127,6 @@ public:
             if (currentKeys[key])
             {
                 spr.textureRect = nr.hold;
-                handleLongNotes(registry, nr);
             }
             else
             {
@@ -156,6 +136,7 @@ public:
             // Check if key was JUST pressed (down this frame, up last frame)
             if (currentKeys[key] && !prevKeys[key])
             {
+                handleLongNotesStart(registry, nr);
                 handleNotes(registry, nr);
             }
 
