@@ -7,6 +7,7 @@ struct BeatNote
 {
 	double time;
 	int column;
+	float length = 0;
 };
 
 bool LoadBeatmapJson(const std::string& path, std::vector<BeatNote>& out)
@@ -26,7 +27,12 @@ bool LoadBeatmapJson(const std::string& path, std::vector<BeatNote>& out)
 		{
 			double time = note["time"];
 			int column = note["column"];
-			out.push_back({ time, column });
+			out.push_back({ time, column, 0 });
+		}
+
+		if (note.contains("length"))
+		{
+			out.at(out.size() - 1).length = note["length"];
 		}
 	}
 
@@ -59,17 +65,20 @@ public:
 	{
 	}
 
-	void SpawnNote(entt::registry& registry, int tnum, float carry = 0)
+	entt::entity SpawnNote(entt::registry& registry, int tnum, float carry = 0, bool endNote = false, float length = 0)
 	{
 		constexpr int vals[4] = { 0, 3, 1, 2 }; // your custom mapping
 		const int num = vals[tnum];
+		constexpr int noteSize = 16 * 4;
 
 		entt::entity arrow = registry.create();
+
 		ScreenPosition& sp = registry.emplace<ScreenPosition>(arrow, ScreenPosition{ sPos + (float)(num * m), -50 });
+		sp.y += length;
 
 		Sprite sArrow;
-		sArrow.sizeX = 16 * 4;
-		sArrow.sizeY = 16 * 4;
+		sArrow.sizeX = noteSize;
+		sArrow.sizeY = noteSize;
 		sArrow.texture = t_Arrows;
 		sArrow.useTextureRect = true;
 		sArrow.layerOrder = 10;
@@ -83,7 +92,42 @@ public:
 		sp.y += carry * m.Speed;
 
 		registry.emplace<RemoveAfterDelay>(arrow, RemoveAfterDelay{ 5, 0 });
-		registry.emplace<Note>(arrow, Note{ num });
+
+		if(!endNote) registry.emplace<Note>(arrow, Note{ num });
+		else registry.emplace<EndNote>(arrow, EndNote{ num });
+
+		return arrow;
+	}
+
+	void SpawnLongNote(entt::registry& registry, int tnum, float noteTime, float carry = 0)
+	{
+		constexpr int noteSize = 16 * 4;
+		constexpr int vals[4] = { 0, 3, 1, 2 }; // your custom mapping
+		const int num = vals[tnum];
+
+		entt::entity arrow = registry.create();
+		ScreenPosition& sp = registry.emplace<ScreenPosition>(arrow, ScreenPosition{ sPos + (float)(num * m), -50 });
+
+		RectangleShape sArrow;
+		sArrow.width = 16 * 4;
+		sArrow.layer = 9;
+		sArrow.color = { 130,130,130,130 };
+
+		Mover m;
+		m.Speed = (595 + 50) / m_fallTime;
+		registry.emplace<Mover>(arrow, m);
+
+		sp.y += carry * m.Speed;
+
+		sArrow.height = noteTime * m.Speed;
+
+		registry.emplace<RemoveAfterDelay>(arrow, RemoveAfterDelay{ 5, 0 });
+
+		entt::entity startNote = SpawnNote(registry, tnum, carry, false, sArrow.height - noteSize);
+		entt::entity endNote = SpawnNote(registry, tnum, carry, true);
+
+		registry.emplace<LongNote>(arrow, LongNote{ startNote, endNote, num, noteTime, false });
+		registry.emplace<RectangleShape>(arrow, sArrow);
 	}
 
 	void Update(entt::registry& registry) override
@@ -102,7 +146,10 @@ public:
 
 			// Carry is how much "late" we are in spawning it (small error correction)
 			float carry = std::max(0.0, spawnThreshold - note.time);
-			SpawnNote(registry, note.column, carry);
+			if (note.length == 0)
+				SpawnNote(registry, note.column, carry);
+			else
+				SpawnLongNote(registry, note.column, note.length, carry);
 
 			++m_nextNoteIndex;
 		}
