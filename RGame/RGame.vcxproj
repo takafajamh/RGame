@@ -166,6 +166,8 @@
     <ClInclude Include="Components\ChangeSceneComponent.hpp" />
     <ClInclude Include="Components\Checkbox.hpp" />
     <ClInclude Include="Components.hpp" />
+    <ClInclude Include="Components\DealEffector.hpp" />
+    <ClInclude Include="Components\EnemyToken.hpp" />
     <ClInclude Include="Components\GameVolumeEffector.hpp" />
     <ClInclude Include="Components\HeightDependendLayer.hpp" />
     <ClInclude Include="Components\InputTRectChange.hpp" />
@@ -173,6 +175,7 @@
     <ClInclude Include="Components\Note.hpp" />
     <ClInclude Include="Components\NoteReceiver.hpp" />
     <ClInclude Include="Components\NPC.hpp" />
+    <ClInclude Include="Components\PassEffector.hpp" />
     <ClInclude Include="Components\Position.hpp" />
     <ClInclude Include="Components\QuitGameEffector.hpp" />
     <ClInclude Include="Components\RectangleShape.hpp" />
@@ -183,6 +186,8 @@
     <ClInclude Include="Components\TextUpdateFromPointer.hpp" />
     <ClInclude Include="Components\Tilemap.hpp" />
     <ClInclude Include="Components\TimeMover.hpp" />
+    <ClInclude Include="Components\TokenComp.hpp" />
+    <ClInclude Include="Components\TrashTalker.hpp" />
     <ClInclude Include="Systems\AnimatorSystem.hpp" />
     <ClInclude Include="Systems\HeightDependendLayerSystem.hpp" />
     <ClInclude Include="Systems\InputTRectChangeSystem.hpp" />
@@ -196,6 +201,8 @@
     <ClInclude Include="Systems\RendererSystem.hpp" />
     <ClInclude Include="Systems\TilemapSystem.hpp" />
     <ClInclude Include="Systems\TimeEventManagerSystem.hpp" />
+    <ClInclude Include="Systems\TokenSystem.hpp" />
+    <ClInclude Include="Systems\TrashTalkerSystem.hpp" />
     <ClInclude Include="Systems\UISystem.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

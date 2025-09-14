@@ -4,6 +4,7 @@
 #include <KitsuEngine/System.hpp>
 #include "../Components/ChangeSceneComponent.hpp"
 #include <string>
+#include "TokenSystem.hpp"
 
 // Does not account for just position, uses Screen Position
 
@@ -138,6 +139,18 @@ private:
 				m_game->Volume += 100;
 			}
 		}
+	
+		DealEffector* de = registry.try_get<DealEffector>(entity);
+		if (de != nullptr)
+		{
+			de->clicked = true;
+		}
+
+		PassEffector* pe = registry.try_get<PassEffector>(entity);
+		if (pe != nullptr)
+		{
+			pe->clicked = true;
+		}
 	}
 
 	void outClickEffector(entt::registry& registry, entt::entity& entity)
@@ -146,6 +159,20 @@ private:
 		if (ve != nullptr && m_game != nullptr)
 		{
 			ve->unclicked = true;
+		}
+
+		DealEffector* de = registry.try_get<DealEffector>(entity);
+		if (de != nullptr && de->clicked)
+		{
+			de->clicked = false;
+			de->useless->call(registry);
+		}
+
+		PassEffector* pe = registry.try_get<PassEffector>(entity);
+		if (pe != nullptr && pe->clicked)
+		{
+			pe->clicked = false;
+			pe->useless->pass(registry);
 		}
 	}
 

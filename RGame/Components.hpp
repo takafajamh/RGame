@@ -20,3 +20,8 @@
 #include "Components/NoteReceiver.hpp"
 #include "Components/Note.hpp"
 #include "Components/InputTRectChange.hpp"
+#include "Components/TokenComp.hpp"
+#include "Components/EnemyToken.hpp"
+#include "Components/TrashTalker.hpp"
+#include "Components/DealEffector.hpp"
+#include "Components/PassEffector.hpp"
