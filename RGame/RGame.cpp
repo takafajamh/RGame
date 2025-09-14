@@ -94,7 +94,7 @@ public:
         }
 
         std::vector<BeatNote> beatmap;
-        if (!LoadBeatmapJson("Music/mapSl.json", beatmap)) 
+        if (!LoadBeatmapJson("Music/mapped.json", beatmap)) 
         {
             spdlog::error("Failed to load beatmap!");
         }
