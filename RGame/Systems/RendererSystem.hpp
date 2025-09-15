@@ -299,7 +299,7 @@ public:
 		for (auto [entity, txt, pos] : view.each())
 		{
 			auto& text = view.get<Text>(entity);
-			auto& pos = view.get<Position>(entity);
+			//auto& pos = view.get<Position>(entity);
 
 			SDL_FRect dst = { pos.x - dx, pos.y - dy, txt.xSize, txt.ySize};
 
@@ -318,9 +318,9 @@ public:
 		for (auto [entity, txt, pos] : view2.each())
 		{
 			auto& text = view2.get<Text>(entity);
-			auto& pos = view2.get<ScreenPosition>(entity);
+			//auto& pos = view2.get<ScreenPosition>(entity);
 
-			SDL_FRect origin = { pos.x, pos.y, txt.fontSize * txt.content.size(), txt.fontSize};
+			SDL_FRect origin = { pos.x, pos.y, (float)txt.fontSize * txt.content.size(), (float)txt.fontSize};
 
 			std::vector<std::string> texs = split(txt);
 			

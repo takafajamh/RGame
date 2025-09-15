@@ -1,4 +1,6 @@
-﻿#include <SDL3/SDL.h>
+﻿#define SDL_MAIN_USE_CALLBACKS
+
+#include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3_Image/SDL_image.h>
 #include <spdlog/spdlog.h>
@@ -28,7 +30,7 @@ class App : public Scene
 {
 private:
     
-    std::shared_ptr<Font> font = std::make_shared<Font>("Font/munro.ttf");
+    std::shared_ptr<Font> font = std::make_shared<Font>("assets/Font/munro.ttf");
     
 
     std::string replaceCharacters(const std::string& text, const std::vector<std::string>& names) 
@@ -68,16 +70,16 @@ public:
         addSystem<UISystem>();
         addSystem<TrashTalkerSystem>();
 
-        std::shared_ptr<Texture> t_Quest = CreateTexture("GPX/Quest.png");
-        std::shared_ptr<Texture> t_Party = CreateTexture("GPX/Party.png");
-        std::shared_ptr<Texture> t_Table = CreateTexture("GPX/table.png");
-        std::shared_ptr<Texture> t_Buttons = CreateTexture("GPX/buttons.png");
-        std::shared_ptr<Texture> t_Buttons1 = CreateTexture("GPX/good.png");
-        std::shared_ptr<Texture> t_Token = CreateTexture("GPX/token.png");
-        std::shared_ptr<Texture> t_EnemyToken1 = CreateTexture("GPX/tokenE1.png");
-        std::shared_ptr<Texture> t_EnemyToken2 = CreateTexture("GPX/tokenE2.png");
-        std::shared_ptr<Texture> t_Icons = CreateTexture("GPX/icons.png");
-        std::shared_ptr<Texture> t_Button = CreateTexture("GPX/button.png");
+        std::shared_ptr<Texture> t_Quest = CreateTexture("assets/GPX/Quest.png");
+        std::shared_ptr<Texture> t_Party = CreateTexture("assets/GPX/Party.png");
+        std::shared_ptr<Texture> t_Table = CreateTexture("assets/GPX/table.png");
+        std::shared_ptr<Texture> t_Buttons = CreateTexture("assets/GPX/buttons.png");
+        std::shared_ptr<Texture> t_Buttons1 = CreateTexture("assets/GPX/good.png");
+        std::shared_ptr<Texture> t_Token = CreateTexture("assets/GPX/token.png");
+        std::shared_ptr<Texture> t_EnemyToken1 = CreateTexture("assets/GPX/tokenE1.png");
+        std::shared_ptr<Texture> t_EnemyToken2 = CreateTexture("assets/GPX/tokenE2.png");
+        std::shared_ptr<Texture> t_Icons = CreateTexture("assets/GPX/icons.png");
+        std::shared_ptr<Texture> t_Button = CreateTexture("assets/GPX/button.png");
 
         ts->t_g = t_Buttons1;
         ts->t_n = t_Buttons;
@@ -433,19 +435,35 @@ std::pair<int,int> GetScreenSize()
     return { 0,0 };
 }
 
-int main(int argc, char** argv)
+Game* game;
+
+SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 {
     srand(time(NULL));
     KitsuEngineInit(1600, 900, "OwO");
-
-    Game* game = new Game();
+    game = new Game();
     App* mainScene = new App(game);
-
-
     game->StartGame(mainScene);
-    
+
+    return SDL_APP_CONTINUE;
+}
+
+SDL_AppResult SDL_AppIterate(void* appstate) 
+{
+    game->MainLoop();
+    return SDL_APP_CONTINUE;
+
+}
+
+SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
+{
+    game->HandleEvents(event);
+    return SDL_APP_CONTINUE;
+}
+
+void SDL_AppQuit(void* appstate, SDL_AppResult result)
+{
     delete game;
     KitsuEngineClean();
-    
-    return 0;
+    SDL_Quit();
 }
