@@ -13,3 +13,5 @@ Release/
 *.exe
 *.log
 *.sln
+*.vcxproj
+*.filters
