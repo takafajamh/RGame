@@ -110,49 +110,38 @@ public:
 
         }
         
-        spdlog::info("in1");
 
         {
-            spdlog::info("i1");
             entt::entity party = m_registry.create();
             Sprite s;
             s.sizeX = 600 / 1.5;
             s.sizeY = 800 / 1.5;
             s.texture = t_Party;
-            spdlog::info("i2");
 
             m_registry.emplace<Sprite>(party, s);
             m_registry.emplace<ScreenPosition>(party, ScreenPosition{ 1100,400 });
 
-            spdlog::info("i3");
 
             std::random_device rd;
             std::mt19937 g(rd());
             std::shuffle(ts->Characters.begin(), ts->Characters.end(), g);
-            spdlog::info("i4");
 
             entt::entity text = m_registry.create();
             ts->partyText = text;
             Text t;
-            spdlog::info("i51");
             int d = std::rand() % ts->PartyMembers.size();
-            spdlog::info("i52");
             ts->CDif = ts->PartyMembers.at(d).dif;
-            spdlog::info("i53");
             t.content = ts->PartyMembers.at(d).t + "\n\n" + ts->replaceCharacters(ts->PartyMembers.at(d).s, ts->Characters);
-            spdlog::info("i54");
             t.font = font;
             t.fontSize = 24;
             t.xSize = 420;
             t.color = { 0,0,0,255 };
-            spdlog::info("i5");
 
             m_registry.emplace<Text>(text, t);
             m_registry.emplace<ScreenPosition>(text, ScreenPosition{ 1110, 520 });
 
         }
 
-        spdlog::info("in2");
         // table
         {
             entt::entity table = m_registry.create();
@@ -440,7 +429,11 @@ Game* game;
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 {
     srand(time(NULL));
-    KitsuEngineInit(1600, 900, "OwO");
+    int res = KitsuEngineInit(1600, 900, "OwO");
+    if (res == -1)
+    {
+        return SDL_APP_FAILURE;
+    }
     game = new Game();
     App* mainScene = new App(game);
     game->StartGame(mainScene);

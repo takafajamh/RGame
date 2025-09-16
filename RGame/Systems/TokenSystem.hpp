@@ -141,7 +141,6 @@ public:
 
 	std::string replaceCharacters(const std::string& text, const std::vector<std::string>& names)
 	{
-		spdlog::info("replaceCharacters: start");
 		std::regex pattern(R"(\[chr(\d+)\])"); // matches [chr1], [chr2], etc.
 
 		std::string result;
@@ -178,7 +177,6 @@ public:
 		// append remaining tail (or whole text if no matches)
 		result.append(text, last_pos, std::string::npos);
 
-		spdlog::info("replaceCharacters: done");
 		return result;
 	}
 
