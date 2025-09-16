@@ -1,5 +1,5 @@
 #pragma once
-#include <KitsuEngine/KitsuneEngine.hpp>
+#include <KitsuEngine/Scene.hpp>
 
 struct ChangeSceneComponent
 {
