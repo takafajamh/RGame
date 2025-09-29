@@ -18,6 +18,7 @@
 #include "Systems/UISystem.hpp"
 #include "Systems/TokenSystem.hpp"
 #include "Systems/TrashTalkerSystem.hpp"
+#include "Systems/MouseFollowSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -44,6 +45,7 @@ public:
         addSystem<AnimatorSystem>();
         addSystem<MoverSystem>();
         addSystem<RemoveAfterDelaySystem>();
+        addSystem<MouseFollowSystem>();
         //TokenSystem* ts = addSystem<TokenSystem>();
         addSystem<UISystem>();
         //addSystem<TrashTalkerSystem>();
@@ -88,7 +90,7 @@ public:
             m_registry.emplace<ScreenPosition>(doc, ScreenPosition{ -40 , 900 - 420 });
         }
 
-        // cards
+        // cards +++ behaviour
         {
             std::shared_ptr<Texture> t_die = CreateTexture("assets/GPX/trauma/KARTY/ALL DIE.png");
             std::shared_ptr<Texture> t_sur = CreateTexture("assets/GPX/trauma/KARTY/ALL SURVIVE.png");
@@ -108,23 +110,43 @@ public:
                 s.sizeX = 155;
                 s.sizeY = 215;
                 s.texture = arr[i];
-                s.angle = 50;
+                s.angle = ((std::rand()%60) - 30);
 
-                float y = 220 + ((int)(i > 3 )) * 230;
+                float y = 220 + ((int)(i > 3 )) * 270;
                 float x = i % 4;
 
                 m_registry.emplace<Sprite>(card, s);
                 m_registry.emplace<ScreenPosition>(card, ScreenPosition{ 350.f + x * (1000 / 4), y });
 
-
-
             }
 
-            
-
-            
         }
 
+        // Hand
+        {
+            std::shared_ptr<Texture> t_hand = CreateTexture("assets/GPX/trauma/RECE/MC P fingies.png");
+
+
+            float x = (2 * 1600 / 3) - (250 / 2);
+
+            entt::entity hand = m_registry.create();
+            Sprite s;
+            s.sizeX = 250;
+            s.sizeY = 1700;
+            s.texture = t_hand;
+            s.angle = -60;
+            s.center = {x, 900};
+            s.standardRotation = true;
+            s.layerOrder = 13;
+
+            float y = 200;
+            
+
+            m_registry.emplace<Sprite>(hand, s);
+            m_registry.emplace<MouseFollowHand>(hand, MouseFollowHand{true});
+            m_registry.emplace<ScreenPosition>(hand, ScreenPosition{x, y});
+
+        }
 
 
         /*
