@@ -127,7 +127,7 @@ public:
             std::shared_ptr<Texture> t_hand = CreateTexture("assets/GPX/trauma/RECE/MC P fingies.png");
 
 
-            float x = (2 * 1600 / 3) - (250 / 2);
+            float x = (2 * 1600 / 3);
 
             entt::entity hand = m_registry.create();
             Sprite s;
@@ -135,8 +135,8 @@ public:
             s.sizeY = 1700;
             s.texture = t_hand;
             s.angle = -60;
-            s.center = {x, 900};
-            s.standardRotation = true;
+            s.center = {125, 700};
+            s.standardRotation = false;
             s.layerOrder = 13;
 
             float y = 200;

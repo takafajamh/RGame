@@ -17,16 +17,20 @@ public:
 
 			float x, y;
 			SDL_GetMouseState(&x, &y);
+			
 
 			float rx = ((x - pos.x) * (x - pos.x));
-			float ry = ((900 - y) * (900 - y));
+			float ry = ((1000 - y) * (1000 - y));
 
 			float r = std::sqrt(ry + rx);
-			pos.y = 900 - r; 
-			float ytan = 900 - y;
+			pos.y = 1000 - r; 
+			float ytan = 1000 - y;
 			float xtan = (x - pos.x);
 
+			sprite.center.y = 1000 - pos.y;
+
 			float angle = std::atan2f(xtan, ytan) * 180.0f / 3.14;
+			//mfh.angle = angle = mfh.angle + (mfh.da * dt);
 			sprite.angle = angle;
 			
 		}
