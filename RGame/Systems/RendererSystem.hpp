@@ -15,6 +15,10 @@ private:
 		SDL_FRect* srcRect;
 		SDL_Texture* tex;
 		int layer;
+		float angle;
+		SDL_FPoint center;
+		bool flippedX;
+		bool standardRotation;
 	};
 
 	struct ShapeRenderable
@@ -195,33 +199,57 @@ public:
 
 		registry.view<Sprite, Position>().each([&](auto entity, Sprite& sprite, Position& position) 
 			{
+				Renderable temp;
+
 				SDL_FRect dstRect = { position.x - dx, position.y - dy, sprite.sizeX, sprite.sizeY };
-				if (sprite.flipX)
-				{
-					dstRect.x += dstRect.w;
-					dstRect.w *= -1;
-				}
+				temp.flippedX = sprite.flipX;
 
 				SDL_FRect* srcRect = nullptr;
 				if (sprite.useTextureRect)
 					srcRect = &sprite.textureRect;
 
-				renderQueue.push_back({ dstRect, srcRect,sprite.texture->SDL_texture, sprite.layerOrder });
+				temp.angle = sprite.angle;
+				if (temp.angle != 0)
+				{
+					SDL_FPoint centerr = { sprite.center.x - dx, sprite.center.y - dy};
+
+					temp.center = centerr;
+				}
+
+				temp.dstRect = dstRect;
+				temp.srcRect = srcRect;
+				temp.tex = sprite.texture->SDL_texture;
+				temp.layer = sprite.layerOrder;
+				temp.standardRotation = sprite.standardRotation;
+
+				renderQueue.push_back(temp);
 			});
 
 		registry.view<Sprite, ScreenPosition>().each([&](auto entity, Sprite& sprite, ScreenPosition& sposition)
 			{
+				
+				Renderable temp;
+
 				SDL_FRect dstRect = { sposition.x, sposition.y, sprite.sizeX, sprite.sizeY };
-				if (sprite.flipX)
-				{
-					dstRect.x += dstRect.w;
-					dstRect.w *= -1;
-				}
+				temp.flippedX = sprite.flipX;
+
 				SDL_FRect* srcRect = nullptr;
 				if (sprite.useTextureRect)
 					srcRect = &sprite.textureRect;
 
-				renderQueue.push_back({ dstRect, srcRect,sprite.texture->SDL_texture, sprite.layerOrder });
+				temp.angle = sprite.angle;
+				if (temp.angle != 0)
+				{
+					temp.center = sprite.center;
+				}
+
+				temp.dstRect = dstRect;
+				temp.srcRect = srcRect;
+				temp.tex = sprite.texture->SDL_texture;
+				temp.layer = sprite.layerOrder;
+				temp.standardRotation = sprite.standardRotation;
+
+				renderQueue.push_back(temp);
 			});
 
 		std::sort(renderQueue.begin(), renderQueue.end(), [](const auto& a, const auto& b) 
@@ -231,7 +259,14 @@ public:
 
 		for (const auto& r : renderQueue)
 		{
-			bool renderState = SDL_RenderTexture(renderer, r.tex, r.srcRect, &r.dstRect);
+			bool renderState;
+
+			SDL_FlipMode fm = (SDL_FlipMode)((int)r.flippedX * 2); // 0 - none, 2 - horizontal, no support for vertical yet
+
+			if (r.angle == 0 || r.standardRotation)
+				renderState = SDL_RenderTextureRotated(renderer, r.tex, r.srcRect, &r.dstRect, r.angle, nullptr, fm);
+			else
+				renderState = SDL_RenderTextureRotated(renderer, r.tex, r.srcRect, &r.dstRect, r.angle, &r.center, fm);
 
 			if (!renderState)
 			{

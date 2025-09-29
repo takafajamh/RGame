@@ -108,12 +108,16 @@ public:
                 s.sizeX = 155;
                 s.sizeY = 215;
                 s.texture = arr[i];
+                s.angle = 50;
 
                 float y = 220 + ((int)(i > 3 )) * 230;
                 float x = i % 4;
 
                 m_registry.emplace<Sprite>(card, s);
                 m_registry.emplace<ScreenPosition>(card, ScreenPosition{ 350.f + x * (1000 / 4), y });
+
+
+
             }
 
             
