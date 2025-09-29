@@ -33,28 +33,6 @@ private:
     std::shared_ptr<Font> font = std::make_shared<Font>("assets/Font/munro.ttf");
     
 
-    std::string replaceCharacters(const std::string& text, const std::vector<std::string>& names) 
-    {
-        std::string result = text;
-        std::regex pattern(R"(\[chr(\d+)\])"); // matches [chr1], [chr2], etc.
-
-        std::smatch match;
-        auto it = result.cbegin();
-        while (std::regex_search(it, result.cend(), match, pattern)) {
-            int index = std::stoi(match[1]) - 1; // chr1 -> index 0
-            if (index >= 0 && index < (int)names.size())
-            {
-                result.replace(match.position(0) + (it - result.cbegin()), match.length(0), names[index]);
-                it = result.cbegin() + match.position(0) + names[index].size() + (it - result.cbegin());
-            }
-            else 
-            {
-                it = match.suffix().first; // skip if out of range
-            }
-        }
-        return result;
-    }
-
 public:
     App(Game* game) : Scene(game)
     {
@@ -66,10 +44,10 @@ public:
         addSystem<AnimatorSystem>();
         addSystem<MoverSystem>();
         addSystem<RemoveAfterDelaySystem>();
-        TokenSystem* ts = addSystem<TokenSystem>();
+        //TokenSystem* ts = addSystem<TokenSystem>();
         addSystem<UISystem>();
-        addSystem<TrashTalkerSystem>();
-
+        //addSystem<TrashTalkerSystem>();
+/*
         std::shared_ptr<Texture> t_Quest = CreateTexture("assets/GPX/Quest.png");
         std::shared_ptr<Texture> t_Party = CreateTexture("assets/GPX/Party.png");
         std::shared_ptr<Texture> t_Table = CreateTexture("assets/GPX/table.png");
@@ -80,9 +58,72 @@ public:
         std::shared_ptr<Texture> t_EnemyToken2 = CreateTexture("assets/GPX/tokenE2.png");
         std::shared_ptr<Texture> t_Icons = CreateTexture("assets/GPX/icons.png");
         std::shared_ptr<Texture> t_Button = CreateTexture("assets/GPX/button.png");
+        */
+        //ts->t_g = t_Buttons1;
+       // ts->t_n = t_Buttons;
 
-        ts->t_g = t_Buttons1;
-        ts->t_n = t_Buttons;
+        // quest   +++ Text
+        {
+            std::shared_ptr<Texture> t_Quest = CreateTexture("assets/GPX/trauma/quest.png");
+            entt::entity quest = m_registry.create();
+            Sprite s;
+            s.sizeX = 730;
+            s.sizeY = 150;
+            s.texture = t_Quest;
+
+            m_registry.emplace<Sprite>(quest, s);
+            m_registry.emplace<ScreenPosition>(quest, ScreenPosition{ (1600 / 2) - (730/2),0});
+        }
+
+        // paper  +++ Text
+        {
+            std::shared_ptr<Texture> t_doc = CreateTexture("assets/GPX/trauma/kartka.png");
+            entt::entity doc = m_registry.create();
+            Sprite s;
+            s.sizeX = 330;
+            s.sizeY = 450;
+            s.texture = t_doc;
+
+            m_registry.emplace<Sprite>(doc, s);
+            m_registry.emplace<ScreenPosition>(doc, ScreenPosition{ -40 , 900 - 420 });
+        }
+
+        // cards
+        {
+            std::shared_ptr<Texture> t_die = CreateTexture("assets/GPX/trauma/KARTY/ALL DIE.png");
+            std::shared_ptr<Texture> t_sur = CreateTexture("assets/GPX/trauma/KARTY/ALL SURVIVE.png");
+            std::shared_ptr<Texture> t_fai = CreateTexture("assets/GPX/trauma/KARTY/FAIL QUEST.png");
+            std::shared_ptr<Texture> t_fin = CreateTexture("assets/GPX/trauma/KARTY/FINISH QUEST.png");
+            std::shared_ptr<Texture> t_lvl = CreateTexture("assets/GPX/trauma/KARTY/LEVEL UP.png");
+            std::shared_ptr<Texture> t_lov = CreateTexture("assets/GPX/trauma/KARTY/LOVE.png");
+            std::shared_ptr<Texture> t_one = CreateTexture("assets/GPX/trauma/KARTY/ONE DIES.png");
+            std::shared_ptr<Texture> t_tra = CreateTexture("assets/GPX/trauma/KARTY/TRAUMA.png");
+
+            std::shared_ptr<Texture> arr[] = { t_die, t_sur, t_fai, t_fin, t_lvl, t_lov, t_one, t_tra };
+
+            for (size_t i = 0; i < 8; i++)
+            {
+                entt::entity card = m_registry.create();
+                Sprite s;
+                s.sizeX = 155;
+                s.sizeY = 215;
+                s.texture = arr[i];
+
+                float y = 220 + ((int)(i > 3 )) * 230;
+                float x = i % 4;
+
+                m_registry.emplace<Sprite>(card, s);
+                m_registry.emplace<ScreenPosition>(card, ScreenPosition{ 350.f + x * (1000 / 4), y });
+            }
+
+            
+
+            
+        }
+
+
+
+        /*
 
         {
             entt::entity quest = m_registry.create();
@@ -392,7 +433,7 @@ public:
 
 
         }
-
+        */
         spdlog::info("Scene got init");
     }
        
