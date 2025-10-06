@@ -19,6 +19,7 @@
 #include "Systems/TokenSystem.hpp"
 #include "Systems/TrashTalkerSystem.hpp"
 #include "Systems/MouseFollowSystem.hpp"
+#include "Systems/DebugSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -48,6 +49,7 @@ public:
         addSystem<MouseFollowSystem>();
         //TokenSystem* ts = addSystem<TokenSystem>();
         addSystem<UISystem>();
+        addSystem<DebugSystem>();
         //addSystem<TrashTalkerSystem>();
 /*
         std::shared_ptr<Texture> t_Quest = CreateTexture("assets/GPX/Quest.png");
@@ -63,6 +65,20 @@ public:
         */
         //ts->t_g = t_Buttons1;
        // ts->t_n = t_Buttons;
+
+        // table
+        {
+            std::shared_ptr<Texture> t_Table = CreateTexture("assets/GPX/trauma/TABLE.png");
+            entt::entity quest = m_registry.create();
+            Sprite s;
+            s.sizeX = 1600;
+            s.sizeY = 900;
+            s.texture = t_Table;
+            s.layerOrder = 3;
+
+            m_registry.emplace<Sprite>(quest, s);
+            m_registry.emplace<ScreenPosition>(quest, ScreenPosition{ 0,0 });
+        }
 
         // quest   +++ Text
         {
@@ -122,7 +138,7 @@ public:
 
         }
 
-        // Hand
+        // Hand M
         {
             std::shared_ptr<Texture> t_hand = CreateTexture("assets/GPX/trauma/RECE/MC P fingies.png");
 
@@ -141,11 +157,124 @@ public:
 
             float y = 200;
             
-
             m_registry.emplace<Sprite>(hand, s);
             m_registry.emplace<MouseFollowHand>(hand, MouseFollowHand{true});
             m_registry.emplace<ScreenPosition>(hand, ScreenPosition{x, y});
+        }
+        
+        // Hands static
+        {
+            std::shared_ptr<Texture> t_handMCL = CreateTexture("assets/GPX/trauma/RECE/MC L.png");
+            std::shared_ptr<Texture> t_handP1L = CreateTexture("assets/GPX/trauma/RECE/P1 L.png");
+            std::shared_ptr<Texture> t_handP2L = CreateTexture("assets/GPX/trauma/RECE/P2 L.png");
 
+            // Player
+            {
+                float x = (1 * 1600 / 4) - 45;
+
+                entt::entity hand = m_registry.create();
+                Sprite s;
+                s.sizeX = 250;
+                s.sizeY = 1700;
+                s.texture = t_handMCL;
+                s.angle = -25;
+                s.center = { 125, 700 };
+                s.standardRotation = false;
+                s.layerOrder = 13;
+
+                float y = 460;
+
+                m_registry.emplace<Sprite>(hand, s);
+                m_registry.emplace<ScreenPosition>(hand, ScreenPosition{ x, y });
+            }
+            
+            // P1
+            {
+                float x = 1800;
+
+                entt::entity hand = m_registry.create();
+                Sprite s;
+                s.sizeX = 250;
+                s.sizeY = 1700;
+                s.texture = t_handP1L;
+                s.angle = -120;
+                s.center = { 125, 700 };
+                s.standardRotation = false;
+                s.layerOrder = 12;
+
+                float y = -150;
+
+                m_registry.emplace<Sprite>(hand, s);
+                m_registry.emplace<ScreenPosition>(hand, ScreenPosition{ x, y });
+            }
+
+            // P2
+            {
+                float x = 100;
+
+                entt::entity hand = m_registry.create();
+                Sprite s;
+                s.sizeX = 250;
+                s.sizeY = 1700;
+                s.texture = t_handP2L;
+                s.angle = 165;
+                s.center = { 125, 700 };
+                s.standardRotation = false;
+                s.layerOrder = 12;
+
+                float y = -1135;
+
+                m_registry.emplace<Sprite>(hand, s);
+               // m_registry.emplace<DebugPositionMove>(hand, DebugPositionMove{ true });
+                m_registry.emplace<ScreenPosition>(hand, ScreenPosition{ x, y });
+            }
+        }
+
+        // Hands dynamic
+        {
+            std::shared_ptr<Texture> t_handP1P = CreateTexture("assets/GPX/trauma/RECE/P1 P.png");
+            std::shared_ptr<Texture> t_handP2P = CreateTexture("assets/GPX/trauma/RECE/P2 P.png");
+
+
+            // P1
+            {
+                float x = 1767;
+
+                entt::entity hand = m_registry.create();
+                Sprite s;
+                s.sizeX = 250;
+                s.sizeY = 1700;
+                s.texture = t_handP1P;
+                s.angle = -109;
+                s.center = { 125, 700 };
+                s.standardRotation = false;
+                s.layerOrder = 12;
+
+                float y = -790;
+
+                m_registry.emplace<Sprite>(hand, s);
+                m_registry.emplace<ScreenPosition>(hand, ScreenPosition{ x, y });
+            }
+
+            // P2
+            {
+                float x = -395;
+
+                entt::entity hand = m_registry.create();
+                Sprite s;
+                s.sizeX = 250;
+                s.sizeY = 1700;
+                s.texture = t_handP2P;
+                s.angle = 132;
+                s.center = { 125, 700 };
+                s.standardRotation = false;
+                s.layerOrder = 12;
+
+                float y = -720;
+
+                m_registry.emplace<Sprite>(hand, s);
+                m_registry.emplace<ScreenPosition>(hand, ScreenPosition{ x, y });
+            }
         }
 
 

@@ -31,3 +31,4 @@
 #include "Components/DealEffector.hpp"
 #include "Components/PassEffector.hpp"
 #include "Components/MouseFollowHand.hpp"
+#include "Components/DebugPositionMove.hpp"
