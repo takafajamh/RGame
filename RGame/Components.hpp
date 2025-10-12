@@ -32,3 +32,4 @@
 #include "Components/PassEffector.hpp"
 #include "Components/MouseFollowHand.hpp"
 #include "Components/DebugPositionMove.hpp"
+#include "Components/MouseCursor.hpp"

@@ -20,6 +20,8 @@
 #include "Systems/TrashTalkerSystem.hpp"
 #include "Systems/MouseFollowSystem.hpp"
 #include "Systems/DebugSystem.hpp"
+#include "Systems/MouseCursorSystem.hpp"
+#include "Systems/NTokenSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -49,7 +51,9 @@ public:
         addSystem<MouseFollowSystem>();
         //TokenSystem* ts = addSystem<TokenSystem>();
         addSystem<UISystem>();
+        NTokenSystem* nts = addSystem<NTokenSystem>();
         addSystem<DebugSystem>();
+        addSystem<MouseCursorSystem>();
         //addSystem<TrashTalkerSystem>();
 /*
         std::shared_ptr<Texture> t_Quest = CreateTexture("assets/GPX/Quest.png");
@@ -141,6 +145,8 @@ public:
         // Hand M
         {
             std::shared_ptr<Texture> t_hand = CreateTexture("assets/GPX/trauma/RECE/MC P fingies.png");
+            std::shared_ptr<Texture> t_handHold = CreateTexture("assets/GPX/trauma/RECE/MC P token.png");
+            std::shared_ptr<Texture> t_cursor = CreateTexture("assets/GPX/trauma/RECE/AIM.png");
 
 
             float x = (2 * 1600 / 3);
@@ -160,6 +166,22 @@ public:
             m_registry.emplace<Sprite>(hand, s);
             m_registry.emplace<MouseFollowHand>(hand, MouseFollowHand{true});
             m_registry.emplace<ScreenPosition>(hand, ScreenPosition{x, y});
+
+
+            nts->hand = hand;
+            nts->t_HandNull = t_hand;
+            nts->t_HandToken = t_handHold;
+
+            entt::entity cursor = m_registry.create();
+            Sprite s1;
+            s1.sizeX = 68;
+            s1.sizeY = 68;
+            s1.texture = t_cursor;
+            s1.layerOrder = 19;
+
+            m_registry.emplace<Sprite>(cursor, s1);
+            m_registry.emplace<MouseCursor>(cursor, MouseCursor{-34,-34});
+            m_registry.emplace<ScreenPosition>(cursor, ScreenPosition{ 0,0 });
         }
         
         // Hands static
@@ -275,6 +297,27 @@ public:
                 m_registry.emplace<Sprite>(hand, s);
                 m_registry.emplace<ScreenPosition>(hand, ScreenPosition{ x, y });
             }
+        }
+
+        // token (change tex later)
+        {
+            std::shared_ptr<Texture> t_Token = CreateTexture("assets/GPX/token.png");
+            nts->t_Token = t_Token;
+
+            for (size_t i = 0; i < 4; i++)
+            {
+                entt::entity token = m_registry.create();
+                Sprite s;
+                s.sizeX = 60;
+                s.sizeY = 60;
+                s.texture = t_Token;
+                s.layerOrder = 12;
+
+                m_registry.emplace<Sprite>(token, s);
+                m_registry.emplace<TokenComp>(token, TokenComp{(int)i});
+                m_registry.emplace<ScreenPosition>(token, ScreenPosition{ (float)600 + (i * 80),760});
+            }
+
         }
 
 

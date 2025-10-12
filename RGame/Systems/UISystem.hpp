@@ -165,14 +165,14 @@ private:
 		if (de != nullptr && de->clicked)
 		{
 			de->clicked = false;
-			de->useless->call(registry);
+			//de->useless->call(registry);
 		}
 
 		PassEffector* pe = registry.try_get<PassEffector>(entity);
 		if (pe != nullptr && pe->clicked)
 		{
 			pe->clicked = false;
-			pe->useless->pass(registry);
+			//pe->useless->pass(registry);
 		}
 	}
 

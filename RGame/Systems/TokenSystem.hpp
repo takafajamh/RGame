@@ -7,7 +7,7 @@
 #include <regex>
 #include <algorithm>
 #include <random>
-
+/*
 // Does not account for just position, uses Screen Position
 
 class TokenSystem : public ISystem
@@ -959,3 +959,5 @@ public:
 	}
 
 };
+
+*/

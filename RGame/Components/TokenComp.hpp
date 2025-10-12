@@ -2,6 +2,7 @@
 
 struct TokenComp
 {
-	bool Holding = false;
-	int BetState = -1;
+	int id = 0;
+	//bool Holding = false;
+	//int BetState = -1;
 };
