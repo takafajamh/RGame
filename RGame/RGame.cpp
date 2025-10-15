@@ -84,7 +84,7 @@ public:
             m_registry.emplace<ScreenPosition>(quest, ScreenPosition{ 0,0 });
         }
 
-        // quest   +++ Text
+        // quest
         {
             std::shared_ptr<Texture> t_Quest = CreateTexture("assets/GPX/trauma/quest.png");
             entt::entity quest = m_registry.create();
@@ -95,6 +95,20 @@ public:
 
             m_registry.emplace<Sprite>(quest, s);
             m_registry.emplace<ScreenPosition>(quest, ScreenPosition{ (1600 / 2) - (730/2),0});
+        }
+        
+        // Quest text - add generated stuff
+        {
+            entt::entity text = m_registry.create();
+            Text t;
+            t.content = "AWUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU";
+            t.font = font;
+            t.fontSize = 32;
+            t.xSize = 600;
+            t.color = { 0,0,0,255 };
+
+            m_registry.emplace<Text>(text, t);
+            m_registry.emplace<ScreenPosition>(text, ScreenPosition{ 500, 35 });
         }
 
         // paper  +++ Text
@@ -299,7 +313,7 @@ public:
             }
         }
 
-        // token (change tex later)
+        // token
         {
             std::shared_ptr<Texture> t_Token = CreateTexture("assets/GPX/token.png");
             nts->t_Token = t_Token;
@@ -324,28 +338,7 @@ public:
         /*
 
         {
-            entt::entity quest = m_registry.create();
-            Sprite s;
-            s.sizeX = 600 / 1.5;
-            s.sizeY = 800 / 1.5;
-            s.texture = t_Quest;
-
-            m_registry.emplace<Sprite>(quest, s);
-            m_registry.emplace<ScreenPosition>(quest, ScreenPosition{ 100,400 });
-
-            entt::entity text = m_registry.create();
-            ts->questText = text;
-            Text t;
-            int r = std::rand() % ts->Quests.size();
-            ts->dif = ts->Quests.at(r).dif;
-            t.content = ts->Quests.at(r).s;
-            t.font = font;
-            t.fontSize = 24;
-            t.xSize = 380;
-            t.color = { 0,0,0,255 };
-
-            m_registry.emplace<Text>(text, t);
-            m_registry.emplace<ScreenPosition>(text, ScreenPosition{110, 520});
+            
 
         }
         
@@ -440,37 +433,6 @@ public:
                 ts->buttons.push_back(buttons);
                 
             }
-        }
-
-        // token
-        {
-            for (size_t i = 0; i < 10; i++)
-            {
-                entt::entity token = m_registry.create();
-                Sprite s;
-                s.sizeX = 60;
-                s.sizeY = 60;
-                s.texture = t_Token;
-                s.layerOrder = 13;
-
-                m_registry.emplace<Sprite>(token, s);
-                m_registry.emplace<TokenComp>(token, TokenComp{});
-                m_registry.emplace<ScreenPosition>(token, ScreenPosition{ 480 + (float)(i*65),40});
-            }
-
-            entt::entity text = m_registry.create();
-            Text t;
-            t.content = "100";
-            t.font = font;
-            t.fontSize = 36;
-            t.xSize = 100;
-            t.color = { 0,0,0,255 };
-
-            ts->moneyText = text;
-
-            m_registry.emplace<Text>(text, t);
-            m_registry.emplace<ScreenPosition>(text, ScreenPosition{ 1480, 10 });
-
         }
 
 
