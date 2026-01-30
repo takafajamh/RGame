@@ -116,70 +116,9 @@ public:
 	
 	virtual void Render(entt::registry& registry) override
 	{
-		DrawTilemaps(registry);
 		DrawSprites(registry);
 		DrawRectangles(registry);
 		DrawTexts(registry);
-	}
-
-	void DrawTilemaps(entt::registry& registry)
-	{
-		int windowW, windowH;
-		SDL_GetWindowSize(window, &windowW, &windowH);
-
-		float dx = camXPos - windowW / 2;
-		float dy = camYPos - windowH / 2;
-
-
-		auto view = registry.view<Position, Tilemap>();
-		for (auto [entity, pos, tilemap] : view.each())
-		{
-			if (!tilemap.texture)
-			{
-				spdlog::error("Tilemap does not contain a texture, continue");
-				continue;
-			}
-
-			float texW, texH;
-			SDL_GetTextureSize(tilemap.texture->SDL_texture, &texW, &texH);
-
-			int tilesPerRow = (int)(texW) / tilemap.tileWidth;
-
-			for (const auto& layer : tilemap.tileGIDs)
-			{
-				for (int y = 0; y < tilemap.mapHeight; ++y)
-				{
-					for (int x = 0; x < tilemap.mapWidth; ++x)
-					{
-						int idx = y * tilemap.mapWidth + x;
-						int gid = layer[idx];
-						if (gid == 0) continue;
-
-						int srcX = (gid - 1) % tilesPerRow * tilemap.tileWidth;
-						int srcY = (gid - 1) / tilesPerRow * tilemap.tileHeight;
-
-						SDL_FRect srcRect = {
-						static_cast<float>(srcX),
-						static_cast<float>(srcY),
-						static_cast<float>(tilemap.tileWidth),
-						static_cast<float>(tilemap.tileHeight)
-						};
-
-						
-						SDL_FRect dstRect = {
-						pos.x + (float)(tilemap.scale * x * tilemap.tileWidth) - dx,
-						pos.y + (float)(tilemap.scale * y * tilemap.tileHeight) - dy,
-						static_cast<float>(tilemap.scale * tilemap.tileWidth),
-						static_cast<float>(tilemap.scale * tilemap.tileHeight)
-						};
-
-						SDL_RenderTexture(renderer, tilemap.texture->SDL_texture, &srcRect, &dstRect);
-
-					}
-				}
-			}
-		}
-	
 	}
 
 	void DrawSprites(entt::registry& registry)
