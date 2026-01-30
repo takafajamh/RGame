@@ -12,3 +12,4 @@
 #include "Components/ChangeSceneComponent.hpp"
 #include "Components/QuitGameEffector.hpp"
 #include "Components/GameVolumeEffector.hpp"
+#include "Components/MoveCameraEffector.hpp"

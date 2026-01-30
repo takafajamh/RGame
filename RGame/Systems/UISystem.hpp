@@ -5,7 +5,6 @@
 #include "../Components/ChangeSceneComponent.hpp"
 #include <string>
 
-// Does not account for just position, uses Screen Position
 
 class UISystem : public ISystem
 {
@@ -62,10 +61,32 @@ private:
 		float mouseX, mouseY;
 		Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
-		auto view = registry.view<TextureButton, Sprite, ScreenPosition>();
+		auto view = registry.view<TextureButton, Sprite>();
 
-		for (auto [entity, button, sprite, pos] : view.each())
+		for (auto [entity, button, sprite] : view.each())
 		{
+			ScreenPosition pos;
+
+			ScreenPosition* pos_check = registry.try_get<ScreenPosition>(entity);
+			if (pos_check == nullptr)
+			{
+				Position* pos2_check = registry.try_get<Position>(entity);
+				if (pos2_check != nullptr)
+				{
+					pos.x = pos2_check->x;
+					pos.y = pos2_check->y;
+				}
+				else
+				{
+					spdlog::warn("[UISystem] Button does not have position, nor screen position, ignoring");
+					continue;
+				}
+			}
+			else
+			{
+				pos = *pos_check;
+			}
+
 			SDL_FRect rect =
 			{
 				pos.x,
@@ -80,7 +101,6 @@ private:
 
 			button.isHovered = hovered;
 
-			// Set current color based on state
 			if (hovered)
 			{
 				sprite.textureRect = button.HoverRect;
@@ -102,9 +122,6 @@ private:
 				button.isClicked = false;
 			}
 				
-
-			
-
 		}
 	}
 
@@ -138,7 +155,16 @@ private:
 				m_game->Volume += 100;
 			}
 		}
-	
+
+		MoveCameraEffector* mce = registry.try_get<MoveCameraEffector>(entity);
+		if (mce != nullptr && mce->unclicked)
+		{
+			mce->unclicked = false;
+			camXPos += mce->dx;
+			camYPos += mce->dy;
+		}
+
+
 	}
 
 	void outClickEffector(entt::registry& registry, entt::entity& entity)
@@ -148,6 +174,13 @@ private:
 		{
 			ve->unclicked = true;
 		}
+
+		MoveCameraEffector* mce = registry.try_get<MoveCameraEffector>(entity);
+		if (mce != nullptr)
+		{
+			mce->unclicked = true;
+		}
+
 
 	}
 
