@@ -62,6 +62,9 @@ private:
 		Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
 		auto view = registry.view<TextureButton, Sprite>();
+		int width, height;
+		SDL_GetWindowSize(window, &width, &height);
+
 
 		for (auto [entity, button, sprite] : view.each())
 		{
@@ -73,8 +76,11 @@ private:
 				Position* pos2_check = registry.try_get<Position>(entity);
 				if (pos2_check != nullptr)
 				{
-					pos.x = pos2_check->x;
-					pos.y = pos2_check->y;
+					float dx = camXPos - width / 2;
+					float dy = camYPos - height / 2;
+
+					pos.x = pos2_check->x - dx;
+					pos.y = pos2_check->y - dy;
 				}
 				else
 				{

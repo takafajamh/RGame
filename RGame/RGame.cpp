@@ -112,6 +112,96 @@ private:
 
         }
 
+    }
+
+    void SetupMilikingRoom(const std::shared_ptr<Texture> t_right)
+    {
+        // "right" - left, layer 7
+        {
+            entt::entity right = m_registry.create();
+            m_registry.emplace<Position>(right, Position{ 1920 + 60, 1080 - 280 - 30 });
+
+            Sprite s_right;
+            s_right.layerOrder = 7;
+            s_right.texture = t_right;
+            s_right.sizeX = 40;
+            s_right.sizeY = 280;
+            s_right.useTextureRect = true;
+            s_right.textureRect = { 0, 0, 40, 280 };
+            s_right.flipX = true;
+            m_registry.emplace<Sprite>(right, s_right);
+
+            TextureButton tb;
+            tb.ClickRect = { 0,0,40,280 };
+            tb.HoverRect = { 40,0,40,280 };
+            m_registry.emplace<TextureButton>(right, tb);
+
+            MoveCameraEffector mce;
+            mce.dx = -1920;
+            mce.dy = 0;
+            m_registry.emplace<MoveCameraEffector>(right, mce);
+
+
+        }
+
+
+        // right, layer 7
+        {
+            entt::entity right = m_registry.create();
+            m_registry.emplace<Position>(right, Position{ 1920 + 1800, 1080 - 280 - 30 });
+
+            Sprite s_right;
+            s_right.layerOrder = 7;
+            s_right.texture = t_right;
+            s_right.sizeX = 40;
+            s_right.sizeY = 280;
+            s_right.useTextureRect = true;
+            s_right.textureRect = { 0, 0, 40, 280 };
+            m_registry.emplace<Sprite>(right, s_right);
+
+            TextureButton tb;
+            tb.ClickRect = { 0,0,40,280 };
+            tb.HoverRect = { 40,0,40,280 };
+            m_registry.emplace<TextureButton>(right, tb);
+
+            MoveCameraEffector mce;
+            mce.dx = 1920;
+            mce.dy = 0;
+            m_registry.emplace<MoveCameraEffector>(right, mce);
+
+
+        }
+    }
+
+    void SetupRestingRoom(const std::shared_ptr<Texture> t_right)
+    {
+        // "right" - left, layer 7
+        {
+            entt::entity right = m_registry.create();
+            m_registry.emplace<Position>(right, Position{ 1920 + 1920 + 60, 1080 - 280 - 30 });
+
+            Sprite s_right;
+            s_right.layerOrder = 7;
+            s_right.texture = t_right;
+            s_right.sizeX = 40;
+            s_right.sizeY = 280;
+            s_right.useTextureRect = true;
+            s_right.textureRect = { 0, 0, 40, 280 };
+            s_right.flipX = true;
+            m_registry.emplace<Sprite>(right, s_right);
+
+            TextureButton tb;
+            tb.ClickRect = { 0,0,40,280 };
+            tb.HoverRect = { 40,0,40,280 };
+            m_registry.emplace<TextureButton>(right, tb);
+
+            MoveCameraEffector mce;
+            mce.dx = -1920;
+            mce.dy = 0;
+            m_registry.emplace<MoveCameraEffector>(right, mce);
+
+
+        }
 
     }
 
@@ -135,6 +225,8 @@ public:
     
     
         SetupHall(t_manager, t_right);
+        SetupMilikingRoom(t_right);
+        SetupRestingRoom(t_right);
 
         
     }
