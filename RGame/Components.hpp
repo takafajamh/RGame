@@ -13,3 +13,5 @@
 #include "Components/QuitGameEffector.hpp"
 #include "Components/GameVolumeEffector.hpp"
 #include "Components/MoveCameraEffector.hpp"
+#include "Components/DebugMove.hpp"
+#include "Components/Tip.hpp"

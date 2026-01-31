@@ -12,6 +12,8 @@
 #include "Systems/AnimatorSystem.hpp"
 #include "Systems/RemoveAfterDelaySystem.hpp"
 #include "Systems/UISystem.hpp"
+#include "Systems/DebugMoveSystem.hpp"
+#include "Systems/TipSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -114,8 +116,15 @@ private:
 
     }
 
+    // Add tips to buttons, to check how check pedals
     void SetupMilikingRoom(const std::shared_ptr<Texture> t_right)
     {
+        std::shared_ptr<Texture> t_bg = CreateTexture("assets/GPX/bag.png");
+        std::shared_ptr<Texture> t_machines = CreateTexture("assets/GPX/machines.png");
+        std::shared_ptr<Texture> t_buttons = CreateTexture("assets/GPX/buttons.png");
+        std::shared_ptr<Texture> t_pedals = CreateTexture("assets/GPX/pedals.png");
+
+
         // "right" - left, layer 7
         {
             entt::entity right = m_registry.create();
@@ -144,7 +153,6 @@ private:
 
         }
 
-
         // right, layer 7
         {
             entt::entity right = m_registry.create();
@@ -171,6 +179,189 @@ private:
 
 
         }
+    
+        // BG, layer 2
+        {
+            entt::entity bg = m_registry.create();
+            m_registry.emplace<Position>(bg, Position{ 1920 + 0,0 });
+            Sprite s_bg;
+
+            s_bg.layerOrder = 2;
+            s_bg.texture = t_bg;
+            s_bg.sizeX = 1920;
+            s_bg.sizeY = 1080;
+            m_registry.emplace<Sprite>(bg, s_bg);
+        }
+    
+        // Machines, layer 4
+        {
+            std::vector<Position> positions = { 
+            Position{ 2400,0 },
+            Position{ 2570,0 },
+            Position{ 2740,0 },
+            Position{ 2909,0 },
+            Position{ 3056,0 },
+            Position{ 3226,0 } };
+
+            std::vector<SDL_Scancode> keys = {
+                SDL_SCANCODE_Z,
+                SDL_SCANCODE_X,
+                SDL_SCANCODE_C,
+                SDL_SCANCODE_V,
+                SDL_SCANCODE_B,
+                SDL_SCANCODE_N,
+            };
+
+            for (size_t i = 0; i < positions.size(); i++)
+            {
+                entt::entity machine = m_registry.create();
+                m_registry.emplace<Position>(machine, Position{positions.at(i).x, positions.at(i).y});
+
+                Sprite s_machine;
+                s_machine.layerOrder = 4;
+                s_machine.texture = t_machines;
+                s_machine.sizeX = 230;
+                s_machine.sizeY = 590;
+                s_machine.useTextureRect = true;
+                s_machine.textureRect = { (float)i * 230, 0, 230, 590 };
+                m_registry.emplace<Sprite>(machine, s_machine);
+
+                /*
+                DebugMove dm;
+                dm.key = keys.at(i);
+                dm.speed = 50;
+                m_registry.emplace<DebugMove>(machine, dm);*/
+            }
+        
+        }
+
+        // Buttons, layer 4
+        {
+            std::vector<Position> positions = {
+            Position{ 2088, 794 },
+            Position{ 2088, 888 },
+            Position{ 2088, 973 },
+            Position{ 2250, 888 }, 
+            Position{ 2405, 794 },
+            Position{ 2405, 888 },
+            Position{ 2405, 973 },
+            Position{ 2574, 794 },
+            Position{ 2574, 888 },
+            Position{ 2574, 973 },
+            Position{ 2730, 794 },
+            Position{ 2730, 888 },
+            Position{ 2730, 973 },
+            Position{ 2890, 794 },
+            Position{ 2890, 888 },
+            Position{ 2890, 973 },
+            Position{ 3056, 794 },
+            Position{ 3056, 888 },
+            Position{ 3056, 973 },
+            Position{ 3206, 794 },
+            Position{ 3206, 888 },
+            Position{ 3206, 973 },
+            Position{ 3340, 794 },
+            Position{ 3460, 794 },
+            Position{ 3460, 884 } };
+
+            std::vector<SDL_Scancode> keys = {
+                SDL_SCANCODE_Z,
+                SDL_SCANCODE_X,
+                SDL_SCANCODE_C,
+                SDL_SCANCODE_V,
+                SDL_SCANCODE_B,
+                SDL_SCANCODE_N,
+            };
+
+            for (size_t i = 0; i < positions.size(); i++)
+            {
+                entt::entity button = m_registry.create();
+                m_registry.emplace<Position>(button, Position{ positions.at(i).x, positions.at(i).y });
+
+                Sprite s_button;
+                s_button.layerOrder = 4;
+                s_button.texture = t_buttons;
+                s_button.sizeX = 90;
+                s_button.sizeY = 110;
+                s_button.useTextureRect = true;
+                s_button.textureRect = {0, (float)i*90, 110, 90 };
+                m_registry.emplace<Sprite>(button, s_button);
+
+                TextureButton tb;
+                tb.ClickRect = { 0, (float)i * 90, 110, 90 };
+                tb.HoverRect = { 110, (float)i * 90, 110, 90 };
+                m_registry.emplace<TextureButton>(button, tb);
+
+
+                /*
+                if (i< keys.size())
+                {
+                    DebugMove dm;
+                    dm.key = keys.at(i);
+                    dm.speed = 100;
+                    m_registry.emplace<DebugMove>(button, dm);
+                }*/
+
+            }
+
+        }
+    
+        // Pedals, layer 5
+        {
+            std::vector<Position> positions = {
+            Position{ 1930,0 },
+            Position{ 2082,0 },
+            Position{ 2230,0 },
+            Position{ 2376,0 } };
+
+            std::vector<std::string> tips =
+            {
+                "Add chocolate cake layer",
+                "Add strawberry cake layer",
+                "Add standard cake layer",
+                "Add lemon cake layer"
+            };
+
+            std::vector<SDL_Scancode> keys = {
+                SDL_SCANCODE_Z,
+                SDL_SCANCODE_X,
+                SDL_SCANCODE_C,
+                SDL_SCANCODE_V
+            };
+
+            for (size_t i = 0; i < positions.size(); i++)
+            {
+                entt::entity pedal = m_registry.create();
+                m_registry.emplace<Position>(pedal, Position{ positions.at(i).x, positions.at(i).y });
+
+                Sprite s_pedal;
+                s_pedal.layerOrder = 5;
+                s_pedal.texture = t_pedals;
+                s_pedal.sizeX = 140;
+                s_pedal.sizeY = 200;
+                s_pedal.useTextureRect = true;
+                s_pedal.textureRect = { 0, (float)i * 200, 140, 200 };
+                m_registry.emplace<Sprite>(pedal, s_pedal);
+
+                TextureButton tb;
+                tb.ClickRect = { 0, (float)i * 200, 140, 200 };
+                tb.HoverRect = { 140, (float)i * 200, 140, 200 };
+                m_registry.emplace<TextureButton>(pedal, tb);
+
+                Tip t;
+                t.tip = tips.at(i);
+                m_registry.emplace<Tip>(pedal, t);
+
+
+                /*
+                DebugMove dm;
+                dm.key = keys.at(i);
+                dm.speed = 50;
+                m_registry.emplace<DebugMove>(pedal, dm);*/
+            }
+
+        }
+
     }
 
     void SetupRestingRoom(const std::shared_ptr<Texture> t_right)
@@ -217,6 +408,9 @@ public:
         rs->camYPos = 1080 / 2;
         addSystem<AnimatorSystem>();
         addSystem<UISystem>();
+        addSystem<DebugMoveSystem>();
+        addSystem<TipSystem>(font);
+
         spdlog::info("Scene got init");
 
 
