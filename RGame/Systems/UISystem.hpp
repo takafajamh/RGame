@@ -3,6 +3,7 @@
 #include "../Components.hpp"
 #include <KitsuEngine/System.hpp>
 #include "../Components/ChangeSceneComponent.hpp"
+#include "../Systems/CakeMakerSystem.hpp"
 #include <string>
 
 
@@ -10,7 +11,7 @@ class UISystem : public ISystem
 {
 private:
 	Uint32 prevMouseState = 0;
-
+	CakeMakerSystem* cms = nullptr;
 	Game* m_game = nullptr;
 
 	void checkboxUpdate(entt::registry& registry)
@@ -170,6 +171,16 @@ private:
 			camYPos += mce->dy;
 		}
 
+		if (cms != nullptr)
+		{
+			CakeButtonEffector* cbe = registry.try_get<CakeButtonEffector>(entity);
+			if (cbe != nullptr && !cbe->clicked)
+			{
+				cbe->clicked = true;
+				cms->ButtonClicked(registry, *cbe);
+			}
+		}
+
 
 	}
 
@@ -187,14 +198,27 @@ private:
 			mce->unclicked = true;
 		}
 
-
+		if (cms != nullptr)
+		{
+			CakeButtonEffector* cbe = registry.try_get<CakeButtonEffector>(entity);
+			if (cbe != nullptr)
+			{
+				cbe->clicked = false;
+			}
+		}
 	}
 
 
 public:
-	UISystem(Game* game = nullptr)
+	UISystem(Game* game = nullptr, CakeMakerSystem* cakeSystem = nullptr)
 	{
 		m_game = game;
+		cms = cakeSystem;
+	}
+
+	void SetCakeMakerSystem(CakeMakerSystem* system)
+	{
+		cms = system;
 	}
 
 	void Update(entt::registry& registry)

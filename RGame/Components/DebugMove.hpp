@@ -3,7 +3,7 @@
 
 struct DebugMove
 {
-	float speed = 10;
+	float speed = 50;
 	SDL_Scancode key;
 	bool clicked = false;
 	bool singlePress = false;

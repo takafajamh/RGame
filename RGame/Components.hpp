@@ -15,3 +15,4 @@
 #include "Components/MoveCameraEffector.hpp"
 #include "Components/DebugMove.hpp"
 #include "Components/Tip.hpp"
+#include "Components/CakeButtonEffect.hpp"

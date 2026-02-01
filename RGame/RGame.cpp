@@ -14,6 +14,7 @@
 #include "Systems/UISystem.hpp"
 #include "Systems/DebugMoveSystem.hpp"
 #include "Systems/TipSystem.hpp"
+#include "Systems/CakeMakerSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -116,13 +117,18 @@ private:
 
     }
 
+
+
     // Add tips to buttons, to check how check pedals
-    void SetupMilikingRoom(const std::shared_ptr<Texture> t_right)
+    void SetupMilikingRoom(const std::shared_ptr<Texture> t_right, UISystem* uis)
     {
         std::shared_ptr<Texture> t_bg = CreateTexture("assets/GPX/bag.png");
         std::shared_ptr<Texture> t_machines = CreateTexture("assets/GPX/machines.png");
         std::shared_ptr<Texture> t_buttons = CreateTexture("assets/GPX/buttons.png");
         std::shared_ptr<Texture> t_pedals = CreateTexture("assets/GPX/pedals.png");
+        std::shared_ptr<Texture> t_cake = CreateTexture("assets/GPX/cakes.png");
+
+        uis->SetCakeMakerSystem(addSystem<CakeMakerSystem>(t_cake));
 
 
         // "right" - left, layer 7
@@ -292,6 +298,23 @@ private:
                 tb.HoverRect = { 110, (float)i * 90, 110, 90 };
                 m_registry.emplace<TextureButton>(button, tb);
 
+                int pos = 1;
+                if (i < 3)
+                    pos = 1;
+                else if (i == 3)
+                    pos = 2;
+                else if (i <= 21)
+                    pos = (int)((i + 5) / 3);
+                else if (i == 22)
+                    pos = 9;
+                else
+                    pos = 10;
+
+                CakeButtonEffector cbe;
+                cbe.id = i + 5;
+                cbe.position = pos;
+                m_registry.emplace<CakeButtonEffector>(button, cbe);
+
 
                 /*
                 if (i< keys.size())
@@ -352,6 +375,11 @@ private:
                 t.tip = tips.at(i);
                 m_registry.emplace<Tip>(pedal, t);
 
+                CakeButtonEffector cbe;
+                cbe.id = i + 1;
+                cbe.position = 1;
+                m_registry.emplace<CakeButtonEffector>(pedal, cbe);
+
 
                 /*
                 DebugMove dm;
@@ -407,7 +435,7 @@ public:
         rs->camXPos = 1920 / 2;
         rs->camYPos = 1080 / 2;
         addSystem<AnimatorSystem>();
-        addSystem<UISystem>();
+        UISystem* uis = addSystem<UISystem>();
         addSystem<DebugMoveSystem>();
         addSystem<TipSystem>(font);
 
@@ -419,7 +447,7 @@ public:
     
     
         SetupHall(t_manager, t_right);
-        SetupMilikingRoom(t_right);
+        SetupMilikingRoom(t_right, uis);
         SetupRestingRoom(t_right);
 
         
