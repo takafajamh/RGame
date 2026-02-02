@@ -37,9 +37,6 @@ CakeSystem
    remove() -> remove all elements
    finish() -> move into first room
    changeItem() -> loop through vector, change image, change Button tip
-
-
-
 */
 
 class CakeMakerSystem : public ISystem
@@ -122,6 +119,7 @@ public:
 		}
 	}
 
+	// fucking literally copy for added elements, but spawn like 5 at random in a circle - https://quick-bench.com/q/4YLsNRGjt5kd-IfRtizk99Cf0u4
 	void addIcing(entt::registry& registry, int type)
 	{
 		spdlog::info("[CakeMakerSystem] spawned icing");
@@ -193,6 +191,36 @@ public:
 
 
 
+	}
+
+	void finish(entt::registry& registry)
+	{
+		int h = 0;
+		for (size_t i = 0; i < elements.size(); i++)
+		{
+			entt::entity& e = elements.at(i);
+
+			// move it into a chat / order manager
+			registry.get<Position>(e).x = 400;
+			registry.get<Position>(e).y -= 165;
+
+			Sprite& s = registry.get<Sprite>(e);
+			s.sizeX *= 2;
+			s.sizeY *= 2;
+
+			if (registry.try_get<CakeComponentFlag>(e) != nullptr && i != 0)
+				h++;
+
+			registry.get<Position>(e).y -= cakeSize * h;
+
+			DebugMove dm;
+			dm.key = SDL_SCANCODE_Y;
+			registry.emplace_or_replace<DebugMove>(e, dm);
+		}
+
+		elements.clear();
+		height = 0;
+		cakePos = -1;
 	}
 
 	// + play sound
@@ -286,6 +314,7 @@ public:
 
 		// move up finish, remove from there and put for somebody else??
 		case 28:
+			finish(registry);
 			break;
 
 		// trash
