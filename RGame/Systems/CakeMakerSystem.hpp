@@ -169,6 +169,18 @@ public:
 
 	}
 
+	void makeAHole(entt::registry& registry, int type)
+	{
+		// go through all elements from the top
+		// if contains flag -> cake component
+		// change texture rects y to the correct based on the button
+
+		// type - 1, 2, 3
+
+		int remap[] = { 1, 3, 2 };
+		int y = remap[type - 1] * /*rect.y*/;
+	}
+
 	// + play sound
 	void ButtonClicked(entt::registry& registry, CakeButtonEffector& cbe)
 	{
@@ -201,6 +213,7 @@ public:
 		case 5:
 		case 6:
 		case 7:
+			makeAHole(registry, cbe.id - 4);
 			break;
 
 		//move
@@ -215,16 +228,16 @@ public:
 			addIcing(registry, cbe.id - 9);
 			break;
 			
-			// addons
-		case 12:
-		case 13:
-		case 14:
-		case 15:
-		case 16:
-		case 17:
-		case 20:
-		case 23:
-		case 26:
+			// addons, just add graphics :v
+		case 12: //
+		case 13: //
+		case 14: //
+		case 15: ///
+		case 16: ///
+		case 17: ///
+		case 20: ////
+		case 23: /////
+		case 26: //////
 			break;
 
 
@@ -257,7 +270,7 @@ public:
 			loop(registry);
 			break;
 
-		// move up finish
+		// move up finish, remove from there and put for somebody else??
 		case 28:
 			break;
 
