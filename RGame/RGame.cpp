@@ -127,8 +127,9 @@ private:
         std::shared_ptr<Texture> t_buttons = CreateTexture("assets/GPX/buttons.png");
         std::shared_ptr<Texture> t_pedals = CreateTexture("assets/GPX/pedals.png");
         std::shared_ptr<Texture> t_cake = CreateTexture("assets/GPX/cakes.png");
+        std::shared_ptr<Texture> t_icing = CreateTexture("assets/GPX/icings.png");
 
-        uis->SetCakeMakerSystem(addSystem<CakeMakerSystem>(t_cake));
+        uis->SetCakeMakerSystem(addSystem<CakeMakerSystem>(t_cake, t_icing));
 
 
         // "right" - left, layer 7

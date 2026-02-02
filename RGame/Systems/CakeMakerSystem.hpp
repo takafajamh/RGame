@@ -42,10 +42,20 @@ CakeSystem
 class CakeMakerSystem : public ISystem
 {
 private:
-	int cakePos = -1;
-	std::shared_ptr<Texture> t_cake;
+	const int cakeSize = 28;
 	
-	entt::entity m_cake = entt::null;
+	int cakePos = -1;
+	int height = 0;
+	int layer = 3;
+	
+	
+	std::shared_ptr<Texture> t_cake;
+	std::shared_ptr<Texture> t_icing;
+	
+
+
+	std::vector<entt::entity> elements;
+	
 	const std::vector<Position> validPositions = {
 		Position{2114,668},
 		Position{2280,668},
@@ -60,9 +70,10 @@ private:
 	};
 
 public:
-	CakeMakerSystem(std::shared_ptr<Texture> texture_cake)
+	CakeMakerSystem(std::shared_ptr<Texture> texture_cake, std::shared_ptr<Texture> texture_icing)
 	{
 		t_cake = texture_cake;
+		t_icing = texture_icing;
 	}
 
 	void Update(entt::registry& registry)
@@ -74,10 +85,10 @@ public:
 	{
 		spdlog::info("[CakeMakerSystem] spawned a cake");
 		entt::entity cake = registry.create();
-		registry.emplace<Position>(cake, Position{ 2114,668 });
+		registry.emplace<Position>(cake, Position{ 2114,668 - (float)(height-1) * cakeSize });
 
 		Sprite s_cake;
-		s_cake.layerOrder = 3;
+		s_cake.layerOrder = layer;
 		s_cake.texture = t_cake;
 		s_cake.sizeX = 85;
 		s_cake.sizeY = 75;
@@ -85,12 +96,11 @@ public:
 		s_cake.textureRect = {(float)(type - 1) * 85, 0, 85, 75};
 		registry.emplace<Sprite>(cake, s_cake);
 
-		DebugMove dm;
-		dm.key = SDL_SCANCODE_Z;
-		registry.emplace<DebugMove>(cake, dm);
 
-		m_cake = cake;
+		elements.push_back(cake);
 		cakePos = 1;
+		height++;
+		layer++;
 	}
 
 	void moveCake(entt::registry& registry)
@@ -100,10 +110,63 @@ public:
 
 		if (pp > 0 && pp < validPositions.size())
 		{
-			Position& p = registry.get<Position>(m_cake);
-			p.x = validPositions.at(pp).x;
-			p.y = validPositions.at(pp).y;
+			for (entt::entity& e : elements)
+			{
+				Position& ppp = registry.get<Position>(e);
+				ppp.x = validPositions.at(pp).x;
+			}
 		}
+	}
+
+	void addIcing(entt::registry& registry, int type)
+	{
+		spdlog::info("[CakeMakerSystem] spawned icing");
+
+		entt::entity icing = registry.create();
+		registry.emplace<Position>(icing, Position{ 2435,694 - (float)(height - 1) * cakeSize });
+
+		Sprite s_ice;
+		s_ice.layerOrder = layer;
+		s_ice.texture = t_icing;
+		s_ice.sizeX = 85;
+		s_ice.sizeY = 75;
+		s_ice.useTextureRect = true;
+		s_ice.textureRect = { (float)(type) * 85, 0, 85, 75 };
+		registry.emplace<Sprite>(icing, s_ice);
+
+		elements.push_back(icing);
+
+		DebugMove dm;
+		dm.key = SDL_SCANCODE_X;
+		registry.emplace<DebugMove>(icing, dm);
+		layer++;
+	}
+
+	void trash(entt::registry& registry)
+	{
+		for (entt::entity& e : elements)
+		{
+			registry.destroy(e);
+		}
+		elements.clear();
+		height = 0;
+		cakePos = -1;
+	}
+
+	void loop(entt::registry& registry)
+	{
+		cakePos = 1;
+		int pp = cakePos - 1;
+
+		if (pp >= 0 && pp < validPositions.size())
+		{
+			for (entt::entity& e : elements)
+			{
+				Position& ppp = registry.get<Position>(e);
+				ppp.x = validPositions.at(pp).x;
+			}
+		}
+
 	}
 
 	// + play sound
@@ -114,13 +177,13 @@ public:
 		spdlog::info("[CakeMakerSystem] {}, {}, {}", cbe.id, cbe.position, cakePos);
 
 
-		if (cbe.position != cakePos && cbe.id > 4 && cbe.id != 8) // play sound
-			return;
+		if (cbe.position != cakePos && cbe.id > 4 && cbe.id != 8) // I am not on the same tile as button and I am not 4 create buttons, nor am I move button
+			return; 
 		
-		if (cbe.id <= 4 && registry.valid(m_cake))
+		if (cbe.id <= 4 && elements.size() > 0 && cbe.position != cakePos) // I am one of the early buttons, I have many elements and I am not on the same position
 			return;
 
-		if (cbe.id > 4 && !registry.valid(m_cake))
+		if (cbe.id > 4 && elements.size() == 0)
 			return;
 
 
@@ -149,6 +212,10 @@ public:
 		case 9:
 		case 10:
 		case 11:
+			addIcing(registry, cbe.id - 9);
+			break;
+			
+			// addons
 		case 12:
 		case 13:
 		case 14:
@@ -187,6 +254,7 @@ public:
 
 		// move up and loop
 		case 27:
+			loop(registry);
 			break;
 
 		// move up finish
@@ -195,6 +263,7 @@ public:
 
 		// trash
 		case 29:
+			trash(registry);
 			break;
 
 		default:
