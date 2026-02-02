@@ -4,7 +4,10 @@
 #include <KitsuEngine/System.hpp>
 #include <string>
 
-
+struct CakeComponentFlag
+{
+	const bool isDelicious = true;
+};
 
 /*
 Figure out a valid struct that would identify the cake to then do fun stuff
@@ -96,6 +99,7 @@ public:
 		s_cake.textureRect = {(float)(type - 1) * 85, 0, 85, 75};
 		registry.emplace<Sprite>(cake, s_cake);
 
+		registry.emplace<CakeComponentFlag>(cake, CakeComponentFlag{});
 
 		elements.push_back(cake);
 		cakePos = 1;
@@ -169,16 +173,26 @@ public:
 
 	}
 
+	// I can make hole, what about the icing? or the toping, texture mask?
 	void makeAHole(entt::registry& registry, int type)
 	{
-		// go through all elements from the top
-		// if contains flag -> cake component
-		// change texture rects y to the correct based on the button
-
 		// type - 1, 2, 3
 
-		int remap[] = { 1, 3, 2 };
-		int y = remap[type - 1] * /*rect.y*/;
+		for (int i = elements.size() - 1; i >= 0; i--)
+		{
+			CakeComponentFlag* ccf = registry.try_get<CakeComponentFlag>(elements.at(i));
+			if (ccf != nullptr)
+			{
+				Sprite& s = registry.get<Sprite>(elements.at(i));
+				int remap[] = { 1, 3, 2 };
+				int y = remap[type - 1] * s.textureRect.h;
+				s.textureRect.y = y;
+				break;
+			}
+		}
+
+
+
 	}
 
 	// + play sound
