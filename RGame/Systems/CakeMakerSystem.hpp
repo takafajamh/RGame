@@ -51,7 +51,33 @@ private:
 	
 	std::shared_ptr<Texture> t_cake;
 	std::shared_ptr<Texture> t_icing;
+
+	std::shared_ptr<Texture> t_items; // add to constructor
 	
+
+	// add valid tex rects (from game manager set later on?)
+	std::vector<SDL_FRect> validWeapon = {
+		{0,0,40,40},
+		{40,0,40,40}
+	};
+	int shownWeaponId = 0;
+	entt::entity weaponView = entt::null; // spawn it somewhere
+
+	std::vector<SDL_FRect> validDrugs = {
+		{0,40,40,40},
+		{40,40,40,40}
+	};
+	int shownDrugId = 0;
+	entt::entity drugView = entt::null; // spawn it somewhere
+
+
+	std::vector<SDL_FRect> validChemicals = {
+		{0,80,40,40},
+		{40,80,40,40}
+	};
+	int shownChemicalId = 0;
+	entt::entity chemicalView = entt::null; // spawn it somewhere
+
 
 
 	std::vector<entt::entity> elements;
@@ -223,14 +249,50 @@ public:
 		cakePos = -1;
 	}
 
+	// Dir: -1 / 1
+	void weaponMove(entt::registry& registry, int dir)
+	{
+		shownWeaponId += dir;
+		if (shownWeaponId >= validWeapon.size())
+			shownWeaponId = 0;
+
+		if (shownWeaponId < 0)
+			shownWeaponId = validWeapon.size() - 1;
+
+		registry.get<Sprite>(weaponView).textureRect = validWeapon.at(shownWeaponId);
+	}
+
+	// Dir: -1 / 1
+	void drugMove(entt::registry& registry, int dir)
+	{
+		shownDrugId += dir;
+		if (shownDrugId >= validDrugs.size())
+			shownDrugId = 0;
+
+		if (shownDrugId < 0)
+			shownDrugId = validDrugs.size() - 1;
+
+		registry.get<Sprite>(drugView).textureRect = validDrugs.at(shownDrugId);
+	}
+
+	// Dir: -1 / 1
+	void chemicalMove(entt::registry& registry, int dir)
+	{
+		shownChemicalId += dir;
+		if (shownChemicalId >= validChemicals.size())
+			shownChemicalId = 0;
+
+		if (shownChemicalId < 0)
+			shownChemicalId = validChemicals.size() - 1;
+
+		registry.get<Sprite>(chemicalView).textureRect = validChemicals.at(shownChemicalId);
+	}
+
+
+
 	// + play sound
 	void ButtonClicked(entt::registry& registry, CakeButtonEffector& cbe)
 	{
-		//spdlog::info("[CakeMakerSystem] {} == {}", cbe.position, cakePos);
-
-		spdlog::info("[CakeMakerSystem] {}, {}, {}", cbe.id, cbe.position, cakePos);
-
-
 		if (cbe.position != cakePos && cbe.id > 4 && cbe.id != 8) // I am not on the same tile as button and I am not 4 create buttons, nor am I move button
 			return; 
 		
@@ -277,6 +339,9 @@ public:
 		case 15: ///
 		case 16: ///
 		case 17: ///
+			break;
+
+		// Spawn elements
 		case 20: ////
 		case 23: /////
 		case 26: //////
@@ -285,26 +350,32 @@ public:
 
 		// move R1
 		case 18:
+			weaponMove(registry, 1);
 			break;
 
 		// move L1
 		case 19:
+			weaponMove(registry, -1);
 			break;
 
 		// move R2
 		case 21:
+			drugMove(registry, 1);
 			break;
 
 		// move L2
 		case 22:
+			drugMove(registry, -1);
 			break;
 
 		// move R3
 		case 24:
+			chemicalMove(registry, 1);
 			break;
 
 		// move L3
 		case 25:
+			chemicalMove(registry, -1);
 			break;
 
 		// move up and loop
