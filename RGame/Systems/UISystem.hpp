@@ -181,6 +181,13 @@ private:
 			}
 		}
 
+		OptionEffector* oe = registry.try_get<OptionEffector>(entity);
+		if (oe != nullptr && !oe->clicked)
+		{
+			oe->clicked = true;
+			oe->cur->chosenOption = oe->cur->options.at(oe->optionId);
+			*oe->flagChanged = true;
+		}
 
 	}
 
@@ -205,6 +212,12 @@ private:
 			{
 				cbe->clicked = false;
 			}
+		}
+
+		OptionEffector* oe = registry.try_get<OptionEffector>(entity);
+		if (oe != nullptr)
+		{
+			oe->clicked = false;
 		}
 	}
 

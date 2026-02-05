@@ -16,3 +16,5 @@
 #include "Components/DebugMove.hpp"
 #include "Components/Tip.hpp"
 #include "Components/CakeButtonEffect.hpp"
+#include "Components/OptionEffector.hpp"
+#include "Components/DialogueLine.hpp"

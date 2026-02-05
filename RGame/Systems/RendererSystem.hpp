@@ -240,14 +240,31 @@ public:
 			auto& text = view.get<Text>(entity);
 			auto& pos = view.get<Position>(entity);
 
-			SDL_FRect dst = { pos.x - dx, pos.y - dy, txt.xSize, txt.ySize};
+			SDL_FRect origin = { pos.x - dx, pos.y - dy, txt.fontSize * txt.content.size(), txt.fontSize };
 
-			SDL_Surface* surf = TTF_RenderText_Solid(txt.font->SDL_Font, text.content.c_str(), text.content.size(), txt.color);
-			SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
-			SDL_DestroySurface(surf);
+			std::vector<std::string> texs = split(txt);
 
-			SDL_RenderTexture(renderer, tex, nullptr, &dst);
-			SDL_DestroyTexture(tex);
+			for (size_t i = 0; i < texs.size(); i++)
+			{
+				SDL_FRect dst = origin;
+				dst.y += i * txt.fontSize + i * txt.padding;
+
+				int textWidth, textHeight;
+				TTF_SetFontSize(txt.font->getSDL(), txt.fontSize);
+				TTF_GetStringSize(txt.font->getSDL(), texs.at(i).c_str(), texs.at(i).size(), &textWidth, &textHeight);
+
+				dst.w = textWidth;
+
+				SDL_Surface* surf = TTF_RenderText_Solid(txt.font->SDL_Font, texs.at(i).c_str(), texs.at(i).size(), txt.color);
+				SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
+				SDL_DestroySurface(surf);
+
+				SDL_RenderTexture(renderer, tex, nullptr, &dst);
+				SDL_DestroyTexture(tex);
+			}
+
+
+
 		}
 
 
@@ -281,6 +298,7 @@ public:
 				SDL_RenderTexture(renderer, tex, nullptr, &dst);
 				SDL_DestroyTexture(tex);
 			}
+		
 		}
 
 	}

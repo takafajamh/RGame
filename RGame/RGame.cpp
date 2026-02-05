@@ -15,6 +15,7 @@
 #include "Systems/DebugMoveSystem.hpp"
 #include "Systems/TipSystem.hpp"
 #include "Systems/CakeMakerSystem.hpp"
+#include "Systems/DialogueSystem.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -439,6 +440,7 @@ public:
         UISystem* uis = addSystem<UISystem>();
         addSystem<DebugMoveSystem>();
         addSystem<TipSystem>(font);
+        addSystem<DialogueSystem>(font, CreateTexture("assets/GPX/DialogueButton.png"));
 
         spdlog::info("Scene got init");
 
