@@ -3,10 +3,23 @@
 #include "../Components.hpp"
 #include <KitsuEngine/System.hpp>
 #include <string>
+#include <cstdlib>  
+#include <ctime>   
+
+static int randomInt(int min, int max)
+{
+	return min + std::rand() % (max - min + 1);
+}
 
 struct CakeComponentFlag
 {
 	const bool isDelicious = true;
+};
+struct TastyComponentFlag
+{
+	bool edible = true;
+	int dx = 0;
+	int dy = 0;
 };
 
 /*
@@ -96,10 +109,11 @@ private:
 	};
 
 public:
-	CakeMakerSystem(std::shared_ptr<Texture> texture_cake, std::shared_ptr<Texture> texture_icing)
+	CakeMakerSystem(std::shared_ptr<Texture> texture_cake, std::shared_ptr<Texture> texture_icing, std::shared_ptr<Texture> texture_choco)
 	{
 		t_cake = texture_cake;
 		t_icing = texture_icing;
+		t_items = texture_choco;
 	}
 
 	void Update(entt::registry& registry)
@@ -132,6 +146,11 @@ public:
 
 	void moveCake(entt::registry& registry)
 	{
+		if (cakePos >= 10)
+		{
+			return;
+		}
+
 		int pp = cakePos;
 		cakePos++;
 
@@ -140,7 +159,15 @@ public:
 			for (entt::entity& e : elements)
 			{
 				Position& ppp = registry.get<Position>(e);
-				ppp.x = validPositions.at(pp).x;
+				if (registry.try_get<TastyComponentFlag>(e) == nullptr)
+				{
+					ppp.x = validPositions.at(pp).x;
+				}
+				else
+				{
+					ppp.x += validPositions.at(pp).x - validPositions.at((pp - 1) % validPositions.size()).x;
+				}
+				
 			}
 		}
 	}
@@ -163,10 +190,43 @@ public:
 		registry.emplace<Sprite>(icing, s_ice);
 
 		elements.push_back(icing);
+		layer++;
+	}
+
+	void addItem(entt::registry& registry, int type)
+	{
+		spdlog::info("[CakeMakerSystem] spawned item");
+
+		entt::entity item = registry.create();
+		int dx = randomInt(-20, 20);
+		int dy = randomInt(-10, 10);
+
+		int xx[] = {2627, 2783}; 
+		kitsu_assert(type / 3 > 2, "Type is incorrectly calculated", "Type calculated");
+
+		registry.emplace<Position>(item, Position{ xx[type/3] + (float)dx, (float)dy + 708 - (float)(height - 1) * cakeSize});
+
+		int randomPart = randomInt(0, 4);
+
+		Sprite s_item;
+		s_item.layerOrder = layer;
+		s_item.texture = t_items;
+		s_item.sizeX = 14;
+		s_item.sizeY = 14;
+		s_item.useTextureRect = true;
+		s_item.textureRect = { (float)randomPart * 14, (float)(type) * 14, 14, 14 };
+		registry.emplace<Sprite>(item, s_item);
+
+		elements.push_back(item);
+
+		TastyComponentFlag tcf;
+		tcf.dx = dx;
+		tcf.dy = dy;
+		registry.emplace<TastyComponentFlag>(item, tcf);
 
 		DebugMove dm;
-		dm.key = SDL_SCANCODE_X;
-		registry.emplace<DebugMove>(icing, dm);
+		dm.key = SDL_SCANCODE_C;
+		registry.emplace<DebugMove>(item, dm);
 		layer++;
 	}
 
@@ -191,7 +251,14 @@ public:
 			for (entt::entity& e : elements)
 			{
 				Position& ppp = registry.get<Position>(e);
-				ppp.x = validPositions.at(pp).x;
+				if (registry.try_get<TastyComponentFlag>(e) == nullptr)
+				{
+					ppp.x = validPositions.at(pp).x;
+				}
+				else
+				{
+					ppp.x -= 3363 - 2114;
+				}
 			}
 		}
 
@@ -226,9 +293,19 @@ public:
 		{
 			entt::entity& e = elements.at(i);
 
+			TastyComponentFlag* tcf = registry.try_get<TastyComponentFlag>(e);
 			// move it into a chat / order manager
-			registry.get<Position>(e).x = 400;
-			registry.get<Position>(e).y -= 165;
+			if (tcf == nullptr)
+			{
+				registry.get<Position>(e).x = 400;
+				registry.get<Position>(e).y -= 165;
+			}
+			else
+			{
+				registry.get<Position>(e).x -= validPositions.at(validPositions.size()-1).x - 425 - (float)tcf->dx;
+				registry.get<Position>(e).y -= 160 - (float)tcf->dy;
+			}
+			
 
 			Sprite& s = registry.get<Sprite>(e);
 			s.sizeX *= 2;
@@ -238,10 +315,6 @@ public:
 				h++;
 
 			registry.get<Position>(e).y -= cakeSize * h;
-
-			DebugMove dm;
-			dm.key = SDL_SCANCODE_Y;
-			registry.emplace_or_replace<DebugMove>(e, dm);
 		}
 
 		elements.clear();
@@ -339,6 +412,7 @@ public:
 		case 15: ///
 		case 16: ///
 		case 17: ///
+			addItem(registry, cbe.id-12);
 			break;
 
 		// Spawn elements
