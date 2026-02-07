@@ -55,6 +55,7 @@ CakeSystem
 class CakeMakerSystem : public ISystem
 {
 private:
+	bool init = false;
 	const int cakeSize = 28;
 	
 	int cakePos = -1;
@@ -64,29 +65,33 @@ private:
 	
 	std::shared_ptr<Texture> t_cake;
 	std::shared_ptr<Texture> t_icing;
+	std::shared_ptr<Texture> t_it;
 
-	std::shared_ptr<Texture> t_items; // add to constructor
+	std::shared_ptr<Texture> t_items;
 	
 
 	// add valid tex rects (from game manager set later on?)
 	std::vector<SDL_FRect> validWeapon = {
-		{0,0,40,40},
-		{40,0,40,40}
+		{0,120,60,60},
+		{60,120,60,60},
+		{120,120,60,60}
 	};
 	int shownWeaponId = 0;
 	entt::entity weaponView = entt::null; // spawn it somewhere
 
 	std::vector<SDL_FRect> validDrugs = {
-		{0,40,40,40},
-		{40,40,40,40}
+		{0,60,60,60},
+		{60,60,60,60},
+		{120,60,60,60}
 	};
 	int shownDrugId = 0;
 	entt::entity drugView = entt::null; // spawn it somewhere
 
 
 	std::vector<SDL_FRect> validChemicals = {
-		{0,80,40,40},
-		{40,80,40,40}
+		{0,0,60,60},
+		{60,0,60,60},
+		{120,0,60,60}
 	};
 	int shownChemicalId = 0;
 	entt::entity chemicalView = entt::null; // spawn it somewhere
@@ -109,16 +114,62 @@ private:
 	};
 
 public:
-	CakeMakerSystem(std::shared_ptr<Texture> texture_cake, std::shared_ptr<Texture> texture_icing, std::shared_ptr<Texture> texture_choco)
+	CakeMakerSystem(std::shared_ptr<Texture> texture_cake, std::shared_ptr<Texture> texture_icing, std::shared_ptr<Texture> texture_choco, std::shared_ptr<Texture> texture_items)
 	{
 		t_cake = texture_cake;
 		t_icing = texture_icing;
 		t_items = texture_choco;
+		t_it = texture_items;
+	}
+
+	void initItems(entt::registry& registry)
+	{
+		weaponView = registry.create();
+		registry.emplace<Position>(weaponView, Position{ 2990, 94 }); // 2990.5151 94.25005
+
+		Sprite s_gun;
+		s_gun.layerOrder = 120;
+		s_gun.texture = t_it;
+		s_gun.sizeX = 60;
+		s_gun.sizeY = 60;
+		s_gun.useTextureRect = true;
+		s_gun.textureRect = validWeapon.at(0);
+		registry.emplace<Sprite>(weaponView, s_gun);
+
+
+		drugView = registry.create();
+		registry.emplace<Position>(drugView, Position{ 3146, 99 }); //  3146.1465 99.499985
+
+		Sprite s_drug;
+		s_drug.layerOrder = 120;
+		s_drug.texture = t_it;
+		s_drug.sizeX = 60;
+		s_drug.sizeY = 60;
+		s_drug.useTextureRect = true;
+		s_drug.textureRect = validDrugs.at(0);
+		registry.emplace<Sprite>(drugView, s_drug);
+
+
+		chemicalView = registry.create();
+		registry.emplace<Position>(chemicalView, Position{ 3323, 99 }); //  3322.6482 99
+
+		Sprite s_chem;
+		s_chem.layerOrder = 120;
+		s_chem.texture = t_it;
+		s_chem.sizeX = 60;
+		s_chem.sizeY = 60;
+		s_chem.useTextureRect = true;
+		s_chem.textureRect = validChemicals.at(0);
+		registry.emplace<Sprite>(chemicalView, s_chem);
 	}
 
 	void Update(entt::registry& registry)
 	{
-
+		if (!init)
+		{
+			initItems(registry);
+			init = true;
+		}
 	}
 
 	void spawnCake(entt::registry& registry, int type)
@@ -326,11 +377,16 @@ public:
 	void weaponMove(entt::registry& registry, int dir)
 	{
 		shownWeaponId += dir;
-		if (shownWeaponId >= validWeapon.size())
+		
+		if (shownWeaponId >= (signed)validWeapon.size())
+		{
 			shownWeaponId = 0;
+		}
 
 		if (shownWeaponId < 0)
+		{
 			shownWeaponId = validWeapon.size() - 1;
+		}
 
 		registry.get<Sprite>(weaponView).textureRect = validWeapon.at(shownWeaponId);
 	}
@@ -339,7 +395,7 @@ public:
 	void drugMove(entt::registry& registry, int dir)
 	{
 		shownDrugId += dir;
-		if (shownDrugId >= validDrugs.size())
+		if (shownDrugId >= (signed)validDrugs.size())
 			shownDrugId = 0;
 
 		if (shownDrugId < 0)
@@ -352,7 +408,7 @@ public:
 	void chemicalMove(entt::registry& registry, int dir)
 	{
 		shownChemicalId += dir;
-		if (shownChemicalId >= validChemicals.size())
+		if (shownChemicalId >= (signed)validChemicals.size())
 			shownChemicalId = 0;
 
 		if (shownChemicalId < 0)
@@ -361,6 +417,43 @@ public:
 		registry.get<Sprite>(chemicalView).textureRect = validChemicals.at(shownChemicalId);
 	}
 
+	void spawnItem(entt::registry& registry, int type)
+	{
+		spdlog::info("[CakeMakerSystem] spawned an item");
+
+		entt::entity item = registry.create();
+		registry.emplace<Position>(item, Position{ validPositions.at(type + 5).x + 5,688 - (float)(height - 1) * cakeSize});
+
+		SDL_FRect trect = {0,0,0,0};
+		switch (type)
+		{
+		case 0:
+			trect = validWeapon.at(shownWeaponId);
+			break;
+		case 1:
+			trect = validDrugs.at(shownDrugId);
+			break;
+		case 2:
+			trect = validChemicals.at(shownChemicalId);
+			break;
+		default:
+			kitsu_assert(true, "Incorrect type id, should not happen!", "This will not happen");
+			break;
+		}
+
+		Sprite s_item;
+		s_item.layerOrder = layer;
+		s_item.texture = t_it;
+		s_item.sizeX = 60;
+		s_item.sizeY = 60;
+		s_item.useTextureRect = true;
+		s_item.textureRect = trect;
+		registry.emplace<Sprite>(item, s_item);
+
+		elements.push_back(item);
+
+		layer++;
+	}
 
 
 	// + play sound
@@ -416,9 +509,10 @@ public:
 			break;
 
 		// Spawn elements
-		case 20: ////
-		case 23: /////
-		case 26: //////
+		case 20: 
+		case 23: 
+		case 26: 
+			spawnItem(registry, (cbe.id - 20)/3); // 0 3 6 -> 0 1 2
 			break;
 
 
