@@ -16,6 +16,7 @@ struct Client
 	int special = 0;
 	DialogueLine* start;
 	DialogueLine* endLoop;
+	DialogueLine* endLoop2 = nullptr;
 	DialogueLine* correct;
 	DialogueLine* incorrect;
 	Sprite spr;
@@ -65,9 +66,48 @@ private:
 		}
 	}
 
-	bool checkValid(entt::registry& registry) // TODO
+	bool checkValid(entt::registry& registry) 
 	{
-		return true;
+		if (!cur)
+			return false;
+
+		bool v1 = cur->item == -1;
+		bool v2 = cur->special == -1;
+		bool v3 = cur->type == -1;
+
+		for (entt::entity& e : cake)
+		{
+			CakeComponentFlag* ccf = registry.try_get<CakeComponentFlag>(e);
+			SpecialComponentFlag* scf = registry.try_get<SpecialComponentFlag>(e);
+			IcingComponentFlag* icf = registry.try_get<IcingComponentFlag>(e);
+
+			if (scf)
+			{
+				if (scf->type == cur->special)
+					v2 = true;
+
+
+			}
+			if (ccf)
+			{
+				if (ccf->type == cur->item)
+					v1 = true;
+
+			}
+			if (icf)
+			{
+				if (icf->isChoco)
+					v3 = true;
+
+				
+
+			}
+		}
+
+
+
+
+		return v1 && v2 && v3;
 	}
 
 	void spawnNewCharacter(entt::registry& registry)
@@ -108,11 +148,15 @@ public:
 				if (checkValid(registry))
 				{
 					cur->endLoop->next = cur->correct;
+					if(cur->endLoop2)
+						cur->endLoop2->next = cur->correct;
 
 				}
 				else
 				{
 					cur->endLoop->next = cur->incorrect;
+					if (cur->endLoop2)
+						cur->endLoop2->next = cur->incorrect;
 				}
 			}
 		}
@@ -121,8 +165,7 @@ public:
 		{
 			if (clients.size() == 0)
 			{
-				//end;
-				spdlog::critical("Throw unimplemented baka");
+				closeGame = true;
 				return;
 			}
 			destroyCake(registry);

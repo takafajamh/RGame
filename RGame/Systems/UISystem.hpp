@@ -167,8 +167,6 @@ private:
 		if (mce != nullptr && mce->unclicked)
 		{
 			mce->unclicked = false;
-			camXPos += mce->dx;
-			camYPos += mce->dy;
 		}
 
 		if (cms != nullptr)
@@ -202,6 +200,11 @@ private:
 		MoveCameraEffector* mce = registry.try_get<MoveCameraEffector>(entity);
 		if (mce != nullptr)
 		{
+			if (mce->unclicked == false)
+			{
+				camXPos += mce->dx;
+				camYPos += mce->dy;
+			}
 			mce->unclicked = true;
 		}
 

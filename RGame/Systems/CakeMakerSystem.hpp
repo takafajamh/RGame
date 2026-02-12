@@ -13,13 +13,22 @@ static int randomInt(int min, int max)
 
 struct CakeComponentFlag
 {
-	const bool isDelicious = true;
+	bool isDelicious = true;
+	int type = -1;
 };
 struct TastyComponentFlag
 {
 	bool edible = true;
 	int dx = 0;
 	int dy = 0;
+};
+struct SpecialComponentFlag
+{
+	int type = -1;
+};
+struct IcingComponentFlag
+{
+	bool isChoco = false;
 };
 
 /*
@@ -112,6 +121,7 @@ private:
 		Position{3363,668},
 		Position{3472,668},
 	};
+	Mix_Chunk* sfx;
 
 public:
 	std::vector<entt::entity> StealElements;
@@ -122,6 +132,12 @@ public:
 		t_icing = texture_icing;
 		t_items = texture_choco;
 		t_it = texture_items;
+
+		std::string path = "assets/SFX/blob.wav";
+
+		sfx = Mix_LoadWAV(path.c_str());
+		acquisition_assert(sfx, path, SDL_GetError());
+
 	}
 
 	void initItems(entt::registry& registry)
@@ -189,7 +205,7 @@ public:
 		s_cake.textureRect = {(float)(type - 1) * 85, 0, 85, 75};
 		registry.emplace<Sprite>(cake, s_cake);
 
-		registry.emplace<CakeComponentFlag>(cake, CakeComponentFlag{});
+		registry.emplace<CakeComponentFlag>(cake, CakeComponentFlag{true, type});
 
 		elements.push_back(cake);
 		cakePos = 1;
@@ -241,6 +257,8 @@ public:
 		s_ice.useTextureRect = true;
 		s_ice.textureRect = { (float)(type) * 85, 0, 85, 75 };
 		registry.emplace<Sprite>(icing, s_ice);
+
+		registry.emplace<IcingComponentFlag>(icing, IcingComponentFlag{ type == 0 });
 
 		elements.push_back(icing);
 		layer++;
@@ -429,13 +447,23 @@ public:
 		registry.emplace<Position>(item, Position{ validPositions.at(type + 5).x + 5,688 - (float)(height - 1) * cakeSize});
 
 		SDL_FRect trect = {0,0,0,0};
+		int tt = 0;
+
 		switch (type)
 		{
 		case 0:
 			trect = validWeapon.at(shownWeaponId);
+			if (shownWeaponId != 1)
+			{
+				tt = 3;
+			}
 			break;
 		case 1:
 			trect = validDrugs.at(shownDrugId);
+			if (shownDrugId == 1)
+			{
+				tt = 2;
+			}
 			break;
 		case 2:
 			trect = validChemicals.at(shownChemicalId);
@@ -454,7 +482,13 @@ public:
 		s_item.textureRect = trect;
 		registry.emplace<Sprite>(item, s_item);
 
+
+
+		registry.emplace<SpecialComponentFlag>(item, SpecialComponentFlag{tt});
+
 		elements.push_back(item);
+
+
 
 		layer++;
 	}
@@ -471,6 +505,13 @@ public:
 
 		if (cbe.id > 4 && elements.size() == 0)
 			return;
+
+		kitsu_assert(
+			Mix_PlayChannel(-1, sfx, 0),
+			"Can't play SFX :c : {}",
+			"SFX plays :3",
+			SDL_GetError()
+		);
 
 
 		switch (cbe.id)

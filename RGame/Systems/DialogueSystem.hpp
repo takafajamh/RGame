@@ -93,7 +93,7 @@ public:
 			t.color = { 0, 0, 0, 255 };
 			t.content = cur->options.at(i)->text;
 			t.fontSize = 32;
-			t.xSize = 450;
+			t.xSize = 800;
 			t.ySize = 200;
 			registry.emplace<Text>(op, t);
 
@@ -181,9 +181,23 @@ public:
 		float mouseX, mouseY;
 		Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
+
+
 		bool clicked = mouseState & SDL_BUTTON_LMASK;
 		if (clicked && clear)
 		{
+			// Position textPos = {1400, 250};
+			float dx = mouseX - 1400;
+			float dy = mouseY - 250;
+
+			float distanceSquared = dx * dx + dy * dy;
+			float maxDistance = 250.f;
+
+			if (distanceSquared > maxDistance * maxDistance)
+			{
+				return;
+			}
+
 			if (cur->options.size() == 0)
 			{
 				clear = false;

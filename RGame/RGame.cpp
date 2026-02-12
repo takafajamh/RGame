@@ -25,6 +25,12 @@
 #include <random>
 
 
+/*
+TODO:
+Arts
+
+*/
+
 class App : public Scene
 {
 private:
@@ -121,6 +127,201 @@ private:
 
     }
 
+
+    std::pair<DialogueLine*, DialogueLine*> scene4Main()
+    {
+        DialogueLine* dl0 = new DialogueLine("Miss Manager", "Good evening!");
+        DialogueLine* dl1 = new DialogueLine("You", "Good evening");
+        DialogueLine* dl2 = new DialogueLine("Miss Manager", "How was your first day?");
+
+        DialogueLine* dl3 = new DialogueLine("You", "Good.");
+        DialogueLine* dl4 = new DialogueLine("Miss Manager", "Very good");
+        DialogueLine* dl5 = new DialogueLine("You", "Mhm");
+
+        DialogueLine* dl6 = new DialogueLine("You", "The police came.");
+        DialogueLine* dl7 = new DialogueLine("Miss Manager", "Oh.");
+        DialogueLine* dl8 = new DialogueLine("Miss Manager", "You didn't rat us out, right?");
+
+        DialogueLine* dl9 = new DialogueLine("You", "I totally did.");
+        DialogueLine* dl10 = new DialogueLine("Miss Manager", "Not good you know, give me half of the price though.");
+        DialogueLine* dl11 = new DialogueLine("You", "What!? Why!?");
+        DialogueLine* dl12 = new DialogueLine("Miss Manager", "It's in the contract...");
+        DialogueLine* dl13 = new DialogueLine("You", "Shit...");
+
+        DialogueLine* dl14 = new DialogueLine("You", "Of course not!");
+        DialogueLine* dl15 = new DialogueLine("Miss Manager", "That's my boy, I knew you'd be a good addition to the team");
+
+
+        DialogueLine* dl16 = new DialogueLine("You", "So I will go pack myself and see you tomorrow.");
+        DialogueLine* dl17 = new DialogueLine("Miss Manager", "See you tomorrow...");
+        DialogueLine* dl18 = new DialogueLine("You", "*MC left*");
+        DialogueLine* dl19 = new DialogueLine("Miss Manager", "...");
+        DialogueLine* dl20 = new DialogueLine("Miss Manager", "...");
+        DialogueLine* dl21 = new DialogueLine("Miss Manager", "...");
+        DialogueLine* dl22 = new DialogueLine("Miss Manager", "That's the end of the game, you know?");
+        DialogueLine* dl23 = new DialogueLine("Miss Manager", "Yes I am talking to you");
+        DialogueLine* dl24 = new DialogueLine("Miss Manager", "Thank you very much for playing, I hope you enjoyed it");
+
+        DialogueLine* dl25 = new DialogueLine("???", "Yes, it was fun");
+        DialogueLine* dl26 = new DialogueLine("Miss Manager", "Great to hear, bye bye~");
+
+        DialogueLine* dl27 = new DialogueLine("???", "I hated it.");
+        DialogueLine* dl28 = new DialogueLine("Miss Manager", "lmao");
+
+
+        CreateDialogueList({ dl6, dl7, dl8 });
+        CreateDialogueList({ dl9, dl10, dl11, dl12, dl13, dl16 });
+        CreateDialogueList({ dl14, dl15, dl16 });
+        CreateDialogueList({ dl0, dl1, dl2 });
+        CreateDialogueList({ dl25, dl26 });
+        CreateDialogueList({ dl27, dl28 });
+        CreateDialogueList({ dl3, dl4, dl5, dl16, dl17, dl18, dl19, dl20, dl21, dl22, dl23, dl24 });
+
+        dl2->options.push_back(dl3);
+        dl2->options.push_back(dl6);
+        
+        dl8->options.push_back(dl9);
+        dl8->options.push_back(dl14);
+
+        dl24->options.push_back(dl25);
+        dl24->options.push_back(dl27);
+
+
+
+        return std::pair<DialogueLine*, DialogueLine*>(dl0, dl6);
+    }
+
+ 
+    std::pair<DialogueLine*, DialogueLine*> scene3Main(DialogueLine** e2)
+    {
+        DialogueLine* dl0 = new DialogueLine("Beatrice", "Good afternoon.");
+        DialogueLine* dl1 = new DialogueLine("You", "Good morning miss, what can I get you?");
+        DialogueLine* dl2 = new DialogueLine("Beatrice", "I've got an information that you can sell some ammo.");
+        DialogueLine* dl3 = new DialogueLine("Manager in your head", "(*Don't trust the coooooops-*)");
+
+        DialogueLine* dl4 = new DialogueLine("You", "Yes, that's true");
+        DialogueLine* dl5 = new DialogueLine("Beatrice", "Oh.");
+        DialogueLine* dl6 = new DialogueLine("Beatrice", "That went really easily, can you give me some, I need a proof.");
+        DialogueLine* dl7 = new DialogueLine("Beatrice", "And I can't check behind the counter...");
+        DialogueLine* dl8 = new DialogueLine("You", "Ye, coming up!");
+
+        DialogueLine* dl9 = new DialogueLine("You", "This is a cake store miss.");
+        DialogueLine* dl10 = new DialogueLine("Beatrice", "... I... I know.");
+        DialogueLine* dl11 = new DialogueLine("You", "So, can I get you something?");
+        DialogueLine* dl12 = new DialogueLine("Beatrice", "... something sweet please.");
+        DialogueLine* dl13 = new DialogueLine("Beatrice", "I like Ammo as topings!");
+        DialogueLine* dl14 = new DialogueLine("You", "...");
+
+        *e2 = dl8;
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3 });
+        CreateDialogueList({ dl4, dl5, dl6, dl7, dl8 });
+        CreateDialogueList({ dl9, dl10, dl11, dl12, dl13, dl14 });
+        
+        dl3->options.push_back(dl4);
+        dl3->options.push_back(dl9);
+        dl14->next = dl12;
+        dl8->next = dl6;
+
+
+        return std::pair<DialogueLine*, DialogueLine*>(dl0, dl14);
+    }
+
+    DialogueLine* scene3Good()
+    {
+        DialogueLine* dl0 = new DialogueLine("Beatrice", "That looks informative!");
+        DialogueLine* dl1 = new DialogueLine("You", "I suppose so?");
+        DialogueLine* dl2 = new DialogueLine("Bianka", "Thank you!");
+        DialogueLine* dl3 = new DialogueLine("Bianka", "I will get that raise finally! Bye!");
+        DialogueLine* dl4 = new DialogueLine("You", "Goodbye");
+
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3, dl4 });
+        return dl0;
+    }
+
+    DialogueLine* scene3Bad()
+    {
+        DialogueLine* dl0 = new DialogueLine("Beatrice", "You hope it is tasty.");
+        DialogueLine* dl1 = new DialogueLine("You", "I can assure you.");
+        DialogueLine* dl2 = new DialogueLine("Beatrice", "... I will come back.");
+        DialogueLine* dl3 = new DialogueLine("You", "Can't wait!");
+        DialogueLine* dl4 = new DialogueLine("You", "Enjoy");
+        DialogueLine* dl5 = new DialogueLine("Beatrice", "Bye.");
+        DialogueLine* dl6 = new DialogueLine("You", "Goodbye");
+
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3, dl4, dl5, dl6 });
+        return dl0;
+    }
+
+
+
+    std::pair<DialogueLine*, DialogueLine*> scene2Main()
+    {
+        DialogueLine* dl0 = new DialogueLine("Carl", "Hello.");
+        DialogueLine* dl1 = new DialogueLine("You", "Good morning mister, what can I get you?");
+        DialogueLine* dl2 = new DialogueLine("Carl", "...");
+        DialogueLine* dl3 = new DialogueLine("Carl", "I would like some \"green\" chocolate cake, can you do that for me?");
+
+
+        DialogueLine* dl4 = new DialogueLine("You", "\"Green?\"");
+        DialogueLine* dl5 = new DialogueLine("Carl", "You know, inside it. The item...");
+        DialogueLine* dl6 = new DialogueLine("You", "Yeee... I will try to do it.");
+        DialogueLine* dl7 = new DialogueLine("Carl", "Thanks");
+
+        DialogueLine* dl8 = new DialogueLine("You", "Okay~ Gotta go");
+        DialogueLine* dl9 = new DialogueLine("Carl", "I will wait here");
+
+        DialogueLine* dl10 = new DialogueLine("Carl", "Could you get me some chocolate cake with some \"Greens\"?");
+        DialogueLine* dl11 = new DialogueLine("You", "Coming straight away");
+   
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3 });
+        CreateDialogueList({ dl4, dl5, dl6, dl7, dl8, dl9, dl11 });
+        dl11->next = dl10;
+        dl10->next = dl11;
+
+        dl3->options.push_back(dl4);
+        dl3->options.push_back(dl8);
+
+        return std::pair<DialogueLine*, DialogueLine*>(dl0, dl11);
+    }
+
+    DialogueLine* scene2Good()
+    {
+        DialogueLine* dl0 = new DialogueLine("Carl", "Smells just right!");
+        DialogueLine* dl1 = new DialogueLine("You", "I bet it does, enjoy");
+        DialogueLine* dl2 = new DialogueLine("Carl", "Thank you");
+        DialogueLine* dl3 = new DialogueLine("Carl", "Bye");
+        DialogueLine* dl4 = new DialogueLine("You", "Goodbye");
+
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3, dl4 });
+        return dl0;
+    }
+
+    DialogueLine* scene2Bad()
+    {
+        DialogueLine* dl0 = new DialogueLine("Carl", "Are you sure that's it?");
+        DialogueLine* dl1 = new DialogueLine("You", "Positive");
+        DialogueLine* dl2 = new DialogueLine("Carl", "... I don't know man, I hope you are right");
+        DialogueLine* dl3 = new DialogueLine("You", "Thank you for the trust");
+        DialogueLine* dl4 = new DialogueLine("Carl", "...");
+
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3, dl4 });
+        return dl0;
+    }
+
+
+
     std::pair<DialogueLine*,DialogueLine*> scene1Main()
     {
         DialogueLine* dl0 = new DialogueLine("Bianka", "Hii!!!");
@@ -202,6 +403,8 @@ private:
     {
         std::shared_ptr<Texture> t_manager = CreateTexture("assets/GPX/Miss manager.png");
         std::shared_ptr<Texture> t_char2 = CreateTexture("assets/GPX/char2.png");
+        std::shared_ptr<Texture> t_char3 = CreateTexture("assets/GPX/char3.png");
+        std::shared_ptr<Texture> t_char4 = CreateTexture("assets/GPX/char4.png");
 
         // manager, layer 4
         {
@@ -238,9 +441,9 @@ private:
             char2->endLoop = pp.second;  
             char2->incorrect = scene1Bad();
 
-            char2->item = -1;
+            char2->item = 4; // lemon
             char2->special = -1;
-            char2->type = -1;
+            char2->type = 1; // 1
 
             char2->pos = Position{ 450, 1080 - (3508 / 4) - 100 };
 
@@ -254,7 +457,88 @@ private:
 
             getSystemIfExists<GameManager>()->clients.push(char2);
         }
-    
+
+        // char3, layer 4
+        {
+            Client* char2 = new Client();
+            char2->character = entt::null;
+            std::pair<DialogueLine*, DialogueLine*> pp = scene2Main();
+            char2->start = pp.first;
+            char2->correct = scene2Good();
+            char2->endLoop = pp.second;
+            char2->incorrect = scene2Bad();
+
+            char2->item = 1; // choco
+            char2->special = 2; // weed
+            char2->type = -1;
+
+            char2->pos = Position{ 450, 1080 - (3508 / 4) - 100 };
+
+            Sprite s_bianka;
+            s_bianka.layerOrder = 4;
+            s_bianka.texture = t_char3;
+            s_bianka.sizeX = 2480 / 4; // 2480
+            s_bianka.sizeY = 3508 / 4;  // 3508
+
+            char2->spr = s_bianka;
+
+            getSystemIfExists<GameManager>()->clients.push(char2);
+        }
+
+        // char4, layer 4
+        {
+            DialogueLine* e2;
+            Client* char2 = new Client();
+            char2->character = entt::null;
+            std::pair<DialogueLine*, DialogueLine*> pp = scene3Main(&e2);
+            char2->start = pp.first;
+            char2->correct = scene3Good();
+            char2->endLoop = pp.second;
+            char2->endLoop2 = e2;
+            char2->incorrect = scene3Bad();
+
+            char2->item = -1;
+            char2->special = 3;
+            char2->type = -1;
+
+            char2->pos = Position{ 450, 1080 - (3508 / 4) - 100 };
+
+            Sprite s_bianka;
+            s_bianka.layerOrder = 4;
+            s_bianka.texture = t_char4;
+            s_bianka.sizeX = 2480 / 4; // 2480
+            s_bianka.sizeY = 3508 / 4;  // 3508
+
+            char2->spr = s_bianka;
+
+            getSystemIfExists<GameManager>()->clients.push(char2);
+        }
+
+        // manager, layer 4
+        {
+            Client* manager = new Client();
+            manager->character = entt::null;
+            manager->start = scene4Main().first;
+            manager->correct = nullptr; // This one does not have it
+            manager->endLoop = nullptr;
+            manager->incorrect = nullptr;
+            manager->item = -1;
+            manager->special = -1;
+            manager->type = -1;
+
+            manager->pos = Position{ 450, 1080 - (3508 / 4) - 100 };
+
+            Sprite s_manager;
+            s_manager.layerOrder = 4;
+            s_manager.texture = t_manager;
+            s_manager.sizeX = 2480 / 4; // 2480
+            s_manager.sizeY = 3508 / 4;  // 3508
+
+            manager->spr = s_manager;
+
+            getSystemIfExists<GameManager>()->clients.push(manager);
+        }
+
     }
 
     // Add tips to buttons, to check how check pedals
@@ -565,6 +849,21 @@ private:
 
         }
 
+        //text
+        {
+            entt::entity op = m_registry.create();
+            m_registry.emplace<Position>(op, Position{ 1920 + 1920 + 600,400 });
+
+            Text t;
+            t.font = font;
+            t.color = { 0, 0, 0, 255 };
+            t.content = "Day 1";
+            t.fontSize = 64;
+            t.xSize = 550;
+            t.ySize = 200;
+            m_registry.emplace<Text>(op, t);
+        }
+
     }
 
 public:
@@ -634,7 +933,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
     WindowParams wp;
     wp.Fullscreen = true;
 
-    int res = KitsuEngineInit(1920, 1080, "OwO", &wp);
+    int res = KitsuEngineInit(1920, 1080, "Not just a front Cake Game", &wp);
     if (res == -1)
     {
         return SDL_APP_FAILURE;
@@ -649,6 +948,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
     game->MainLoop();
+
+    if (game->shouldStop())
+        return SDL_APP_SUCCESS;
+
     return SDL_APP_CONTINUE;
 
 }
