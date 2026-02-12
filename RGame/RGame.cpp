@@ -16,6 +16,7 @@
 #include "Systems/TipSystem.hpp"
 #include "Systems/CakeMakerSystem.hpp"
 #include "Systems/DialogueSystem.hpp"
+#include "Systems/GameManager.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -30,8 +31,21 @@ private:
     
     std::shared_ptr<Font> font = std::make_shared<Font>("assets/Font/munro.ttf");
     
+    DialogueLine* CreateDialogueList(const std::vector<DialogueLine*>& disconnected)
+    {
+        if (disconnected.size() == 0)
+            return nullptr;
 
-    void SetupHall(const std::shared_ptr<Texture>& t_manager, const std::shared_ptr<Texture> t_right)
+        for (size_t i = 0; i < disconnected.size() - 1; i++)
+        {
+            disconnected.at(i)->next = disconnected.at(i + 1);
+        }
+        return disconnected.at(0);
+    }
+
+
+
+    void SetupHall(const std::shared_ptr<Texture> t_right)
     {
         std::shared_ptr<Texture> t_counter = CreateTexture("assets/GPX/Counter.png");
         std::shared_ptr<Texture> t_wall = CreateTexture("assets/GPX/Wall.png");
@@ -76,18 +90,7 @@ private:
             m_registry.emplace<Sprite>(counter, s_counter);
         }
 
-        // manager, layer 4
-        {
-            entt::entity manager = m_registry.create();
-            m_registry.emplace<Position>(manager, Position{ 450, 1080 - (3508 / 4) - 100});
-            Sprite s_manager;
-
-            s_manager.layerOrder = 4;
-            s_manager.texture = t_manager;
-            s_manager.sizeX = 2480 / 4; // 2480
-            s_manager.sizeY = 3508 / 4;  // 3508
-            m_registry.emplace<Sprite>(manager, s_manager);
-        }
+       
 
         // right, layer 7
         {
@@ -118,7 +121,141 @@ private:
 
     }
 
+    std::pair<DialogueLine*,DialogueLine*> scene1Main()
+    {
+        DialogueLine* dl0 = new DialogueLine("Bianka", "Hii!!!");
+        DialogueLine* dl1 = new DialogueLine("You", "Good morning miss, what can I get you?");
+        DialogueLine* dl2 = new DialogueLine("Bianka", "Hmmm~");
+        DialogueLine* dl3 = new DialogueLine("Bianka", "What about some lemon cake!");
+        DialogueLine* dl4 = new DialogueLine("Bianka", "With chocolate topping please!");
+        DialogueLine* dl5 = new DialogueLine("You", "Anything else?");
+        DialogueLine* dl6 = new DialogueLine("Bianka", "No!");
 
+        DialogueLine* dl7 = new DialogueLine("Bianka", "Some lemon cake please!");
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3, dl4, dl5, dl6});
+        dl6->next = dl7;
+        dl7->next = dl4;
+
+        return std::pair<DialogueLine*, DialogueLine*>(dl0,dl6);
+    }
+
+    DialogueLine* scene1Good()
+    {
+        DialogueLine* dl0 = new DialogueLine("Bianka", "That looks tasty!");
+        DialogueLine* dl1 = new DialogueLine("You", "It sure is");
+        DialogueLine* dl2 = new DialogueLine("Bianka", "Thank you!");
+        DialogueLine* dl3 = new DialogueLine("Bianka", "Byee!");
+        DialogueLine* dl4 = new DialogueLine("You", "Goodbye");
+
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3, dl4 });
+        return dl0;
+    }
+    
+    DialogueLine* scene1Bad()
+    {
+        DialogueLine* dl0 = new DialogueLine("Bianka", "That's not what I wanted!");
+        DialogueLine* dl1 = new DialogueLine("You", "Really?");
+        DialogueLine* dl2 = new DialogueLine("Bianka", "Yes!");
+        DialogueLine* dl3 = new DialogueLine("Bianka", "I am not buying it!");
+        DialogueLine* dl4 = new DialogueLine("Bianka", "Bye!!");
+        DialogueLine* dl5 = new DialogueLine("You", "... shit.");
+
+
+
+        CreateDialogueList({ dl0, dl1, dl2, dl3, dl4, dl5 });
+        return dl0;
+    }
+
+    
+    DialogueLine* scene0()
+	{
+		DialogueLine* dl0 = new DialogueLine("Miss Manager", "Hey there, I've seen you came for your first day!");
+		DialogueLine* dl01 = new DialogueLine("You", "Yes!");
+		DialogueLine* dl1 = new DialogueLine("Miss Manager", "Are you ready for your first day?");
+		dl0->next = dl01;
+		dl01->next = dl1;
+
+
+
+		DialogueLine* dl20 = new DialogueLine("You", "Yes?");
+		DialogueLine* dl21 = new DialogueLine("Miss Manager", "Awesome, you will get everything when you see it, good luck!");
+		DialogueLine* dl22 = new DialogueLine("You", "Wait-");
+		DialogueLine* dl2 = CreateDialogueList({ dl20, dl21, dl22 });
+
+		DialogueLine* dl30 = new DialogueLine("You", "No?");
+		DialogueLine* dl31 = new DialogueLine("Miss Manager", "Quite a shame! I've already signed a contract with you, so you have no choice");
+		DialogueLine* dl32 = new DialogueLine("You", "I guess-");
+		DialogueLine* dl33 = new DialogueLine("Miss Manager", "Well see you then!");
+		DialogueLine* dl3 = CreateDialogueList({ dl30, dl31, dl32, dl33 });
+
+		dl1->options.push_back(dl2);
+		dl1->options.push_back(dl3);
+
+        return dl0;
+	}
+    
+    void SetupClients()
+    {
+        std::shared_ptr<Texture> t_manager = CreateTexture("assets/GPX/Miss manager.png");
+        std::shared_ptr<Texture> t_char2 = CreateTexture("assets/GPX/char2.png");
+
+        // manager, layer 4
+        {
+            Client* manager = new Client();
+            manager->character = entt::null;
+            manager->start = scene0(); 
+            manager->correct = nullptr; // This one does not have it
+            manager->endLoop = nullptr;
+            manager->incorrect = nullptr;
+            manager->item = -1;
+            manager->special = -1;
+            manager->type = -1;
+
+            manager->pos = Position{ 450, 1080 - (3508 / 4) - 100 };
+
+            Sprite s_manager;
+            s_manager.layerOrder = 4;
+            s_manager.texture = t_manager;
+            s_manager.sizeX = 2480 / 4; // 2480
+            s_manager.sizeY = 3508 / 4;  // 3508
+
+            manager->spr = s_manager;
+            
+            getSystemIfExists<GameManager>()->clients.push(manager);
+        }
+
+        // char2, layer 4
+        {
+            Client* char2 = new Client();
+            char2->character = entt::null;
+            std::pair<DialogueLine*, DialogueLine*> pp = scene1Main();
+            char2->start = pp.first;
+            char2->correct = scene1Good();
+            char2->endLoop = pp.second;  
+            char2->incorrect = scene1Bad();
+
+            char2->item = -1;
+            char2->special = -1;
+            char2->type = -1;
+
+            char2->pos = Position{ 450, 1080 - (3508 / 4) - 100 };
+
+            Sprite s_bianka;
+            s_bianka.layerOrder = 4;
+            s_bianka.texture = t_char2;
+            s_bianka.sizeX = 2480 / 4; // 2480
+            s_bianka.sizeY = 3508 / 4;  // 3508
+
+            char2->spr = s_bianka;
+
+            getSystemIfExists<GameManager>()->clients.push(char2);
+        }
+    
+    }
 
     // Add tips to buttons, to check how check pedals
     void SetupMilikingRoom(const std::shared_ptr<Texture> t_right, UISystem* uis)
@@ -133,7 +270,9 @@ private:
         std::shared_ptr<Texture> t_items = CreateTexture("assets/GPX/items.png");
 
         uis->SetCakeMakerSystem(addSystem<CakeMakerSystem>(t_cake, t_icing, t_choco, t_items));
+        addSystem<GameManager>(getSystemIfExists<DialogueSystem>(), getSystemIfExists<CakeMakerSystem>());
 
+        SetupClients();
 
         // "right" - left, layer 7
         {
@@ -443,15 +582,15 @@ public:
         addSystem<DebugMoveSystem>();
         addSystem<TipSystem>(font);
         addSystem<DialogueSystem>(font, CreateTexture("assets/GPX/DialogueButton.png"));
+       
 
         spdlog::info("Scene got init");
 
 
-        std::shared_ptr<Texture> t_manager = CreateTexture("assets/GPX/Miss manager.png");
         std::shared_ptr<Texture> t_right = CreateTexture("assets/GPX/right.png");
     
     
-        SetupHall(t_manager, t_right);
+        SetupHall(t_right);
         SetupMilikingRoom(t_right, uis);
         SetupRestingRoom(t_right);
 

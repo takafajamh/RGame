@@ -114,6 +114,8 @@ private:
 	};
 
 public:
+	std::vector<entt::entity> StealElements;
+
 	CakeMakerSystem(std::shared_ptr<Texture> texture_cake, std::shared_ptr<Texture> texture_icing, std::shared_ptr<Texture> texture_choco, std::shared_ptr<Texture> texture_items)
 	{
 		t_cake = texture_cake;
@@ -367,6 +369,8 @@ public:
 
 			registry.get<Position>(e).y -= cakeSize * h;
 		}
+
+		StealElements = elements;
 
 		elements.clear();
 		height = 0;

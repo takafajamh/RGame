@@ -13,7 +13,7 @@
 class DialogueSystem : public ISystem
 {
 private:
-	bool running = true;
+	
 	DialogueLine* cur = nullptr;
 
 	entt::entity background = entt::null;
@@ -26,6 +26,7 @@ private:
 
 public:
 	bool flagChanged = false;
+	bool running = true;
 
 	DialogueSystem(std::shared_ptr<Font> font, std::shared_ptr<Texture> t_option)
 	{
@@ -156,8 +157,14 @@ public:
 
 	void Update(entt::registry& registry)
 	{
-		if (!running || cur == nullptr)
+		if (!running)
 			return;
+
+		if (cur == nullptr)
+		{
+			running = false;
+			return;
+		}
 
 		if (!startUp)
 		{
@@ -181,6 +188,7 @@ public:
 			{
 				clear = false;
 				cur = cur->next;
+
 				if (cur == nullptr)
 					dissapear(registry);
 				else
@@ -201,43 +209,17 @@ public:
 
 	}
 
-	DialogueLine* CreateDialogueList(const std::vector<DialogueLine*>& disconnected)
+	void SetupDialogue(DialogueLine* start)
 	{
-		if (disconnected.size() == 0)
-			return nullptr;
-
-		for (size_t i = 0; i < disconnected.size()-1; i++)
-		{
-			disconnected.at(i)->next = disconnected.at(i + 1);
-		}
-		return disconnected.at(0);
+		cur = start;
+		running = true;
+		startUp = false;
 	}
 
 	void dod()
 	{
-		DialogueLine* dl1 = new DialogueLine("Miss Manager", "Are you ready for your first day?");
-
-		DialogueLine* dl4 = new DialogueLine("You", "I guess I am alone now...");
-		DialogueLine* dl5 = new DialogueLine("You", "Let's look around before any customer comes...");
-		DialogueLine* dl45 = CreateDialogueList({ dl4, dl5 });
-
-
-		DialogueLine* dl20 = new DialogueLine("You", "Yes?");
-		DialogueLine* dl21 = new DialogueLine("Miss Manager", "Awesome, you will get everything when you see it, good luck!");
-		DialogueLine* dl22 = new DialogueLine("You", "Wait-");
-		DialogueLine* dl2 = CreateDialogueList({ dl20, dl21, dl22, dl4 });
-
-		DialogueLine* dl30 = new DialogueLine("You", "No?");
-		DialogueLine* dl31 = new DialogueLine("Miss Manager", "Quite a shame! I've already signed a contract with you, so you have no choice");
-		DialogueLine* dl32 = new DialogueLine("You", "I guess-");
-		DialogueLine* dl33 = new DialogueLine("Miss Manager", "Well see you then!");
-		DialogueLine* dl3 = CreateDialogueList({ dl30, dl31, dl32, dl33, dl4 });
-
-		dl1->options.push_back(dl2);
-		dl1->options.push_back(dl3);
-
-		cur = dl1;
-		startUp = false;
+		
+		
 	}
 
 
